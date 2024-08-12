@@ -7,6 +7,7 @@
 - Get the simple data to google maps.
 - Try and get pictures and make it more exciting.
 - Perhaps, perhaps?? Make a SQLite or postgres database to store the data.
+- Postgres is probably better for geo data compared to SQLite... but SQLite is easier to use.
 
 To install dependencies:
 
