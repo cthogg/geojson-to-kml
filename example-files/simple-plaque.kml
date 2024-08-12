@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml
+	xmlns="http://earth.google.com/kml/2.2">
+	<Document>
+		<Style id="placemark-red">
+			<IconStyle>
+				<Icon>
+					<href>https://omaps.app/placemarks/placemark-red.png</href>
+				</Icon>
+			</IconStyle>
+		</Style>
+		<name>Blue plaques</name>
+		<visibility>1</visibility>
+		<Placemark>
+			<name>Special place</name>
+			<description>Description of place</description>
+			<styleUrl>#placemark-red</styleUrl>
+			<Point>
+				<coordinates>-0.29049,51.48904</coordinates>
+			</Point>
+		</Placemark>
+	</Document>
+</kml>
