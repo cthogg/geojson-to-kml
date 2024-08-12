@@ -6,6 +6,7 @@
 - Get the simple data to organic maps
 - Get the simple data to google maps.
 - Try and get pictures and make it more exciting.
+- Perhaps, perhaps?? Make a SQLite or postgres database to store the data.
 
 To install dependencies:
 
