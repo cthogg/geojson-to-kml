@@ -111,6 +111,12 @@ const formatText = async (text: string) =>
     semi: false,
     singleQuote: true,
     tabWidth: 2,
+    proseWrap: "never",
   });
 
-console.log(await formatText(allPlacemarksText(geoJsonPlacemarks)));
+const generateKml = async (geojson: unknown) => {
+  const file = await allPlacemarksText(geoJsonPlacemarks);
+  Bun.write("blue-plaques-output.kml", file);
+};
+
+generateKml(geojson);
