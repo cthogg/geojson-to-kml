@@ -1,5 +1,5 @@
 import prettier from "prettier";
-
+import { z } from "zod";
 type Placemark = {
   name: string;
   description: string;
@@ -36,15 +36,36 @@ const geojson = {
   ],
 };
 
-const geoJsonPlacemark: Placemark = {
-  name: "Kew Bridge Pumping Station grey plaque",
-  description:
-    "Kew Bridge Pumping Station Unique in its approach to the preservation of water pumping equipment, in particular the original installations of five famous Cornish beam engines.",
-  styleUrl: "#placemark-red",
-  Point: {
-    coordinates: "-0.29049,51.48904",
-  },
-};
+const featureSchema = z.object({
+  type: z.literal("Feature"),
+  geometry: z.object({
+    type: z.literal("Point"),
+    coordinates: z.tuple([z.number(), z.number()]),
+    is_accurate: z.boolean(),
+  }),
+  properties: z.object({
+    id: z.string(),
+    inscription: z.string(),
+    title: z.string(),
+    uri: z.string().url(),
+    type: z.literal("open-plaque"),
+  }),
+});
+const featureCollectionSchema = z.object({
+  type: z.literal("FeatureCollection"),
+  features: z.array(featureSchema),
+});
+
+const geoJsonPlacemarks: Placemark[] = featureCollectionSchema
+  .parse(geojson)
+  .features.map((feature) => ({
+    name: feature.properties.title,
+    description: feature.properties.inscription,
+    styleUrl: "#placemark-red",
+    Point: {
+      coordinates: feature.geometry.coordinates.join(","),
+    },
+  }));
 
 const frontMatter = `<?xml version="1.0" encoding="UTF-8"?>
 <kml
@@ -92,6 +113,4 @@ const formatText = async (text: string) =>
     tabWidth: 2,
   });
 
-console.log(
-  await formatText(allPlacemarksText([geoJsonPlacemark, geoJsonPlacemark]))
-);
+console.log(await formatText(allPlacemarksText(geoJsonPlacemarks)));
