@@ -3,7 +3,7 @@
 ## TODO:
 
 - Get all data on there.
-- Get the simple data to organic maps
+- Get the simple data to organic maps. Probably using https://github.com/nashwaan/xml-js#readme.
 - Get the simple data to google maps.
 - Try and get pictures and make it more exciting.
 - Perhaps, perhaps?? Make a SQLite or postgres database to store the data.
