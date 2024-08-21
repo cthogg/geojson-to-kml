@@ -84,11 +84,14 @@ const convertPlacemarksToKml = (placemarks: Placemark[]) => {
 const allPlacemarksText = (placemarks: Placemark[]) =>
   `${frontMatter}${convertPlacemarksToKml(placemarks)}${endMatter}`;
 
-console.log(
-  await prettier.format(allPlacemarksText([geoJsonPlacemark]), {
+const formatText = async (text: string) =>
+  await prettier.format(text, {
     parser: "html", // Use 'html' parser for HTML-like content
     semi: false,
     singleQuote: true,
     tabWidth: 2,
-  })
+  });
+
+console.log(
+  await formatText(allPlacemarksText([geoJsonPlacemark, geoJsonPlacemark]))
 );
