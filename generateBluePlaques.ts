@@ -1,4 +1,3 @@
-import prettier from "prettier";
 import { z } from "zod";
 type Placemark = {
   name: string;
@@ -76,16 +75,6 @@ const convertPlacemarksToKml = (placemarks: Placemark[]) => {
 
 const allPlacemarksText = (placemarks: Placemark[]) =>
   `${frontMatter}${convertPlacemarksToKml(placemarks)}${endMatter}`;
-
-//If you decide to do this ensure that the text is all on one line for the description.
-const formatText = async (text: string) =>
-  await prettier.format(text, {
-    parser: "html", // Use 'html' parser for HTML-like content
-    semi: false,
-    singleQuote: true,
-    tabWidth: 2,
-    proseWrap: "never",
-  });
 
 export const generateBluePlaquesKml = async () => {
   const foo = await Bun.file("largeFiles/london-open-plaques.geojson").text();
