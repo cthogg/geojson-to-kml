@@ -56,9 +56,8 @@ const featureCollectionSchema = z.object({
   features: z.array(featureSchema),
 });
 
-const geoJsonPlacemarks: Placemark[] = featureCollectionSchema
-  .parse(geojson)
-  .features.map((feature) => ({
+const geoJsonPlacemarks = (geojson: unknown): Placemark[] =>
+  featureCollectionSchema.parse(geojson).features.map((feature) => ({
     name: feature.properties.title,
     description: feature.properties.inscription,
     styleUrl: "#placemark-red",
@@ -115,8 +114,9 @@ const formatText = async (text: string) =>
   });
 
 const generateKml = async (geojson: unknown) => {
-  const file = await allPlacemarksText(geoJsonPlacemarks);
-  Bun.write("blue-plaques-output.kml", file);
+  const foo = await Bun.file("largeFiles/london-open-plaques.geojson").text();
+  const file = allPlacemarksText(geoJsonPlacemarks(JSON.parse(foo)));
+  Bun.write("largeFiles/blue-plaques-output.kml", file);
 };
 
 generateKml(geojson);
