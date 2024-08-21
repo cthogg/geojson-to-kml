@@ -1,4 +1,13 @@
-console.log("Hello via Bun!");
+import prettier from "prettier";
+
+type Placemark = {
+  name: string;
+  description: string;
+  styleUrl: string;
+  Point: {
+    coordinates: string;
+  };
+};
 
 // Get the whole blue plaques file
 // Get what data I need to have it on (i.e. the KML).
@@ -27,24 +36,6 @@ const geojson = {
   ],
 };
 
-// <Placemark>
-// 			<name>Special place</name>
-// 			<description>Description of place</description>
-// 			<styleUrl>#placemark-red</styleUrl>
-// 			<Point>
-// 				<coordinates>-0.29049,51.48904</coordinates>
-// 			</Point>
-// 		</Placemark>
-
-type Placemark = {
-  name: string;
-  description: string;
-  styleUrl: string;
-  Point: {
-    coordinates: string;
-  };
-};
-
 const geoJsonPlacemark: Placemark = {
   name: "Kew Bridge Pumping Station grey plaque",
   description:
@@ -54,21 +45,6 @@ const geoJsonPlacemark: Placemark = {
     coordinates: "-0.29049,51.48904",
   },
 };
-
-const placemarkToKml = (placemark: Placemark) => {
-  return `
-  <Placemark>
-    <name>${placemark.name}</name>
-    <description>${placemark.description}</description>
-    <styleUrl>${placemark.styleUrl}</styleUrl>
-    <Point>
-      <coordinates>${placemark.Point.coordinates}</coordinates>
-    </Point>
-  </Placemark>
-  `;
-};
-
-const mockPlacemark = placemarkToKml(geoJsonPlacemark);
 
 const frontMatter = `<?xml version="1.0" encoding="UTF-8"?>
 <kml
@@ -88,7 +64,18 @@ const frontMatter = `<?xml version="1.0" encoding="UTF-8"?>
 const endMatter = `	</Document>
 </kml>`;
 
-const kml = `${frontMatter}${mockPlacemark}${endMatter}`;
+const placemarkToKml = (placemark: Placemark) => {
+  return `
+  <Placemark>
+    <name>${placemark.name}</name>
+    <description>${placemark.description}</description>
+    <styleUrl>${placemark.styleUrl}</styleUrl>
+    <Point>
+      <coordinates>${placemark.Point.coordinates}</coordinates>
+    </Point>
+  </Placemark>
+  `;
+};
 
 const convertPlacemarksToKml = (placemarks: Placemark[]) => {
   return placemarks.map(placemarkToKml).join("\n");
@@ -97,4 +84,11 @@ const convertPlacemarksToKml = (placemarks: Placemark[]) => {
 const allPlacemarksText = (placemarks: Placemark[]) =>
   `${frontMatter}${convertPlacemarksToKml(placemarks)}${endMatter}`;
 
-console.log(allPlacemarksText([geoJsonPlacemark]));
+console.log(
+  await prettier.format(allPlacemarksText([geoJsonPlacemark]), {
+    parser: "html", // Use 'html' parser for HTML-like content
+    semi: false,
+    singleQuote: true,
+    tabWidth: 2,
+  })
+);
