@@ -86,16 +86,21 @@ export const generateBluePlaquesKml = async () => {
   // make a new output folder and then create a new file for each in batches of 2000
   const outputFolder = "largeFiles/blue-plaques-output";
   await mkdir(outputFolder);
-  const batchSize = 2000;
+  const batchSize = 20000;
   for (let i = 0; i < allPlacemarks.length; i += batchSize) {
     const batch = allPlacemarks.slice(i, i + batchSize);
-    const file = allPlacemarksText(batch);
+    // replace all & with because otherwise did not parse well
+    const file = allPlacemarksText(batch).replace(/&/g, "and");
     Bun.write(
       `${outputFolder}/output-${Math.floor((i + 1) / batchSize)}.kml`,
       file
     );
   }
 
-  const file = allPlacemarksText(geoJsonPlacemarks(JSON.parse(foo)));
+  const file = allPlacemarksText(geoJsonPlacemarks(JSON.parse(foo))).replace(
+    /&/g,
+    "and"
+  );
+
   Bun.write("largeFiles/blue-plaques-output.kml", file);
 };
