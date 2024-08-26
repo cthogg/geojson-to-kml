@@ -74,13 +74,13 @@ export const generateListedBuildingsKml = async () => {
   // make a new output folder and then create a new file for each in batches of 2000
   const outputFolder = "largeFiles/listed-buildings-output";
   await mkdir(outputFolder);
-  const batchSize = 20000;
+  const batchSize = 10000;
   for (let i = 0; i < allPlacemarks.length; i += batchSize) {
     const batch = allPlacemarks.slice(i, i + batchSize);
     // replace all & with because otherwise did not parse well
     const file = allPlacemarksText(batch).replace(/&/g, "and");
     Bun.write(
-      `${outputFolder}/output-${Math.floor((i + 1) / batchSize)}.kml`,
+      `${outputFolder}/listed-buildings-${Math.floor((i + 1) / batchSize)}.kml`,
       file
     );
   }
