@@ -1,3 +1,3 @@
-import { generateListedBuildingsKml } from "./generateListedBuildings";
+import { generateBluePlaquesKml } from "./generateBluePlaques";
 
-generateListedBuildingsKml();
+generateBluePlaquesKml();
