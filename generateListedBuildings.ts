@@ -69,7 +69,6 @@ export const generateListedBuildingsKml = async () => {
   const foo = await Bun.file(
     "largeFiles/filtered-listed-buildings.geojson"
   ).text();
-  console.log(JSON.parse(foo).length);
   const allPlacemarks = geoJsonPlacemarks(JSON.parse(foo));
 
   // make a new output folder and then create a new file for each in batches of 2000
