@@ -2,37 +2,30 @@ import { mkdir } from "node:fs/promises";
 import { z } from "zod";
 import { Placemark } from "./types";
 
-const featureSchema = z.object({
-  type: z.literal("Feature"),
-  geometry: z.object({
-    type: z.literal("Point"),
-    coordinates: z.tuple([z.number(), z.number()]),
-    is_accurate: z.boolean(),
-  }),
-  properties: z.object({
-    id: z.string(),
-    inscription: z.string(),
-    title: z.string(),
-    uri: z.string().url(),
-    type: z.literal("open-plaque"),
-  }),
-});
-const featureCollectionSchema = z.object({
-  type: z.literal("FeatureCollection"),
-  features: z.array(featureSchema),
+const listedBuildingSchema = z.object({
+  geometry: z.string(),
+  name: z.string(),
+  reference: z.string(),
+  documentation_url: z.string().url().optional(),
+  listed_building_grade: z.string().optional(),
+  latitude: z.number(),
+  longitude: z.number(),
 });
 
-const PLACEMARK_ID = "placemark-blue";
+const PLACEMARK_ID = "placemark-green";
 
 const geoJsonPlacemarks = (geojson: unknown): Placemark[] =>
-  featureCollectionSchema.parse(geojson).features.map((feature) => ({
-    name: feature.properties.title,
-    description: feature.properties.inscription,
-    styleUrl: `#${PLACEMARK_ID}`,
-    Point: {
-      coordinates: feature.geometry.coordinates.join(","),
-    },
-  }));
+  z
+    .array(listedBuildingSchema)
+    .parse(geojson)
+    .map((feature) => ({
+      name: feature.name,
+      description: `Grade ${feature.listed_building_grade} listed building. ${feature.documentation_url}`,
+      styleUrl: `#${PLACEMARK_ID}`,
+      Point: {
+        coordinates: `${feature.longitude},${feature.latitude}`,
+      },
+    }));
 
 const frontMatter = `<?xml version="1.0" encoding="UTF-8"?>
 <kml
@@ -45,7 +38,7 @@ const frontMatter = `<?xml version="1.0" encoding="UTF-8"?>
 				</Icon>
 			</IconStyle>
 		</Style>
-		<name>Blue plaques</name>
+		<name>Listed buildings</name>
 		<visibility>1</visibility>
     `;
 
@@ -72,12 +65,15 @@ const convertPlacemarksToKml = (placemarks: Placemark[]) => {
 const allPlacemarksText = (placemarks: Placemark[]) =>
   `${frontMatter}${convertPlacemarksToKml(placemarks)}${endMatter}`;
 
-export const generateBluePlaquesKml = async () => {
-  const foo = await Bun.file("largeFiles/london-open-plaques.geojson").text();
+export const generateListedBuildingsKml = async () => {
+  const foo = await Bun.file(
+    "largeFiles/filtered-listed-buildings.geojson"
+  ).text();
+  console.log(JSON.parse(foo).length);
   const allPlacemarks = geoJsonPlacemarks(JSON.parse(foo));
 
   // make a new output folder and then create a new file for each in batches of 2000
-  const outputFolder = "largeFiles/blue-plaques-output";
+  const outputFolder = "largeFiles/listed-buildings-output";
   await mkdir(outputFolder);
   const batchSize = 20000;
   for (let i = 0; i < allPlacemarks.length; i += batchSize) {
