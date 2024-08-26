@@ -1,37 +1,78 @@
 import { mkdir } from "node:fs/promises";
 import { z } from "zod";
+import { saveBluePlaqueWikiLinks } from "./bluePlaqueWikiLinks";
 import { Placemark } from "./types";
 
-const featureSchema = z.object({
-  type: z.literal("Feature"),
-  geometry: z.object({
-    type: z.literal("Point"),
-    coordinates: z.tuple([z.number(), z.number()]),
-    is_accurate: z.boolean(),
-  }),
-  properties: z.object({
-    id: z.string(),
-    inscription: z.string(),
-    title: z.string(),
-    uri: z.string().url(),
-    type: z.literal("open-plaque"),
-  }),
+// example plaque
+
+// {
+//   "id": 9850,
+//   "erected_at": "1997-07-10",
+//   "uri": "https://openplaques.org/plaques/9850",
+//   "latitude": 51.48904,
+//   "longitude": -0.29049,
+//   "inscription": "Kew Bridge Pumping Station Unique in its approach to the preservation of water pumping equipment, in particular the original installations of five famous Cornish beam engines.",
+//   "title": "Kew Bridge Pumping Station grey plaque",
+//   "people": [
+//     {
+//       "full_name": "Kew Bridge Pumping Station",
+//       "uri": "https://openplaques.org/people/19146.html",
+//       "primary_role_name": "pumping station"
+//     }
+//   ],
+//   "colour_name": "grey"
+// }
+
+const plaqueSchema = z.object({
+  id: z.number(),
+  uri: z.string().url(),
+  latitude: z.number(),
+  longitude: z.number(),
+  inscription: z.string(),
+  title: z.string(),
+  people: z.array(
+    z.object({
+      full_name: z.string(),
+      uri: z.string().url(),
+      primary_role_name: z.string().nullable(),
+    })
+  ),
+  colour_name: z.string().nullable(),
 });
-const featureCollectionSchema = z.object({
-  type: z.literal("FeatureCollection"),
-  features: z.array(featureSchema),
-});
+
+const plaquesSchema = z.array(plaqueSchema);
+
+// const featureSchema = z.object({
+//   type: z.literal("Feature"),
+//   geometry: z.object({
+//     type: z.literal("Point"),
+//     coordinates: z.tuple([z.number(), z.number()]),
+//     is_accurate: z.boolean(),
+//   }),
+//   properties: z.object({
+//     id: z.string(),
+//     inscription: z.string(),
+//     title: z.string(),
+//     uri: z.string().url(),
+//     type: z.literal("open-plaque"),
+//   }),
+// });
+// const featureCollectionSchema = z.object({
+//   type: z.literal("FeatureCollection"),
+//   features: z.array(featureSchema),
+// });
 
 const PLACEMARK_ID = "placemark-blue";
 
 const geoJsonPlacemarks = (geojson: unknown): Placemark[] =>
-  featureCollectionSchema.parse(geojson).features.map((feature) => ({
-    name: feature.properties.title,
-    description: feature.properties.inscription,
+  plaquesSchema.parse(geojson).map((feature) => ({
+    name: feature.title,
+    description: feature.inscription,
     styleUrl: `#${PLACEMARK_ID}`,
     Point: {
-      coordinates: feature.geometry.coordinates.join(","),
+      coordinates: `${feature.longitude},${feature.latitude}`,
     },
+    fullName: feature.people[0]?.full_name,
   }));
 
 const frontMatter = `<?xml version="1.0" encoding="UTF-8"?>
@@ -73,8 +114,8 @@ const allPlacemarksText = (placemarks: Placemark[]) =>
   `${frontMatter}${convertPlacemarksToKml(placemarks)}${endMatter}`;
 
 export const generateBluePlaquesKml = async () => {
-  const foo = await Bun.file("largeFiles/london-open-plaques.geojson").text();
-  const allPlacemarks = geoJsonPlacemarks(JSON.parse(foo));
+  const foo = await Bun.file("largeFiles/london-open-plaques.json").text();
+  const allPlacemarks = geoJsonPlacemarks(JSON.parse(foo)).slice(0, 10);
 
   // make a new output folder and then create a new file for each in batches of 2000
   const outputFolder = "largeFiles/blue-plaques-output";
@@ -89,6 +130,8 @@ export const generateBluePlaquesKml = async () => {
       file
     );
   }
+
+  saveBluePlaqueWikiLinks(allPlacemarks);
 
   const file = allPlacemarksText(geoJsonPlacemarks(JSON.parse(foo))).replace(
     /&/g,
