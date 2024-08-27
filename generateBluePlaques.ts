@@ -1,5 +1,5 @@
-import { mkdir } from "node:fs/promises";
 import { z } from "zod";
+import { saveBluePlaqueWikiLinks } from "./bluePlaqueWikiLinks";
 import wikilinks from "./bluePlaqueWikiLinks.json";
 import { Placemark, WikiLinksJson } from "./types";
 // example plaque
@@ -124,26 +124,26 @@ const allPlacemarksText = (placemarks: Placemark[]) =>
 
 export const generateBluePlaquesKml = async () => {
   const foo = await Bun.file("largeFiles/london-open-plaques.json").text();
-  const allPlacemarks = geoJsonPlacemarks(JSON.parse(foo)).slice(0, 10);
-
+  const allPlacemarks = geoJsonPlacemarks(JSON.parse(foo));
+  await saveBluePlaqueWikiLinks(allPlacemarks);
   // make a new output folder and then create a new file for each in batches of 2000
-  const outputFolder = "largeFiles/blue-plaques-output";
-  await mkdir(outputFolder);
-  const batchSize = 20000;
-  for (let i = 0; i < allPlacemarks.length; i += batchSize) {
-    const batch = allPlacemarks.slice(i, i + batchSize);
-    // replace all & with because otherwise did not parse well
-    const file = allPlacemarksText(batch).replace(/&/g, "and");
-    Bun.write(
-      `${outputFolder}/output-${Math.floor((i + 1) / batchSize)}.kml`,
-      file
-    );
-  }
+  // const outputFolder = "largeFiles/blue-plaques-output";
+  // await mkdir(outputFolder);
+  // const batchSize = 20000;
+  // for (let i = 0; i < allPlacemarks.length; i += batchSize) {
+  //   const batch = allPlacemarks.slice(i, i + batchSize);
+  //   // replace all & with because otherwise did not parse well
+  //   const file = allPlacemarksText(batch).replace(/&/g, "and");
+  //   Bun.write(
+  //     `${outputFolder}/output-${Math.floor((i + 1) / batchSize)}.kml`,
+  //     file
+  //   );
+  // }
 
-  const file = allPlacemarksText(geoJsonPlacemarks(JSON.parse(foo))).replace(
-    /&/g,
-    "and"
-  );
+  // const file = allPlacemarksText(geoJsonPlacemarks(JSON.parse(foo))).replace(
+  //   /&/g,
+  //   "and"
+  // );
 
-  Bun.write("largeFiles/blue-plaques-output.kml", file);
+  // Bun.write("largeFiles/blue-plaques-output.kml", file);
 };
