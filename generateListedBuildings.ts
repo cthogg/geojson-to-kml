@@ -18,14 +18,21 @@ const geoJsonPlacemarks = (geojson: unknown): Placemark[] =>
   z
     .array(listedBuildingSchema)
     .parse(geojson)
-    .map((feature) => ({
-      name: feature.name,
-      description: `Grade ${feature.listed_building_grade} listed building. ${feature.documentation_url}`,
-      styleUrl: `#${PLACEMARK_ID}`,
-      Point: {
-        coordinates: `${feature.longitude},${feature.latitude}`,
-      },
-    }));
+    .map((feature) => {
+      return {
+        name: feature.name,
+        description: `Grade ${feature.listed_building_grade} listed building. ${feature.documentation_url}`,
+        styleUrl: `#${PLACEMARK_ID}`,
+        Point: {
+          coordinates: `${feature.longitude},${feature.latitude}`,
+        },
+        fullName: feature.name,
+        wiki: {
+          summary: "",
+          url: "",
+        },
+      };
+    });
 
 const frontMatter = `<?xml version="1.0" encoding="UTF-8"?>
 <kml

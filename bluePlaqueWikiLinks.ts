@@ -10,11 +10,9 @@ export const fetchWikipediaSearchResult = async (personName: string) => {
 };
 
 export const fetchWikipediaSummary = async (articleTitle: string) => {
-  console.log("articleTitle", articleTitle);
   const wikipediaSearch = `https://en.wikipedia.org/api/rest_v1/page/summary/${articleTitle}`;
   const resp = await fetch(wikipediaSearch);
   const text = await resp.json();
-  console.log(text);
   const wikipediaData = WikipediaSummarySchema.parse(text);
   return wikipediaData;
 };
@@ -35,7 +33,9 @@ export const fetchBluePlaqueWikiLinks = async (placemarks: Placemark[]) => {
       );
       const { extract } = await fetchWikipediaSummary(articleName);
       bluePlaqueWikiLinks[personName] = {
-        summary: extract,
+        summary: extract.includes("may refer to:")
+          ? "No information found"
+          : extract,
         url: articleUri,
       };
     }

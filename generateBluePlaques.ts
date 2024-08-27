@@ -1,8 +1,7 @@
 import { mkdir } from "node:fs/promises";
 import { z } from "zod";
-import { saveBluePlaqueWikiLinks } from "./bluePlaqueWikiLinks";
-import { Placemark } from "./types";
-
+import wikilinks from "./bluePlaqueWikiLinks.json";
+import { Placemark, WikiLinksJson } from "./types";
 // example plaque
 
 // {
@@ -65,15 +64,22 @@ const plaquesSchema = z.array(plaqueSchema);
 const PLACEMARK_ID = "placemark-blue";
 
 const geoJsonPlacemarks = (geojson: unknown): Placemark[] =>
-  plaquesSchema.parse(geojson).map((feature) => ({
-    name: feature.title,
-    description: feature.inscription,
-    styleUrl: `#${PLACEMARK_ID}`,
-    Point: {
-      coordinates: `${feature.longitude},${feature.latitude}`,
-    },
-    fullName: feature.people[0]?.full_name,
-  }));
+  plaquesSchema.parse(geojson).map((feature) => {
+    const wikijson = WikiLinksJson.parse(wikilinks);
+    return {
+      name: feature.title,
+      description: feature.inscription,
+      styleUrl: `#${PLACEMARK_ID}`,
+      Point: {
+        coordinates: `${feature.longitude},${feature.latitude}`,
+      },
+      fullName: feature.people[0]?.full_name,
+      wiki: {
+        summary: wikijson[feature.people[0]?.full_name]?.summary,
+        url: wikijson[feature.people[0]?.full_name]?.url,
+      },
+    };
+  });
 
 const frontMatter = `<?xml version="1.0" encoding="UTF-8"?>
 <kml
@@ -97,7 +103,10 @@ const placemarkToKml = (placemark: Placemark) => {
   return `
   <Placemark>
     <name>${placemark.name}</name>
-    <description>${placemark.description}</description>
+    <description>${placemark.description}
+    ${placemark.wiki.url}
+    ${placemark.wiki.summary}
+    </description>
     <styleUrl>${placemark.styleUrl}</styleUrl>
     <Point>
       <coordinates>${placemark.Point.coordinates}</coordinates>
@@ -130,8 +139,6 @@ export const generateBluePlaquesKml = async () => {
       file
     );
   }
-
-  saveBluePlaqueWikiLinks(allPlacemarks);
 
   const file = allPlacemarksText(geoJsonPlacemarks(JSON.parse(foo))).replace(
     /&/g,
