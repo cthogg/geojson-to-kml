@@ -1,4 +1,3 @@
-import { mkdir } from "node:fs/promises";
 import path from "path";
 import { z } from "zod";
 import {
@@ -6,6 +5,7 @@ import {
   BLUE_PLAQUES_OUTPUT_FOLDER,
 } from "../constants";
 import { Placemark, WikiLinksJson } from "../types";
+import { generateKmlFile, writeKmlFiles } from "../utils/kmlGeneration";
 import wikilinks from "./bluePlaqueWikiLinks.json";
 
 const plaqueSchema = z.object({
@@ -47,76 +47,32 @@ const geoJsonPlacemarks = (geojson: unknown): Placemark[] =>
     };
   });
 
-const frontMatter = `<?xml version="1.0" encoding="UTF-8"?>
-<kml
-	xmlns="http://earth.google.com/kml/2.2">
-	<Document>
-		<Style id="${PLACEMARK_ID}">
-			<IconStyle>
-				<Icon>
-					<href>https://omaps.app/placemarks/${PLACEMARK_ID}.png</href>
-				</Icon>
-			</IconStyle>
-		</Style>
-		<name>Blue plaques</name>
-		<visibility>1</visibility>
-    `;
-
-const endMatter = `	</Document>
-</kml>`;
-
-const placemarkToKml = (placemark: Placemark) => {
-  return `
-  <Placemark>
-    <name>${placemark.name}</name>
-    <description>${placemark.description}
-    ${placemark.wiki.url}
-    ${placemark.wiki.summary}
-    </description>
-    <styleUrl>${placemark.styleUrl}</styleUrl>
-    <Point>
-      <coordinates>${placemark.Point.coordinates}</coordinates>
-    </Point>
-  </Placemark>
-  `;
-};
-
-const convertPlacemarksToKml = (placemarks: Placemark[]) => {
-  return placemarks.map(placemarkToKml).join("\n");
-};
-
-const allPlacemarksText = (placemarks: Placemark[]) =>
-  `${frontMatter}${convertPlacemarksToKml(placemarks)}${endMatter}`;
-
 export const generateBluePlaquesKml = async () => {
   console.log("Generating blue plaques KML...");
-  const foo = await Bun.file(BLUE_PLAQUES_INPUT_FILE).text();
-  const allPlacemarks = geoJsonPlacemarks(JSON.parse(foo));
+  const data = await Bun.file(BLUE_PLAQUES_INPUT_FILE).text();
+  const allPlacemarks = geoJsonPlacemarks(JSON.parse(data));
 
-  // Create output directory
-  await mkdir(BLUE_PLAQUES_OUTPUT_FOLDER, { recursive: true });
+  const config = {
+    placemarkId: PLACEMARK_ID,
+    documentName: "Blue plaques",
+  };
 
-  const batchSize = 20000;
-  for (let i = 0; i < allPlacemarks.length; i += batchSize) {
-    const batch = allPlacemarks.slice(i, i + batchSize);
-    const file = allPlacemarksText(batch).replace(/&/g, "and");
-    Bun.write(
-      path.join(
-        BLUE_PLAQUES_OUTPUT_FOLDER,
-        `output-${Math.floor((i + 1) / batchSize)}.kml`
-      ),
-      file
-    );
-  }
+  await writeKmlFiles(
+    allPlacemarks,
+    BLUE_PLAQUES_OUTPUT_FOLDER,
+    "output",
+    20000
+  );
 
-  const file = allPlacemarksText(geoJsonPlacemarks(JSON.parse(foo))).replace(
+  // Generate single complete file
+  const completeKml = generateKmlFile(allPlacemarks, config).replace(
     /&/g,
     "and"
   );
-
-  Bun.write(
+  await Bun.write(
     path.join(BLUE_PLAQUES_OUTPUT_FOLDER, "blue-plaques-output.kml"),
-    file
+    completeKml
   );
+
   console.log(`Blue plaques KML generated at ${BLUE_PLAQUES_OUTPUT_FOLDER}`);
 };
