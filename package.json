@@ -2,6 +2,11 @@
   "name": "geojson-to-kml",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "generate-blue-plaques": "bun bluePlaques/index.ts",
+    "generate-listed-buildings": "bun generateListedBuildings.ts",
+    "generate-blue-plaque-wiki-links": "bun generateBluePlaqueWikiLinks.ts"
+  },
   "devDependencies": {
     "bun-types": "latest"
   },

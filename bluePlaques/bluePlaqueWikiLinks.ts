@@ -1,5 +1,5 @@
-import { Placemark } from "./types";
-import { WikipediaSearchSchema, WikipediaSummarySchema } from "./wikiTypes";
+import { Placemark } from "../types";
+import { WikipediaSearchSchema, WikipediaSummarySchema } from "../wikiTypes";
 
 export const fetchWikipediaSearchResult = async (personName: string) => {
   const wikipediaSearch = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${personName}&limit=10&namespace=0&format=json`;

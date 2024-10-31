@@ -1,7 +1,7 @@
 import { mkdir } from "node:fs/promises";
 import { z } from "zod";
+import { Placemark, WikiLinksJson } from "../types";
 import wikilinks from "./bluePlaqueWikiLinks.json";
-import { Placemark, WikiLinksJson } from "./types";
 
 const plaqueSchema = z.object({
   id: z.number(),
@@ -84,6 +84,7 @@ const allPlacemarksText = (placemarks: Placemark[]) =>
   `${frontMatter}${convertPlacemarksToKml(placemarks)}${endMatter}`;
 
 export const generateBluePlaquesKml = async () => {
+  console.log("Generating blue plaques KML...");
   const foo = await Bun.file("largeFiles/london-open-plaques.json").text();
   const allPlacemarks = geoJsonPlacemarks(JSON.parse(foo));
   // make a new output folder and then create a new file for each in batches of 2000
@@ -106,4 +107,7 @@ export const generateBluePlaquesKml = async () => {
   );
 
   Bun.write("largeFiles/blue-plaques-output.kml", file);
+  console.log(
+    "Blue plaques KML generated at largeFiles/blue-plaques-output.kml"
+  );
 };
