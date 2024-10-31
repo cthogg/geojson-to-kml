@@ -1,3 +1,5 @@
 import { generateBluePlaquesKml } from "./generateBluePlaques";
+import { generateListedBuildingsKml } from "./generateListedBuildings";
 
-generateBluePlaquesKml();
+await generateBluePlaquesKml();
+await generateListedBuildingsKml();

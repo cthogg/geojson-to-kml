@@ -2,25 +2,6 @@ import { mkdir } from "node:fs/promises";
 import { z } from "zod";
 import wikilinks from "./bluePlaqueWikiLinks.json";
 import { Placemark, WikiLinksJson } from "./types";
-// example plaque
-
-// {
-//   "id": 9850,
-//   "erected_at": "1997-07-10",
-//   "uri": "https://openplaques.org/plaques/9850",
-//   "latitude": 51.48904,
-//   "longitude": -0.29049,
-//   "inscription": "Kew Bridge Pumping Station Unique in its approach to the preservation of water pumping equipment, in particular the original installations of five famous Cornish beam engines.",
-//   "title": "Kew Bridge Pumping Station grey plaque",
-//   "people": [
-//     {
-//       "full_name": "Kew Bridge Pumping Station",
-//       "uri": "https://openplaques.org/people/19146.html",
-//       "primary_role_name": "pumping station"
-//     }
-//   ],
-//   "colour_name": "grey"
-// }
 
 const plaqueSchema = z.object({
   id: z.number(),
@@ -40,26 +21,6 @@ const plaqueSchema = z.object({
 });
 
 const plaquesSchema = z.array(plaqueSchema);
-
-// const featureSchema = z.object({
-//   type: z.literal("Feature"),
-//   geometry: z.object({
-//     type: z.literal("Point"),
-//     coordinates: z.tuple([z.number(), z.number()]),
-//     is_accurate: z.boolean(),
-//   }),
-//   properties: z.object({
-//     id: z.string(),
-//     inscription: z.string(),
-//     title: z.string(),
-//     uri: z.string().url(),
-//     type: z.literal("open-plaque"),
-//   }),
-// });
-// const featureCollectionSchema = z.object({
-//   type: z.literal("FeatureCollection"),
-//   features: z.array(featureSchema),
-// });
 
 const PLACEMARK_ID = "placemark-blue";
 
