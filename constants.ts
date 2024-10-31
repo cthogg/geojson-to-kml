@@ -5,7 +5,7 @@ export const BLUE_PLAQUE_WIKI_LINKS_FILE = path.resolve(
   "..",
   "bluePlaqueWikiLinks.json"
 );
-export const LARGE_FILES_FOLDER = path.resolve(__dirname, "..", "largeFiles");
+export const LARGE_FILES_FOLDER = path.resolve(__dirname, "largeFiles");
 export const BLUE_PLAQUES_OUTPUT_FOLDER = path.resolve(
   LARGE_FILES_FOLDER,
   "blue-plaques-output"
