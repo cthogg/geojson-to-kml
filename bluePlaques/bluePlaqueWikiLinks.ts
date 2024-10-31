@@ -1,3 +1,4 @@
+import { BLUE_PLAQUE_WIKI_LINKS_FILE } from "../constants";
 import { Placemark } from "../types";
 import { WikipediaSearchSchema, WikipediaSummarySchema } from "../wikiTypes";
 
@@ -46,5 +47,5 @@ export const fetchBluePlaqueWikiLinks = async (placemarks: Placemark[]) => {
 export const saveBluePlaqueWikiLinks = async (placemarks: Placemark[]) => {
   const bluePlaqueWikiLinks = await fetchBluePlaqueWikiLinks(placemarks);
   const json = JSON.stringify(bluePlaqueWikiLinks, null, 2);
-  Bun.write("bluePlaqueWikiLinks.json", json);
+  Bun.write(BLUE_PLAQUE_WIKI_LINKS_FILE, json);
 };

@@ -1,5 +1,10 @@
 import { mkdir } from "node:fs/promises";
+import path from "path";
 import { z } from "zod";
+import {
+  BLUE_PLAQUES_INPUT_FILE,
+  BLUE_PLAQUES_OUTPUT_FOLDER,
+} from "../constants";
 import { Placemark, WikiLinksJson } from "../types";
 import wikilinks from "./bluePlaqueWikiLinks.json";
 
@@ -85,18 +90,21 @@ const allPlacemarksText = (placemarks: Placemark[]) =>
 
 export const generateBluePlaquesKml = async () => {
   console.log("Generating blue plaques KML...");
-  const foo = await Bun.file("largeFiles/london-open-plaques.json").text();
+  const foo = await Bun.file(BLUE_PLAQUES_INPUT_FILE).text();
   const allPlacemarks = geoJsonPlacemarks(JSON.parse(foo));
-  // make a new output folder and then create a new file for each in batches of 2000
-  const outputFolder = "largeFiles/blue-plaques-output";
-  await mkdir(outputFolder);
+
+  // Create output directory
+  await mkdir(BLUE_PLAQUES_OUTPUT_FOLDER, { recursive: true });
+
   const batchSize = 20000;
   for (let i = 0; i < allPlacemarks.length; i += batchSize) {
     const batch = allPlacemarks.slice(i, i + batchSize);
-    // replace all & with because otherwise did not parse well
     const file = allPlacemarksText(batch).replace(/&/g, "and");
     Bun.write(
-      `${outputFolder}/output-${Math.floor((i + 1) / batchSize)}.kml`,
+      path.join(
+        BLUE_PLAQUES_OUTPUT_FOLDER,
+        `output-${Math.floor((i + 1) / batchSize)}.kml`
+      ),
       file
     );
   }
@@ -106,8 +114,9 @@ export const generateBluePlaquesKml = async () => {
     "and"
   );
 
-  Bun.write("largeFiles/blue-plaques-output.kml", file);
-  console.log(
-    "Blue plaques KML generated at largeFiles/blue-plaques-output.kml"
+  Bun.write(
+    path.join(BLUE_PLAQUES_OUTPUT_FOLDER, "blue-plaques-output.kml"),
+    file
   );
+  console.log(`Blue plaques KML generated at ${BLUE_PLAQUES_OUTPUT_FOLDER}`);
 };
