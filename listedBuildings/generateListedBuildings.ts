@@ -1,6 +1,6 @@
 import { mkdir } from "node:fs/promises";
 import { z } from "zod";
-import { Placemark } from "./types";
+import { Placemark } from "../types";
 
 const listedBuildingSchema = z.object({
   geometry: z.string(),
