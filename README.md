@@ -1,5 +1,9 @@
 # geojson-to-kml
 
+## About
+
+This project is a simple script to convert the blue plaques and listed buildings data into kml files.
+Data from Openplaques and Historic England.
 To install dependencies:
 
 ```bash
