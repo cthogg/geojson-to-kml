@@ -47,7 +47,11 @@ const geoJsonPlacemarks = (geojson: unknown): Placemark[] =>
     };
   });
 
-export const generateBluePlaquesKml = async () => {
+export const generateBluePlaquesKml = async ({
+  batchSize,
+}: {
+  batchSize: number;
+}) => {
   console.log("Generating blue plaques KML...");
   const data = await Bun.file(BLUE_PLAQUES_INPUT_FILE).text();
   const allPlacemarks = geoJsonPlacemarks(JSON.parse(data));
@@ -60,8 +64,8 @@ export const generateBluePlaquesKml = async () => {
   await writeKmlFiles(
     allPlacemarks,
     BLUE_PLAQUES_OUTPUT_FOLDER,
-    "output",
-    20000
+    "blue-plaques-batched",
+    batchSize
   );
 
   // Generate single complete file
@@ -70,7 +74,7 @@ export const generateBluePlaquesKml = async () => {
     "and"
   );
   await Bun.write(
-    path.join(BLUE_PLAQUES_OUTPUT_FOLDER, "blue-plaques-output.kml"),
+    path.join(BLUE_PLAQUES_OUTPUT_FOLDER, "blue-plaques-full.kml"),
     completeKml
   );
 

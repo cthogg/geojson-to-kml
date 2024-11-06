@@ -1,8 +1,7 @@
 ## ROADMAP:
 
-- Get all data on there. ✅
-- Get the simple blue plauqe data to organic maps. ✅
-- Get listed buildings to organic maps. ✅
+- Add documentation.
+- Output the data to an artifact?.
 - Get the simple data to google maps.
 - Get a link to wikipedia for each blue plaque /place of interest. Should then probably save the link in the database /external one. See the thing which I have removed in the commit TODO:.
 - Try and make the description and title more interesting with appropriate formatting.

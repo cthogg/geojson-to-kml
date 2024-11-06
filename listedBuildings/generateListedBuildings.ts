@@ -36,7 +36,11 @@ const geoJsonPlacemarks = (geojson: unknown): Placemark[] =>
       },
     }));
 
-export const generateListedBuildingsKml = async () => {
+export const generateListedBuildingsKml = async ({
+  batchSize,
+}: {
+  batchSize: number;
+}) => {
   const data = await Bun.file(LISTED_BUILDINGS_INPUT_FILE).text();
   const allPlacemarks = geoJsonPlacemarks(JSON.parse(data));
 
@@ -48,8 +52,8 @@ export const generateListedBuildingsKml = async () => {
   await writeKmlFiles(
     allPlacemarks,
     LISTED_BUILDINGS_OUTPUT_FOLDER,
-    "listed-buildings",
-    10000
+    "listed-buildings-batched",
+    batchSize
   );
 
   // Generate single complete file
@@ -58,7 +62,7 @@ export const generateListedBuildingsKml = async () => {
     "and"
   );
   await Bun.write(
-    path.join(LISTED_BUILDINGS_OUTPUT_FOLDER, "listed-buildings-output.kml"),
+    path.join(LISTED_BUILDINGS_OUTPUT_FOLDER, "listed-buildings-full.kml"),
     completeKml
   );
 };
