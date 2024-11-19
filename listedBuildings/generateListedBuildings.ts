@@ -18,13 +18,22 @@ const listedBuildingSchema = z.object({
 
 const PLACEMARK_ID = "placemark-green";
 
+const BRITISH_LISTED_BUILDINGS_URL = "https://britishlistedbuildings.co.uk/";
+
+const createBritishListedBuildingsUrl = (reference: string) =>
+  `${BRITISH_LISTED_BUILDINGS_URL}${reference}`;
+
 const geoJsonPlacemarks = (geojson: unknown): Placemark[] =>
   z
     .array(listedBuildingSchema)
     .parse(geojson)
     .map((feature) => ({
       name: feature.name,
-      description: `Grade ${feature["listed-building-grade"]} listed building. ${feature["documentation-url"]}`,
+      description: `Grade ${
+        feature["listed-building-grade"]
+      } listed building. ${
+        feature["documentation-url"]
+      } ${createBritishListedBuildingsUrl(feature.reference)}`,
       styleUrl: `#${PLACEMARK_ID}`,
       Point: {
         coordinates: `${feature.longitude},${feature.latitude}`,
