@@ -10,8 +10,8 @@ const listedBuildingSchema = z.object({
   geometry: z.string(),
   name: z.string(),
   reference: z.string(),
-  documentation_url: z.string().url().optional(),
-  listed_building_grade: z.string().optional(),
+  "documentation-url": z.string().url().optional(),
+  "listed-building-grade": z.string().optional(),
   latitude: z.number(),
   longitude: z.number(),
 });
@@ -24,7 +24,7 @@ const geoJsonPlacemarks = (geojson: unknown): Placemark[] =>
     .parse(geojson)
     .map((feature) => ({
       name: feature.name,
-      description: `Grade ${feature.listed_building_grade} listed building. ${feature.documentation_url}`,
+      description: `Grade ${feature["listed-building-grade"]} listed building. ${feature["documentation-url"]}`,
       styleUrl: `#${PLACEMARK_ID}`,
       Point: {
         coordinates: `${feature.longitude},${feature.latitude}`,
