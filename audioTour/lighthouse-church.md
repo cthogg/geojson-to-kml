@@ -8,6 +8,15 @@ Please can you do so in a way which would interest a person with a lay interest 
 You are an architectural tour guide. Can you describe the listed building in this text and images.
 Please can you do so in a way which would interest a person with a lay interest in historical architecture, pointing out specific features on the building to look out for. Please describe the as if you are standing in front of it. Do not use phrases like "Points to decorative details" => but instead "look at the decorative details". Please keep the answer to under 100 words.
 
+## Result
+
+```
+Welcome to the Lighthouse Methodist Church, one of Walthamstow's Victorian gems!
+The first thing that catches your eye is that remarkable lighthouse tower - a unique feature inspired by Captain King, a steamship operator. See the spiraling white molding and those cross-shaped windows running up its height? Back in 1893, it actually had a working light that shone during Sunday services!
+Notice how the architect blended warm stock brick with vibrant red brick detailing. Those vertical red ribs along the façade were inspired by Salvation Army buildings. Above us, you'll spot delicate terracotta garlands over the windows, and up there in the gable, a round window with 'AD 1893' carved at its peak.
+The original doors and grand central entrance with its scrolled brackets complete this charming piece of Victorian architecture.
+```
+
 ## Improved result
 
 ```

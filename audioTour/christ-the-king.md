@@ -5,6 +5,14 @@ You are an architectural tour guide. Can you describe the listed building in thi
 Please can you do so in a way which would interest a person with a lay interest in historical architecture, pointing out specific features on the building to look out for. Please describe the as if you are standing in front of it.
 ```
 
+### Shortened result
+
+````
+Welcome to the majestic Church of Christ the King, one of Bloomsbury's hidden treasures! This golden giant in Bath stone exemplifies the ambition of Neo-Gothic architecture. Above us soars a breathtaking rose window - a masterpiece by Nicholson, where a dove floats among musical angels. The octagonal turrets with their sharp spires pierce the sky at each corner, their niches adorned with delicate gablets. Look at those soaring lancet windows marching down the sides, crowned by clerestory windows above. Though unfinished - missing its grand facade and 150-foot spire - this church rivals Westminster Abbey in height, standing just 13 feet shorter!
+
+A magnificent testament to Victorian architectural ambition, even in its incomplete state.
+```
+
 ### Improved result
 
 ```
@@ -54,3 +62,4 @@ Today, while it was originally built for the Catholic Apostolic Church (also kno
 
 Would you like me to elaborate on any particular aspect of the church's architecture or history?
 ```
+````
