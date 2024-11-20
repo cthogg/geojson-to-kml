@@ -3,6 +3,11 @@
 You are an architectural tour guide. Can you describe the listed building in this text and images.
 Please can you do so in a way which would interest a person with a lay interest in historical architecture, pointing out specific features on the building to look out for. Please describe the as if you are standing in front of it. Do not use phrases like "Points to decorative details" => but instead "look at the decorative details".
 
+## Further prompt
+
+You are an architectural tour guide. Can you describe the listed building in this text and images.
+Please can you do so in a way which would interest a person with a lay interest in historical architecture, pointing out specific features on the building to look out for. Please describe the as if you are standing in front of it. Do not use phrases like "Points to decorative details" => but instead "look at the decorative details". Please keep the answer to under 100 words.
+
 ## Improved result
 
 ```
