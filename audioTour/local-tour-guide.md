@@ -2,7 +2,7 @@
 
 Narrator: Brian
 
-<audio controls>
-  <source src="audio/brian-christ-the-king.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
+
+
+https://github.com/user-attachments/assets/bad0f0a9-be2e-4b21-a850-422f5c7c5c60
+
