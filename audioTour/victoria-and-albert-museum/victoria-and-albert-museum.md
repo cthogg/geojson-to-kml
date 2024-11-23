@@ -3,6 +3,7 @@ title: Victoria and Albert museum
 type: listed-building
 grade: I
 list-entry: 1190187
+coordinates: [51.496639, -0.172180]
 ---
 
 # Victoria and Albert museum
