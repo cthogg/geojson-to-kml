@@ -20,6 +20,12 @@ Notice the beautiful mullioned and transomed windows along the facade - these ar
 
 The entire facade stretches an impressive 720 feet and is constructed from red brick and Portland stone. Today, you can see some historic pockmarks on the facade - these are actually from bomb fragments from World War II, a reminder of the building's resilience through London's history.
 
+### Prompt: 
+```markdown
+You are an architectural tour guide, giving a tour to a person with a lay interest in historical architecture.
+Describe the listed building in this text and images, pointing out specific features on the building to look out for. Please describe the as if you are standing in front of it from the perspective of the image. Do not use phrases like "Points to decorative details" => but instead phrases like "look at the decorative details". Please keep the answer to under 200 words.
+```
+
 ### Listed building text
 ```
 
