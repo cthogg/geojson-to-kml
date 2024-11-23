@@ -1,3 +1,8 @@
+---
+title: Victoria and Albert museum
+type: listed-building
+---
+
 # Victoria and Albert museum
 
 https://github.com/user-attachments/assets/950b6541-dbfc-42b1-94c7-6f77b0bf4d11
