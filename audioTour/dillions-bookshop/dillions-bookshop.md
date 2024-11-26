@@ -3,7 +3,7 @@ title: Dillons bookshop
 type: listed-building
 grade: II
 list-entry: 1379009
-coordinates: [51.496639, -0.172180]
+coordinates: [51.522333, -0.132239]
 ---
 
 # Dillons bookshop
