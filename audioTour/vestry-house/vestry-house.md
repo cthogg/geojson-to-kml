@@ -12,6 +12,15 @@ prompt: You are an architectural tour guide, giving a tour to a person with a la
 
 
 ### AI generated text
+Welcome to the Vestry House Museum, a beautifully preserved historic building in the heart of Walthamstow. This former parish workhouse, dating back to 1730, now serves as a local history museum.
+
+As you look at the building, notice the striking plum brick exterior with red dressings, giving it a distinctive appearance. The two-story south facade features a central main entrance with an inscribed plaque above it, flanked by five bays of segmental-headed windows with flush frames and 12-paned sashes.
+
+The moulded timber eaves cornice adds a touch of elegance to the roofline, which features a tiled hipped double-pitched roof with pantiles on the northern extension. The north wing is lower in height and has a doorcase imported from the nearby Church Hill House, with its intricate waterleaf capitals and arched entryway.
+
+As you step inside, take a moment to admire the original turned baluster staircase and the simple yet well-preserved paneling in the entrance hall, which includes a 17th-century mantelpiece and other imported period features.
+
+This building seamlessly blends its historical character with its current role as a museum, providing a fascinating glimpse into Walthamstow's past.
 
 ### Prompt: 
 ```markdown
