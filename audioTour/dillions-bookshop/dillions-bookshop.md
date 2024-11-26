@@ -9,6 +9,10 @@ prompt: You are an architectural tour guide, giving a tour to a person with a la
 
 # Dillons bookshop
 
+
+https://github.com/user-attachments/assets/820f7da2-a2f5-4984-94c8-2fd405f83af2
+
+
 ![image](https://github.com/user-attachments/assets/079be5c4-1e14-4383-ac11-33a856eb2069)
 
 ### AI generated text
