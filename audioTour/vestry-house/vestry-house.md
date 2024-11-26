@@ -8,7 +8,8 @@ prompt: You are an architectural tour guide, giving a tour to a person with a la
 ---
 # Vestry house
 
-![image](https://github.com/user-attachments/assets/079be5c4-1e14-4383-ac11-33a856eb2069)
+![image](https://github.com/user-attachments/assets/f4884e70-2399-4926-b5b3-6ab6b563d8a4)
+
 
 ### AI generated text
 
