@@ -21,4 +21,35 @@ export const listedBuildingFile: ListedBuilding[] = [
     wikipediaText:
       "Walthamstow Granada (previously known as Mirth, Marvel & Maud Granada/EMD, Granada Cinema, EMD Cinema, MGM Cinema and ABC Cinema) is a Grade II* listed building housing a pub, cinema and cultural centre in Walthamstow, London. The building is famous for having been frequented by Alfred Hitchcock during its time as a cinema. It was built on a site where films were shown as early as 1896.\n\n\n== History ==\n\nIn 1930 Granada plc built a 2,697 seat cinema, opened as The Granada.  The building featured exteriors by Cecil Masey and interior decorations by Theodore Komisarjevsky.\nIn later years, as a result of changes in the building's ownership, the cinema was variously known as MGM, ABC, and EMD cinema. Although never completely renovated after the 1970s, at the time of its closure as a cinema in December 2003, it was the only cinema to have an original working Christie Organ still in place at the cinema where it was originally installed.\nOften used as a concert venue, the Granada Cinema in Hoe Street, Walthamstow, held a concert by the Beatles on 24 May 1963. Other famous musical acts to have performed there include John Coltrane, Little Richard, Gene Vincent, Jerry Lee Lewis, Alex Paterson and Buddy Holly,\n\n\n== Campaign to save building and cinema ==\n\nThe cinema closed in 2003 and was purchased by Universal Church of the Kingdom of God (UCKG) with the intention of converting the building into a church.\nMany members of the local community opposed and successfully campaigned against these plans. Comedian and presenter Griff Rhys Jones, actor Paul McGann and writer Alain de Botton are among the famous names to have backed local residents in asking the local authority to stop plans to convert the building into a church. The Waltham Forest Film Society became the focal point for local campaigners. UCKG failed to gain planning permission to convert the building from Waltham Forest Council and later from the then Secretary of State for Communities and Local Government, Eric Pickles.\n\n\n== Reopening of building 2015 ==\nIn 2014, UCKG sold the cinema to pub company Antic who reopened the building under the new name of Mirth, Marvel and Maud.\nIn May 2019, Waltham Forest Council purchased the building from Antic. Waltham Forest Council and Soho Theatre have teamed up to secure the future of the former Granada/EMD, which will operate a new local theatre with a national profile as part of the legacy of Waltham Forest's year as the first London Borough of Culture.\nSoho Theatre will operate the building as a new cultural venue for North East London. The 950-seat rejuvenated venue will operate as a local theatre with a national profile, presenting the biggest names in comedy plus theatre, performance, music, pantomime and community and education programmes.\nRenovation of the site is being carried out by Willmott Dixon Interiors and is estimated to take around three years to complete, and initial plans suggest that events could be held on the site before the project is complete. A fund of £17million has been set aside for the work, which commenced in May 2020.\n\n\n== References ==",
   },
+  {
+    title: "Chestnuts house",
+    type: "listed-building",
+    grade: "II*",
+    listEntry: "1191062",
+    coordinates: [51.3441, -0.0103],
+    prompt:
+      "You are an architectural tour guide, giving a tour to a person with a lay interest in historical architecture. Describe the listed building in this text and images, pointing out specific features on the building to look out for. Please describe the as if you are standing in front of it from the perspective of the image. Do not use phrases like 'Points to decorative details' => but instead phrases like 'look at the decorative details'. Please keep the answer to under 200 words.",
+    aiGeneratedText: "",
+    listedBuildingText: "",
+    wikidataEntry: "",
+    wikipediaText: "",
+    imageUrl: "",
+    audioUrl: null,
+  },
+  {
+    title: "Vestry house",
+    type: "listed-building",
+    grade: "II",
+    listEntry: "1191188",
+    coordinates: [51.35, 0.045],
+    prompt:
+      "You are an architectural tour guide, giving a tour to a person with a lay interest in historical architecture. Describe the listed building in this text and images, pointing out specific features on the building to look out for. Please describe the as if you are standing in front of it from the perspective of the image. Do not use phrases like 'Points to decorative details' => but instead phrases like 'look at the decorative details'. Please keep the answer to under 200 words.",
+    aiGeneratedText:
+      "\nWelcome to the Vestry House Museum, a beautifully preserved historic building in the heart of Walthamstow. This former parish workhouse, dating back to 1730, now serves as a local history museum.\n\nAs you look at the building, notice the striking plum brick exterior with red dressings, giving it a distinctive appearance. The two-story south facade features a central main entrance with an inscribed plaque above it, flanked by five bays of segmental-headed windows with flush frames and 12-paned sashes.\n\nThe moulded timber eaves cornice adds a touch of elegance to the roofline, which features a tiled hipped double-pitched roof with pantiles on the northern extension. The north wing is lower in height and has a doorcase imported from the nearby Church Hill House, with its intricate waterleaf capitals and arched entryway.\n\nAs you step inside, take a moment to admire the original turned baluster staircase and the simple yet well-preserved paneling in the entrance hall, which includes a 17th-century mantelpiece and other imported period features.\n\nThis building seamlessly blends its historical character with its current role as a museum, providing a fascinating glimpse into Walthamstow's past.\n\n",
+    listedBuildingText: "",
+    wikidataEntry: "",
+    wikipediaText: "",
+    imageUrl: "",
+    audioUrl: null,
+  },
 ];
