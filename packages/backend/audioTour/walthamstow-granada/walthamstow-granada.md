@@ -8,6 +8,9 @@ prompt: You are an architectural tour guide, giving a tour to a person with a la
 ---
 
 # Walthamstow Granada
+
+https://github.com/user-attachments/assets/12ef95a0-03e5-45ee-bd94-9ada230b5bbe
+
 ![image](https://github.com/user-attachments/assets/31a2b75a-9bf2-4fe6-ac0c-acc8997390a8)
 
 ### AI generated text
