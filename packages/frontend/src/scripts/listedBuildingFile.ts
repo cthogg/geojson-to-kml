@@ -9,7 +9,7 @@ export const listedBuildingFile: ListedBuilding[] = [
     wikidataEntry: "Q5323389",
     coordinates: [51.5861, -0.0199],
     imageUrl:
-      "https://github.com/user-attachments/assets/31a2b75a-9bf2-4fe6-ac0c-acc8997390a8",
+      "https://commons.wikimedia.org/wiki/File:Mirth,%20Marvel%20and%20Maud%20-%20exterior.jpg",
     audioUrl:
       "https://github.com/user-attachments/assets/950b6541-dbfc-42b1-94c7-6f77b0bf4d11",
     aiGeneratedText:
