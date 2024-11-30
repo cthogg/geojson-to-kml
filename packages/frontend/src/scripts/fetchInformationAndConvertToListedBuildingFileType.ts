@@ -68,10 +68,7 @@ export async function fetchListedBuilding(
     listEntry: listedBuildingNumber,
     wikidataEntry: building.item.value,
     coordinates: coordinates,
-    imageUrl: building.image?.value ?? "",
-    audioUrl: null,
-    aiGeneratedText: "", // To be filled by AI generation
-    prompt: "", // To be filled when generating AI text
+    imageUrl: building.image?.value ?? null,
     listedBuildingText: "", // Would need additional source
     wikipediaText: wikipediaText, // Would need additional SPARQL query
   };

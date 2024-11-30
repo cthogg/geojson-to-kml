@@ -72,14 +72,16 @@ function App() {
           </div>
 
           {/* Image */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold mb-4">Image</h2>
-            <img
-              src={imageUrl}
-              alt="Description of your image"
-              className="w-full h-auto rounded-lg"
-            />
-          </div>
+          {imageUrl && (
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h2 className="text-xl font-semibold mb-4">Image</h2>
+              <img
+                src={imageUrl}
+                alt="Description of your image"
+                className="w-full h-auto rounded-lg"
+              />
+            </div>
+          )}
 
           {/* Description */}
           <div className="bg-white p-6 rounded-lg shadow-md">

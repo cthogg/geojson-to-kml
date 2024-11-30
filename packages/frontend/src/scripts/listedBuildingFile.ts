@@ -1,6 +1,6 @@
-import { ListedBuilding } from "./listedBuildingFileTypes";
+import { ListedBuildingWithPrompt } from "./listedBuildingFileTypes";
 
-export const listedBuildingFile: ListedBuilding[] = [
+export const listedBuildingFile: ListedBuildingWithPrompt[] = [
   {
     title: "Walthamstow Granada",
     type: "listed-building",
