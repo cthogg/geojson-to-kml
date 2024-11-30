@@ -33,12 +33,7 @@ function App() {
   if (!listedBuildingInformation) {
     return <div>No listed building information found</div>;
   }
-  const {
-    title,
-    imageUrl,
-    audioUrl,
-    aiGeneratedText: description,
-  } = listedBuildingInformation;
+  const { title, imageUrl } = listedBuildingInformation;
   return (
     <>
       {/* Sticky Header */}

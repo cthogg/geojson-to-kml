@@ -12,16 +12,17 @@ const getInformationFromHistoricEnglandNumber = async (
 ) => {
   const siteHtml = await fetchSiteHtml(listedBuildingNumber);
   console.log("siteHtml", siteHtml);
+  Bun.write("siteHtml.html", siteHtml);
   return getInformationFromHistoricalEnglandHtml(siteHtml);
 };
 
 const getInformationFromHistoricalEnglandHtml = async (siteHtml: string) => {
-  const $ = cheerio.load(siteHtml);
-  const body = $("body");
+  const $C = cheerio.load(siteHtml);
+  const body = $C("body").html();
+  const $ = cheerio.load(body);
 
   // Find the Details section and extract its text
-  const detailsSection = body
-    .find(".nhle-entry__section-official--no-spacing-top")
+  const detailsSection = $(".nhle-entry__section-official--no-spacing-top")
     .find('h3:contains("Details")')
     .parent()
     .find("p")
@@ -32,8 +33,7 @@ const getInformationFromHistoricalEnglandHtml = async (siteHtml: string) => {
     .replace(/\s*<br>\s*/g, "\n")
     .trim();
   // Find the Sources section
-  const sourcesSection = body
-    .find(".nhle-entry__section-official--no-spacing-top")
+  const sourcesSection = $(".nhle-entry__section-official--no-spacing-top")
     .find('h3:contains("Sources")')
     .parent()
     .text()

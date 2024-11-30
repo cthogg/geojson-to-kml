@@ -11,30 +11,30 @@ export function convertQueryToUrl(query: string): string {
   return `${baseUrl}query=${encodedQuery}`;
 }
 
-// Example usage:
-const sparqlQuery = `PREFIX wikibase: <http://wikiba.se/ontology#>
-PREFIX wd: <http://www.wikidata.org/entity/> 
-PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX p: <http://www.wikidata.org/prop/>
-PREFIX v: <http://www.wikidata.org/prop/statement/>
-PREFIX schema: <http://schema.org/>
+// // Example usage:
+// const sparqlQuery = `PREFIX wikibase: <http://wikiba.se/ontology#>
+// PREFIX wd: <http://www.wikidata.org/entity/>
+// PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+// PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+// PREFIX p: <http://www.wikidata.org/prop/>
+// PREFIX v: <http://www.wikidata.org/prop/statement/>
+// PREFIX schema: <http://schema.org/>
 
-SELECT ?item ?itemLabel ?coordinateLocation ?heritageDesignation ?image ?wikipediaTitle WHERE {
-   ?item wdt:P1216 "1065590" .
-   OPTIONAL { ?item wdt:P625 ?coordinateLocation. }
-   OPTIONAL { ?item wdt:P1435 ?heritageDesignation. }
-   OPTIONAL { ?item wdt:P18 ?image. }
-   OPTIONAL {
-     ?wikipediaArticle schema:about ?item ;
-                       schema:isPartOf <https://en.wikipedia.org/> .
-     BIND(REPLACE(STR(?wikipediaArticle), "https://en.wikipedia.org/wiki/", "") AS ?wikipediaTitle)
-   }
-  SERVICE wikibase:label {
-    bd:serviceParam wikibase:language "en" .
-   }
-}
-`;
+// SELECT ?item ?itemLabel ?coordinateLocation ?heritageDesignation ?image ?wikipediaTitle WHERE {
+//    ?item wdt:P1216 "1065590" .
+//    OPTIONAL { ?item wdt:P625 ?coordinateLocation. }
+//    OPTIONAL { ?item wdt:P1435 ?heritageDesignation. }
+//    OPTIONAL { ?item wdt:P18 ?image. }
+//    OPTIONAL {
+//      ?wikipediaArticle schema:about ?item ;
+//                        schema:isPartOf <https://en.wikipedia.org/> .
+//      BIND(REPLACE(STR(?wikipediaArticle), "https://en.wikipedia.org/wiki/", "") AS ?wikipediaTitle)
+//    }
+//   SERVICE wikibase:label {
+//     bd:serviceParam wikibase:language "en" .
+//    }
+// }
+// `;
 
 const generateSparQlQueryOfListedBuildingNumber = (
   listedBuildingNumber: string
