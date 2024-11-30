@@ -8,6 +8,10 @@ prompt: You are an architectural tour guide, giving a tour to a person with a la
 ---
 # Vestry house
 
+
+https://github.com/user-attachments/assets/87b4f137-9089-44ce-8982-c1db6115f2e5
+
+
 ![image](https://github.com/user-attachments/assets/f4884e70-2399-4926-b5b3-6ab6b563d8a4)
 
 
