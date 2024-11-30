@@ -49,7 +49,8 @@ export const listedBuildingFile: ListedBuilding[] = [
     listedBuildingText: "",
     wikidataEntry: "",
     wikipediaText: "",
-    imageUrl: "",
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/3/39/Courtyard_of_the_Vestry_House_Museum_-_geograph.org.uk_-_900047.jpg",
     audioUrl: null,
   },
 ];
