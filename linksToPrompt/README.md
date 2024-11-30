@@ -15,3 +15,5 @@
 // Get the listed building text
 // Get the wikipedia text
 // Output it like below in the markdown.
+
+Need to get all of the data in the coordinates.
