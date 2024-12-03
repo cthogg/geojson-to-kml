@@ -8,7 +8,7 @@ const ListedBuildingSchema = z.object({
   wikidataEntry: z.string(),
   coordinates: z.tuple([z.number(), z.number()]).nullable(),
   imageUrl: z.string().nullable(),
-  historicalEnglandText: z.string(),
+  historicalEnglandText: z.string().nullable(),
   wikipediaText: z.string().nullable(),
 });
 /* eslint-enable @typescript-eslint/no-unused-vars */

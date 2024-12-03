@@ -9,11 +9,12 @@ PREFIX p: <http://www.wikidata.org/prop/>
 PREFIX v: <http://www.wikidata.org/prop/statement/>
 PREFIX schema: <http://schema.org/>
 
-SELECT ?item ?itemLabel ?coordinateLocation ?heritageDesignation ?image ?wikipediaTitle WHERE {
+SELECT ?item ?itemLabel ?coordinateLocation ?heritageDesignation ?image ?wikipediaTitle ?britishListedBuildingsID WHERE {
    ?item wdt:P1216 "${listedBuildingNumber}" .
    OPTIONAL { ?item wdt:P625 ?coordinateLocation. }
    OPTIONAL { ?item wdt:P1435 ?heritageDesignation. }
    OPTIONAL { ?item wdt:P18 ?image. }
+   OPTIONAL { ?item wdt:P12485 ?britishListedBuildingsID. }
    OPTIONAL {
      ?wikipediaArticle schema:about ?item ;
                        schema:isPartOf <https://en.wikipedia.org/> .
@@ -22,7 +23,8 @@ SELECT ?item ?itemLabel ?coordinateLocation ?heritageDesignation ?image ?wikiped
   SERVICE wikibase:label {
     bd:serviceParam wikibase:language "en" .
    }
-}`;
+}
+`;
 };
 
 export function convertsparQlQueryToWikidataUrl(query: string): string {
@@ -71,6 +73,12 @@ export const WikidataResponseSchema = z.object({
           })
           .optional(),
         wikipediaTitle: z
+          .object({
+            type: z.literal("literal"),
+            value: z.string(),
+          })
+          .optional(),
+        britishListedBuildingsID: z
           .object({
             type: z.literal("literal"),
             value: z.string(),
