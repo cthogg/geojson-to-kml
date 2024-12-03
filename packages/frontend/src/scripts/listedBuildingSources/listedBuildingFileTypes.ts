@@ -14,12 +14,3 @@ const ListedBuildingSchema = z.object({
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
 export type ListedBuilding = z.infer<typeof ListedBuildingSchema>;
-
-export type PromptInfo = {
-  listEntry: string;
-  prompt: string | null;
-  audioUrl: string | null;
-  aiGeneratedText: string | null;
-};
-
-export type ListedBuildingWithPrompt = ListedBuilding & PromptInfo;
