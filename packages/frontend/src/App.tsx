@@ -27,12 +27,8 @@ function App() {
   if (!listedBuildingInformation) {
     return <div>No listed building information found</div>;
   }
-  const {
-    title,
-    imageUrl,
-    audioUrl,
-    historicalEnglandText: listedBuildingText,
-  } = listedBuildingInformation;
+  const { title, imageUrl, audioUrl, wikipediaText } =
+    listedBuildingInformation;
   return (
     <>
       {/* Sticky Header */}
@@ -81,16 +77,16 @@ function App() {
           <div className="bg-white p-6 rounded-lg shadow-md">
             <details className="group">
               <summary className="text-xl font-semibold mb-4 cursor-pointer list-none">
-                Description
-                <span className="ml-2 text-gray-500 group-open:hidden inline-block">
+                <span className="ml-2 mr-2 text-gray-500 group-open:hidden inline-block">
                   ►
                 </span>
-                <span className="ml-2 text-gray-500 hidden group-open:inline-block">
+                <span className="ml-2 mr-2 text-gray-500 hidden group-open:inline-block">
                   ▼
                 </span>
+                Wikipedia text
               </summary>
               <p className="text-gray-700 leading-relaxed mt-2">
-                {description}
+                {wikipediaText}
               </p>
             </details>
           </div>
