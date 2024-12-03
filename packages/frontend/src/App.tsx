@@ -1,6 +1,6 @@
 import "./App.css";
-import { listedBuildingFile } from "./scripts/listedBuildingFile";
-import { ListedBuildingWithPrompt } from "./scripts/listedBuildingFileTypes";
+import { listedBuildingFile } from "./scripts/listedBuildingSources/listedBuildingFile";
+import { ListedBuilding } from "./scripts/listedBuildingSources/listedBuildingFileTypes";
 
 function getListedBuildingNumberFromRoute() {
   const url = window.location.href;
@@ -10,7 +10,7 @@ function getListedBuildingNumberFromRoute() {
 
 function getListedBuildingInformation(
   listedBuildingNumber: string
-): ListedBuildingWithPrompt | undefined {
+): ListedBuilding | undefined {
   const listedBuilding = listedBuildingFile.find(
     (listedBuilding) => listedBuilding.listEntry === listedBuildingNumber
   );
@@ -27,7 +27,7 @@ function App() {
   if (!listedBuildingInformation) {
     return <div>No listed building information found</div>;
   }
-  const { title, imageUrl, audioUrl, wikipediaText, historicalEnglandText } =
+  const { title, imageUrl, wikipediaText, historicalEnglandText } =
     listedBuildingInformation;
   return (
     <>
@@ -53,12 +53,13 @@ function App() {
           {/* Audio Player */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-semibold mb-4">Audio Player</h2>
-            {audioUrl && (
+            {/* TODO: Add audio */}
+            {/* {audioUrl && (
               <audio controls className="w-full">
                 <source src={audioUrl} type="video/mp4" />
                 Your browser does not support the audio element.
               </audio>
-            )}
+            )} */}
           </div>
 
           {/* Image */}
