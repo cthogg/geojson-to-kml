@@ -1,3 +1,3 @@
 import { fetchListedBuilding } from "./fetchListedBuilding";
 
-console.log(await fetchListedBuilding("1065590"));
+console.log(await fetchListedBuilding("1191188"));

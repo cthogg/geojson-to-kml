@@ -18,8 +18,3 @@ export const fetchListedBuildingDescription = async ({
   // Return the HTML of the div if found, otherwise return null
   return targetDiv.length > 0 ? targetDiv.text() : null;
 };
-console.log(
-  await fetchListedBuildingDescription({
-    britishListedBuildingId: "101065590",
-  })
-);

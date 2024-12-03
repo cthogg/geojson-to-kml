@@ -1,5 +1,10 @@
 ## ROADMAP:
 
+- Get a script to take in a list of listed building numbers and output a file with the data.
+- The file should be JSON file.
+- Should output also the list file to the /frontend repo.
+
+- Also to output the KML file too with the appropriate links to the pages.
 - Add documentation.
 - Output the data to an artifact?.
 - Get the simple data to google maps.
