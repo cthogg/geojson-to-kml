@@ -6,10 +6,10 @@ const ListedBuildingSchema = z.object({
   grade: z.string(),
   listEntry: z.string(),
   wikidataEntry: z.string(),
-  coordinates: z.tuple([z.number(), z.number()]),
+  coordinates: z.tuple([z.number(), z.number()]).nullable(),
   imageUrl: z.string().nullable(),
-  listedBuildingText: z.string(),
-  wikipediaText: z.string(),
+  historicalEnglandText: z.string(),
+  wikipediaText: z.string().nullable(),
 });
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
@@ -22,5 +22,4 @@ export type PromptInfo = {
   aiGeneratedText: string | null;
 };
 
-export type ListedBuildingWithPrompt = ListedBuilding &
-  Omit<PromptInfo, "listEntry">;
+export type ListedBuildingWithPrompt = ListedBuilding & PromptInfo;

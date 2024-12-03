@@ -1,44 +1,6 @@
 import { z } from "zod";
 
-export function convertQueryToUrl(query: string): string {
-  // Base URL for Wikidata Query Service
-  const baseUrl = "https://query.wikidata.org/sparql?format=json&";
-
-  // Encode the query for use in URL
-  const encodedQuery = encodeURIComponent(query);
-
-  // Create the full URL with the query parameter
-  return `${baseUrl}query=${encodedQuery}`;
-}
-
-// // Example usage:
-// const sparqlQuery = `PREFIX wikibase: <http://wikiba.se/ontology#>
-// PREFIX wd: <http://www.wikidata.org/entity/>
-// PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-// PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-// PREFIX p: <http://www.wikidata.org/prop/>
-// PREFIX v: <http://www.wikidata.org/prop/statement/>
-// PREFIX schema: <http://schema.org/>
-
-// SELECT ?item ?itemLabel ?coordinateLocation ?heritageDesignation ?image ?wikipediaTitle WHERE {
-//    ?item wdt:P1216 "1065590" .
-//    OPTIONAL { ?item wdt:P625 ?coordinateLocation. }
-//    OPTIONAL { ?item wdt:P1435 ?heritageDesignation. }
-//    OPTIONAL { ?item wdt:P18 ?image. }
-//    OPTIONAL {
-//      ?wikipediaArticle schema:about ?item ;
-//                        schema:isPartOf <https://en.wikipedia.org/> .
-//      BIND(REPLACE(STR(?wikipediaArticle), "https://en.wikipedia.org/wiki/", "") AS ?wikipediaTitle)
-//    }
-//   SERVICE wikibase:label {
-//     bd:serviceParam wikibase:language "en" .
-//    }
-// }
-// `;
-
-const generateSparQlQueryOfListedBuildingNumber = (
-  listedBuildingNumber: string
-) => {
+const getSparQlQuery = (listedBuildingNumber: string) => {
   return `PREFIX wikibase: <http://wikiba.se/ontology#>
 PREFIX wd: <http://www.wikidata.org/entity/> 
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
@@ -63,15 +25,17 @@ SELECT ?item ?itemLabel ?coordinateLocation ?heritageDesignation ?image ?wikiped
 }`;
 };
 
-export const generateUrlOfListedBuildingNumber = (
-  listedBuildingNumber: string
-) => {
-  return convertQueryToUrl(
-    generateSparQlQueryOfListedBuildingNumber(listedBuildingNumber)
-  );
+export function convertsparQlQueryToWikidataUrl(query: string): string {
+  const baseUrl = "https://query.wikidata.org/sparql?format=json&";
+  const encodedQuery = encodeURIComponent(query);
+  return `${baseUrl}query=${encodedQuery}`;
+}
+
+export const getWikiDataUrl = (listedBuildingNumber: string) => {
+  return convertsparQlQueryToWikidataUrl(getSparQlQuery(listedBuildingNumber));
 };
 
-export const QueryUrlResponseSchema = z.object({
+export const WikidataResponseSchema = z.object({
   head: z.object({
     vars: z.array(z.string()),
   }),
@@ -117,5 +81,4 @@ export const QueryUrlResponseSchema = z.object({
   }),
 });
 
-// Type inference
-export type QueryUrlResponse = z.infer<typeof QueryUrlResponseSchema>;
+export type WikidataResponse = z.infer<typeof WikidataResponseSchema>;

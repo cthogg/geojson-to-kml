@@ -1,8 +1,8 @@
 import "./App.css";
 import { listedBuildingFile } from "./scripts/listedBuildingFile";
-import { ListedBuilding } from "./scripts/listedBuildingFileTypes";
+import { ListedBuildingWithPrompt } from "./scripts/listedBuildingFileTypes";
 
-function getListedBuildingNumberFromUrl() {
+function getListedBuildingNumberFromRoute() {
   const url = window.location.href;
   const match = url.match(/listed-building\/(\d+)/);
   return match ? match[1] : null;
@@ -10,7 +10,7 @@ function getListedBuildingNumberFromUrl() {
 
 function getListedBuildingInformation(
   listedBuildingNumber: string
-): ListedBuilding | undefined {
+): ListedBuildingWithPrompt | undefined {
   const listedBuilding = listedBuildingFile.find(
     (listedBuilding) => listedBuilding.listEntry === listedBuildingNumber
   );
@@ -18,13 +18,7 @@ function getListedBuildingInformation(
 }
 
 function App() {
-  // const imageUrl =
-  //   "https://private-user-images.githubusercontent.com/19980269/389188918-14239c1c-3d89-49aa-8751-76f4e309ca15.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzI5NjIzODYsIm5iZiI6MTczMjk2MjA4NiwicGF0aCI6Ii8xOTk4MDI2OS8zODkxODg5MTgtMTQyMzljMWMtM2Q4OS00OWFhLTg3NTEtNzZmNGUzMDljYTE1LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDExMzAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQxMTMwVDEwMjEyNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTk0ZTQ4ODc3NzEyYWFmMGNlMzI3NzA5MTQxYjQ4NWE4MWZmMWQ0NGNjM2U2MGU2YjdhOWQyOGRiODg2Mzk5NTImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.Wh0zlQ48rkAkpzgD415K8SWGCmltSvOKh3BjV3OyfUE";
-  // const audioUrl =
-  //   "https://github.com/user-attachments/assets/950b6541-dbfc-42b1-94c7-6f77b0bf4d11";
-  // const description = "Here is a description of the page";
-  // const title = "Victoria and Albert Museum";
-  const listedBuildingNumber = getListedBuildingNumberFromUrl();
+  const listedBuildingNumber = getListedBuildingNumberFromRoute();
   if (!listedBuildingNumber) {
     return <div>No listed building number found</div>;
   }
@@ -33,7 +27,12 @@ function App() {
   if (!listedBuildingInformation) {
     return <div>No listed building information found</div>;
   }
-  const { title, imageUrl } = listedBuildingInformation;
+  const {
+    title,
+    imageUrl,
+    audioUrl,
+    historicalEnglandText: listedBuildingText,
+  } = listedBuildingInformation;
   return (
     <>
       {/* Sticky Header */}
