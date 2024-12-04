@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { fetchListedBuildingDescription } from "./getListedBuildingsInformation";
+import { fetchListedBuildingDescription } from "./getListedBuildingsHistoricEngland";
 import { ListedBuilding } from "./listedBuildingFileTypes";
 import {
   WikidataResponse,
@@ -52,7 +52,6 @@ export async function fetchListedBuilding(
   const url = getWikiDataUrl(listedBuildingNumber);
   const response = await fetch(url);
   const data = await response.json();
-  console.log("data", data);
 
   const validatedData = WikidataResponseSchema.parse(data);
 
@@ -72,11 +71,9 @@ export async function fetchListedBuilding(
     wikidataEntry: building.item.value,
     coordinates: parseCoordinates(building.coordinateLocation) ?? null,
     imageUrl: building.image?.value ?? null,
-    historicalEnglandText: building.britishListedBuildingsID?.value
-      ? await fetchListedBuildingDescription({
-          britishListedBuildingId: building.britishListedBuildingsID.value,
-        })
-      : null,
+    historicalEnglandText: await fetchListedBuildingDescription({
+      listedBuildingNumber: listedBuildingNumber,
+    }),
     wikipediaText: building.wikipediaTitle?.value
       ? await fetchWikipediaText(building.wikipediaTitle.value)
       : null,
