@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { fetchListedBuildingDescription } from "./getListedBuildingsHistoricEngland";
+import { getTextOfListedBuilding } from "./getFromSection";
 import { ListedBuilding } from "./listedBuildingFileTypes";
 import {
   WikidataResponse,
@@ -71,7 +71,7 @@ export async function fetchListedBuilding(
     wikidataEntry: building.item.value,
     coordinates: parseCoordinates(building.coordinateLocation) ?? null,
     imageUrl: building.image?.value ?? null,
-    historicalEnglandText: await fetchListedBuildingDescription({
+    historicalEnglandText: await getTextOfListedBuilding({
       listedBuildingNumber: listedBuildingNumber,
     }),
     wikipediaText: building.wikipediaTitle?.value

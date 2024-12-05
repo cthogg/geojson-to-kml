@@ -21,6 +21,16 @@ function extractOfficialListEntryText(html: string): string {
   return overview;
 }
 
-console.log(
-  extractOfficialListEntryText(await Bun.file("./1191188.html").text())
-);
+export const getTextOfListedBuilding = async ({
+  listedBuildingNumber,
+}: {
+  listedBuildingNumber: string;
+}) => {
+  const url = `https://historicengland.org.uk/listing/the-list/list-entry/${listedBuildingNumber}`;
+  console.log("url", url);
+  const response = await fetch(url);
+  const responseText = await response.text();
+  return extractOfficialListEntryText(responseText);
+};
+
+console.log(await getTextOfListedBuilding({ listedBuildingNumber: "1065590" }));
