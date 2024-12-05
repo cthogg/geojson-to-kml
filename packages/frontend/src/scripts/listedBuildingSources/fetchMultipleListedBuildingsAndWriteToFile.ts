@@ -9,7 +9,7 @@ const fetchMultipleListedBuildings = async (
   for (const number of listedBuildingNumbers) {
     const building = await fetchListedBuilding(number);
     listedBuildings.push(building);
-    await delay(5000); // 1 second delay between requests
+    await delay(5100); // 5.1 second delay between as per historicengland.org.uk/robots.txt
   }
   return listedBuildings;
 };

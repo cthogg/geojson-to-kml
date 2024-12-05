@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getTextOfListedBuilding } from "./getFromSection";
+import { getTextOfListedBuilding } from "./fetchTextListedBuildingHistoricEngland";
 import { ListedBuilding } from "./listedBuildingFileTypes";
 import {
   WikidataResponse,
