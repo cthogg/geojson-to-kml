@@ -18,8 +18,20 @@ function getListedBuildingInformation(
   return listedBuilding;
 }
 
+function getAllListedBuildingNamesAndNumbers(): {
+  name: string;
+  number: string;
+}[] {
+  const buildings = getListedBuildingFileFE();
+  return buildings.map((listedBuilding) => ({
+    name: listedBuilding.title,
+    number: listedBuilding.listEntry,
+  }));
+}
+
 function App() {
   const listedBuildingNumber = getListedBuildingNumberFromRoute();
+  const allBuildings = getAllListedBuildingNamesAndNumbers();
   if (!listedBuildingNumber) {
     return <div>No listed building number found</div>;
   }
@@ -34,10 +46,26 @@ function App() {
     <>
       {/* Sticky Header */}
       <header className="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
-        <div className="px-4 py-3">
+        <div className="px-4 py-3 flex justify-between items-center">
           <h2 className="text-lg font-semibold text-gray-800">
             Walking Tour App
           </h2>
+          <div className="relative group">
+            <button className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md">
+              Select Building ▼
+            </button>
+            <div className="absolute right-0 w-64 mt-0 bg-white border rounded-md shadow-lg hidden group-hover:block max-h-96 overflow-y-auto">
+              {allBuildings.map((building) => (
+                <a
+                  key={building.number}
+                  href={`/listed-building/${building.number}`}
+                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                >
+                  {building.name}
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       </header>
 
