@@ -1,4 +1,6 @@
+import { ListedBuilding } from "../../backend/listedBuildingSources/listedBuildingFileTypes";
 import "./App.css";
+import { getListedBuildingFileFE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 
 function getListedBuildingNumberFromRoute() {
   const url = window.location.href;
