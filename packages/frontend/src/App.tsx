@@ -1,5 +1,6 @@
 import { ListedBuilding } from "../../backend/listedBuildingSources/listedBuildingFileTypes";
 import "./App.css";
+import { getPromptData } from "./scripts/ai/getPromptData";
 import { listedBuildingFile } from "./scripts/ai/listedBuildingAudio";
 import { getListedBuildingFileFE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 
@@ -17,6 +18,14 @@ function getListedBuildingInformation(
     (listedBuilding) => listedBuilding.listEntry === listedBuildingNumber
   );
   return listedBuilding;
+}
+
+function getAiSummary(listedBuildingNumber: string): string | undefined {
+  const promptData = getPromptData();
+  const prompt = promptData.find(
+    (prompt) => prompt.listEntry === listedBuildingNumber
+  );
+  return prompt?.aiGeneratedText ?? undefined;
 }
 
 function getAudioUrl(listedBuildingNumber: string): string | undefined {
@@ -53,6 +62,7 @@ function App() {
   const { title, imageUrl, wikipediaText, historicalEnglandText } =
     listedBuildingInformation;
   const audioUrl = getAudioUrl(listedBuildingNumber);
+  const aiSummary = getAiSummary(listedBuildingNumber);
   return (
     <>
       {/* Sticky Header */}
@@ -99,6 +109,21 @@ function App() {
                 Your browser does not support the audio element.
               </audio>
             )}
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <details className="group">
+              <summary className="text-xl font-semibold mb-4 cursor-pointer list-none">
+                <span className="ml-2 mr-2 text-gray-500 group-open:hidden inline-block">
+                  ►
+                </span>
+                <span className="ml-2 mr-2 text-gray-500 hidden group-open:inline-block">
+                  ▼
+                </span>
+                Summary
+              </summary>
+              <p className="text-gray-700 leading-relaxed mt-2">{aiSummary}</p>
+            </details>
           </div>
 
           {/* Image */}
