@@ -1,6 +1,6 @@
 import { z } from "zod";
 /* eslint-disable @typescript-eslint/no-unused-vars */
-const ListedBuildingSchema = z.object({
+export const ListedBuildingSchema = z.object({
   title: z.string(),
   type: z.string(),
   grade: z.string(),
@@ -11,6 +11,8 @@ const ListedBuildingSchema = z.object({
   historicalEnglandText: z.string().nullable(),
   wikipediaText: z.string().nullable(),
 });
+
+export const ListedBuildingArraySchema = z.array(ListedBuildingSchema);
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
 export type ListedBuilding = z.infer<typeof ListedBuildingSchema>;
