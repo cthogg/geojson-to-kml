@@ -30,7 +30,8 @@ SELECT ?item ?itemLabel ?coordinateLocation ?heritageDesignation ?image ?wikiped
 export function convertsparQlQueryToWikidataUrl(query: string): string {
   const baseUrl = "https://query.wikidata.org/sparql?format=json&";
   const encodedQuery = encodeURIComponent(query);
-  return `${baseUrl}query=${encodedQuery}`;
+  const url = `${baseUrl}query=${encodedQuery}`;
+  return url;
 }
 
 export const getWikiDataUrl = (listedBuildingNumber: string) => {
