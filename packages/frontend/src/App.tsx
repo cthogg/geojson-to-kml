@@ -52,7 +52,23 @@ function App() {
   const listedBuildingNumber = getListedBuildingNumberFromRoute();
   const allBuildings = getAllListedBuildingNamesAndNumbers();
   if (!listedBuildingNumber) {
-    return <div>No listed building number found</div>;
+    return (
+      <div>
+        No listed building number found
+        <ul>
+          {allBuildings.map((building) => (
+            <li key={building.number}>
+              <a
+                href={`/listed-building/${building.number}`}
+                className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >
+                {building.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
   }
   const listedBuildingInformation =
     getListedBuildingInformation(listedBuildingNumber);
