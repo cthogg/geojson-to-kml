@@ -23,10 +23,12 @@ function getAllListedBuildingNamesAndNumbers(): {
   number: string;
 }[] {
   const buildings = getListedBuildingFileFE();
-  return buildings.map((listedBuilding) => ({
-    name: listedBuilding.title,
-    number: listedBuilding.listEntry,
-  }));
+  return buildings
+    .map((listedBuilding) => ({
+      name: listedBuilding.title,
+      number: listedBuilding.listEntry,
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 function App() {
