@@ -1,5 +1,5 @@
 import "./App.css";
-import { listedBuildingFile } from "./scripts/listedBuildingSources/listedBuildingFile";
+import { getListedBuildingFileFE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 import { ListedBuilding } from "./scripts/listedBuildingSources/listedBuildingFileTypes";
 
 function getListedBuildingNumberFromRoute() {
@@ -11,7 +11,8 @@ function getListedBuildingNumberFromRoute() {
 function getListedBuildingInformation(
   listedBuildingNumber: string
 ): ListedBuilding | undefined {
-  const listedBuilding = listedBuildingFile.find(
+  const buildings = getListedBuildingFileFE();
+  const listedBuilding = buildings.find(
     (listedBuilding) => listedBuilding.listEntry === listedBuildingNumber
   );
   return listedBuilding;
