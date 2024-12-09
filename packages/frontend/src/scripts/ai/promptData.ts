@@ -3,7 +3,6 @@ import { PromptInfo } from "./listedBuildingAiInformation";
 export const listedBuildingFile: PromptInfo[] = [
   {
     listEntry: "1065590",
-
     audioUrl:
       "https://github.com/user-attachments/assets/950b6541-dbfc-42b1-94c7-6f77b0bf4d11",
     aiGeneratedText:

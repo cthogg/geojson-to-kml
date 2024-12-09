@@ -1,5 +1,6 @@
 import { ListedBuilding } from "../../backend/listedBuildingSources/listedBuildingFileTypes";
 import "./App.css";
+import { listedBuildingFile } from "./scripts/ai/listedBuildingAudio";
 import { getListedBuildingFileFE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 
 function getListedBuildingNumberFromRoute() {
@@ -16,6 +17,13 @@ function getListedBuildingInformation(
     (listedBuilding) => listedBuilding.listEntry === listedBuildingNumber
   );
   return listedBuilding;
+}
+
+function getAudioUrl(listedBuildingNumber: string): string | undefined {
+  const audio = listedBuildingFile.find(
+    (audio) => audio.listEntry === listedBuildingNumber
+  );
+  return audio?.audioUrl ?? undefined;
 }
 
 function getAllListedBuildingNamesAndNumbers(): {
@@ -44,6 +52,7 @@ function App() {
   }
   const { title, imageUrl, wikipediaText, historicalEnglandText } =
     listedBuildingInformation;
+  const audioUrl = getAudioUrl(listedBuildingNumber);
   return (
     <>
       {/* Sticky Header */}
@@ -84,13 +93,12 @@ function App() {
           {/* Audio Player */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-semibold mb-4">Audio Player</h2>
-            {/* TODO: Add audio */}
-            {/* {audioUrl && (
+            {audioUrl && (
               <audio controls className="w-full">
                 <source src={audioUrl} type="video/mp4" />
                 Your browser does not support the audio element.
               </audio>
-            )} */}
+            )}
           </div>
 
           {/* Image */}

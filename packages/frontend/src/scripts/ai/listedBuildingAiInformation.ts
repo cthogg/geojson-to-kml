@@ -1,6 +1,9 @@
-export type PromptInfo = {
-  listEntry: string;
+export type PromptInfo = PromptInfoFE & {
   prompt: string | null;
-  audioUrl: string | null;
   aiGeneratedText: string | null;
+};
+
+export type PromptInfoFE = {
+  listEntry: string;
+  audioUrl: string | null;
 };
