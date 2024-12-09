@@ -4,7 +4,7 @@ import {
   BLUE_PLAQUES_INPUT_FILE,
   BLUE_PLAQUES_OUTPUT_FOLDER,
 } from "../constants";
-import { Placemark, WikiLinksJson } from "../types";
+import { Placemark, WikiLinksJson } from "../kmlTypes";
 import { generateKmlFile, writeKmlFiles } from "../utils/kmlGeneration";
 import wikilinks from "./bluePlaqueWikiLinks.json";
 

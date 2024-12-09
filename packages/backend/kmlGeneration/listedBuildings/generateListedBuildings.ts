@@ -4,7 +4,7 @@ import {
   LISTED_BUILDINGS_INPUT_FILE,
   LISTED_BUILDINGS_OUTPUT_FOLDER,
 } from "../constants";
-import { Placemark } from "../types";
+import { Placemark } from "../kmlTypes";
 import { generateKmlFile, writeKmlFiles } from "../utils/kmlGeneration";
 const listedBuildingSchema = z.object({
   geometry: z.string(),

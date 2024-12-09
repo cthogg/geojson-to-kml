@@ -1,6 +1,6 @@
 import { mkdir } from "node:fs/promises";
 import path from "path";
-import { Placemark } from "../types";
+import { Placemark } from "../kmlTypes";
 
 interface KmlConfig {
   placemarkId: string;

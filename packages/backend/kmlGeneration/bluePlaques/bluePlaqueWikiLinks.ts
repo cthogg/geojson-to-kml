@@ -1,5 +1,5 @@
 import { BLUE_PLAQUE_WIKI_LINKS_FILE } from "../constants";
-import { Placemark } from "../types";
+import { Placemark } from "../kmlTypes";
 import { WikipediaSearchSchema, WikipediaSummarySchema } from "../wikiTypes";
 
 export const fetchWikipediaSearchResult = async (personName: string) => {
