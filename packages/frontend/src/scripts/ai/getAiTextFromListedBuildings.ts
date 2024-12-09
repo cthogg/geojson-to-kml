@@ -38,6 +38,7 @@ export const getAiTextFromListedBuildings = async () => {
         details: `${building.wikipediaText ?? ""} ${
           building.historicalEnglandText ?? ""
         }`,
+        model,
       });
       const promptInfo: PromptInfo = {
         prompt: systemPrompt,
