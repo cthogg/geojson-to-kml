@@ -1,8 +1,8 @@
 import {
   ListedBuilding,
   ListedBuildingArraySchema,
-} from "./listedBuildingFileTypes";
-import data from "./listedBuildings.json";
+} from "../../../../backend/listedBuildingSources/listedBuildingFileTypes";
+import data from "../../../../backend/listedBuildingSources/listedBuildings.json";
 
 export const getListedBuildingFileFE = (): ListedBuilding[] => {
   const listedBuildings = data;
