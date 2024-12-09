@@ -27,7 +27,18 @@ const writeToFile = (listedBuildings: ListedBuilding[]) => {
   Bun.write("listedBuildings.json", JSON.stringify(listedBuildings, null, 2));
 };
 
-const listedBuildingNumbers = ["1065590", "1191062", "1191063", "1191064"];
+const listedBuildingNumbers = [
+  "1379009",
+  "1113038",
+  "1113106",
+  "1113107",
+  "1401342",
+  "1272403",
+  "1391928",
+  "1065590",
+  "1191062",
+  "1191188",
+];
 const listedBuildings = await fetchMultipleListedBuildings(
   listedBuildingNumbers
 );
