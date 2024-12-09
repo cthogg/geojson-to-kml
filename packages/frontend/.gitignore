@@ -1,6 +1,7 @@
 # Logs
 
 secrets/
+map/
 logs
 *.log
 npm-debug.log*
