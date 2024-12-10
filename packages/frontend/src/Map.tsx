@@ -45,7 +45,7 @@ export function Map() {
                 key={`marker-${feature.reference || index}`}
                 position={[feature.latitude, feature.longitude]}
               >
-                <Popup>
+                <Popup minWidth={250}>
                   {feature.name}
                   <div className="flex flex-row">
                     {listedBuilding?.imageUrl && (
