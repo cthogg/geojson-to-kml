@@ -1,4 +1,4 @@
-import data from "../../../backend/kmlGeneration/input/filtered-listed-buildings.json";
+import data from "../backendSync/filtered-listed-buildings.json";
 
 import { z } from "zod";
 import { getListedBuildingFileFE } from "../scripts/listedBuildingSources/getListedBuildingFE";
