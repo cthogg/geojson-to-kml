@@ -25,8 +25,8 @@ export function Map() {
     <div className="h-full w-full flex flex-row">
       <MapContainer
         className="h-screen w-screen"
-        center={[37.8, -122.4]}
-        zoom={14}
+        center={[51.522333, -0.132239]}
+        zoom={12}
         maxZoom={18}
       >
         <TileLayer
