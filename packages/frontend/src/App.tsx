@@ -54,24 +54,7 @@ function App() {
   console.log("listedBuildingNumber", listedBuildingNumber);
   const allBuildings = getAllListedBuildingNamesAndNumbers();
   if (!listedBuildingNumber) {
-    return (
-      <div>
-        No listed building number found
-        <Map />
-        <ul>
-          {allBuildings.map((building) => (
-            <li key={building.number}>
-              <a
-                href={`/listed-building/${building.number}`}
-                className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-              >
-                {building.name}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
+    return <Map />;
   }
   const listedBuildingInformation =
     getListedBuildingInformation(listedBuildingNumber);
