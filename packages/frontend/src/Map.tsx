@@ -40,7 +40,18 @@ export function Map() {
               key={`marker-${feature.reference || index}`}
               position={[feature.latitude, feature.longitude]}
             >
-              <Popup>{feature.name}</Popup>
+              <Popup>
+                {feature.name}
+                <audio controls className="w-full">
+                  <source
+                    src={
+                      "https://github.com/user-attachments/assets/950b6541-dbfc-42b1-94c7-6f77b0bf4d11"
+                    }
+                    type="video/mp4"
+                  />
+                  Your browser does not support the audio element.
+                </audio>
+              </Popup>
             </Marker>
           ))}
         </MarkerClusterGroup>
