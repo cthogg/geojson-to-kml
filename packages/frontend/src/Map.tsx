@@ -2,13 +2,12 @@ import L from "leaflet";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/leaflet.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
+import { getListedBuildingGeojson } from "./reactMap/listedBuildingsGeojsonTypes";
 
 export function Map() {
-  const [markers, setMarkers] = useState([]);
-
   // Set up default icon for Leaflet
   useEffect(() => {
     const DefaultIcon = L.icon({
@@ -20,17 +19,7 @@ export function Map() {
     L.Marker.prototype.options.icon = DefaultIcon;
   }, []);
 
-  useEffect(() => {
-    const fetchMarkers = async () => {
-      const response = await fetch(
-        "https://docs.maptiler.com/sdk-js/assets/earthquakes.geojson"
-      );
-      const jsonData = await response.json();
-      setMarkers(jsonData.features);
-    };
-
-    fetchMarkers();
-  }, []);
+  const markersd = getListedBuildingGeojson();
 
   return (
     <div className="h-full w-full flex flex-row">
@@ -46,15 +35,12 @@ export function Map() {
         />
 
         <MarkerClusterGroup>
-          {markers.map((feature, index) => (
+          {markersd.map((feature, index) => (
             <Marker
-              key={`marker-${feature.id || index}`}
-              position={[
-                feature.geometry.coordinates[1],
-                feature.geometry.coordinates[0],
-              ]}
+              key={`marker-${feature.reference || index}`}
+              position={[feature.latitude, feature.longitude]}
             >
-              <Popup>Magnitude: {feature.properties.mag}</Popup>
+              <Popup>{feature.name}</Popup>
             </Marker>
           ))}
         </MarkerClusterGroup>
