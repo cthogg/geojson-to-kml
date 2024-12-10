@@ -22,14 +22,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": [
-    "src",
-    "../backend/listedBuildingSources/wikidata.ts",
-    "src/scripts/listedBuildingSources/getListedBuildingFE.ts",
-    "../backend/listedBuildingSources/listedBuildingFileTypes.ts",
-    "../backend/listedBuildingSources/listedBuildingFile.ts",
-    "../backend/listedBuildingSources/fetchMultipleListedBuildingsAndWriteToFile.ts",
-    "../backend/listedBuildingSources/fetchListedBuilding.ts",
-    "../backend/listedBuildingSources/fetchTextListedBuildingHistoricEngland.ts"
-  ]
+  "include": ["src"]
 }
