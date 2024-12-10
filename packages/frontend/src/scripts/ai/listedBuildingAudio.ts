@@ -17,7 +17,13 @@ export const listedBuildingAudio: PromptInfoFE[] = [
       "https://github.com/user-attachments/assets/87b4f137-9089-44ce-8982-c1db6115f2e5",
   },
   {
-    listEntry: "1191188",
-    audioUrl: null,
+    listEntry: "1391928",
+    audioUrl:
+      "https://github.com/user-attachments/assets/e64c6b53-1198-4161-b3e3-a20b986eb5e7",
+  },
+  {
+    listEntry: "1113038",
+    audioUrl:
+      "https://github.com/user-attachments/assets/bad0f0a9-be2e-4b21-a850-422f5c7c5c60",
   },
 ];

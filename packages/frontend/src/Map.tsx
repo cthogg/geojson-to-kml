@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { getListedBuildingGeojson } from "./reactMap/listedBuildingsGeojsonTypes";
+import { listedBuildingAudio } from "./scripts/ai/listedBuildingAudio";
 import { getListedBuildingFileFE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 
 export function Map() {
@@ -40,6 +41,9 @@ export function Map() {
             const listedBuilding = getListedBuildingFileFE().find(
               (lb) => lb.listEntry === feature.reference
             );
+            const audio = listedBuildingAudio.find(
+              (lb) => lb.listEntry === feature.reference
+            );
             return (
               <Marker
                 key={`marker-${feature.reference || index}`}
@@ -52,15 +56,12 @@ export function Map() {
                       <img src={listedBuilding?.imageUrl} />
                     )}
                   </div>
-                  <audio controls className="w-full">
-                    <source
-                      src={
-                        "https://github.com/user-attachments/assets/950b6541-dbfc-42b1-94c7-6f77b0bf4d11"
-                      }
-                      type="video/mp4"
-                    />
-                    Your browser does not support the audio element.
-                  </audio>
+                  {audio?.audioUrl && (
+                    <audio controls className="w-full">
+                      <source src={audio?.audioUrl} type="video/mp4" />
+                      Your browser does not support the audio element.
+                    </audio>
+                  )}
                 </Popup>
               </Marker>
             );
