@@ -2,7 +2,7 @@ import { ListedBuilding } from "../../backend/listedBuildingSources/listedBuildi
 import "./App.css";
 import { Map } from "./Map";
 import { getPromptData } from "./scripts/ai/getPromptData";
-import { listedBuildingFile } from "./scripts/ai/listedBuildingAudio";
+import { listedBuildingAudio } from "./scripts/ai/listedBuildingAudio";
 import { getListedBuildingFileFE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 
 function getListedBuildingNumberFromRoute() {
@@ -30,7 +30,7 @@ function getAiSummary(listedBuildingNumber: string): string | undefined {
 }
 
 function getAudioUrl(listedBuildingNumber: string): string | undefined {
-  const audio = listedBuildingFile.find(
+  const audio = listedBuildingAudio.find(
     (audio) => audio.listEntry === listedBuildingNumber
   );
   return audio?.audioUrl ?? undefined;
