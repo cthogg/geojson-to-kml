@@ -57,6 +57,8 @@ export function Map() {
     map?.setView([latitude - 0.00045, longitude], 18);
   };
 
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
     <div className="h-[100dvh] w-[100dvw] flex flex-col relative">
       <MapContainer
@@ -107,7 +109,9 @@ export function Map() {
       {selectedFeature && (
         <div
           style={{ zIndex: 1000 }}
-          className="h-400 absolute bottom-0 left-0 right-0 overflow-y-auto rounded-t-lg bg-white p-4 shadow-lg"
+          className={`absolute bottom-0 left-0 right-0 overflow-y-auto rounded-t-lg bg-white p-4 shadow-lg transition-all duration-300 ${
+            isExpanded ? "h-[80vh]" : "h-400"
+          }`}
         >
           <div className="flex justify-between items-start">
             <button
@@ -145,6 +149,12 @@ export function Map() {
             </h2>
 
             <div className="flex items-center gap-2">
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="text-gray-500 hover:text-gray-700 px-2 py-1"
+              >
+                {isExpanded ? "↓" : "↑"}
+              </button>
               <button
                 onClick={() => {
                   const currentIndex = markersd.findIndex(
@@ -189,7 +199,9 @@ export function Map() {
               <img
                 src={selectedFeature.imageUrl}
                 alt={selectedFeature.name}
-                className="max-h-32 object-cover rounded-lg max-w-48"
+                className={`max-h-32 object-cover rounded-lg ${
+                  isExpanded ? "max-w-96" : "max-w-48"
+                } ${isExpanded ? "max-h-96" : "max-h-48"}`}
               />
             )}
             {selectedFeature.audioUrl && (
