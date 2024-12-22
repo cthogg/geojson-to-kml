@@ -21,3 +21,5 @@ export const getTextOfListedBuilding = async ({
   const responseText = await response.text();
   return extractOfficialListEntryText(responseText);
 };
+
+console.log(await getTextOfListedBuilding({ listedBuildingNumber: "1055809" }));
