@@ -3,15 +3,13 @@ import { getPromptData } from "./getPromptData";
 import { PromptInfo } from "./listedBuildingAiInformation";
 import { generateMessageOllama } from "./ollamaQueryBuildings";
 const systemPrompt =
-  "You are an architectural tour guide, giving a tour to a person with a lay interest in historical architecture. Describe the listed building in this text and images, pointing out specific features on the building to look out for. Please describe the as if you are standing in front of it from the perspective of the image. Do not use phrases like 'Points to decorative details' => but instead phrases like 'look at the decorative details'. Please keep the answer to under 200 words.";
+  "You are an architectural tour guide, giving a tour to a person with a lay interest in historical architecture. Describe the listed building in this text and images, pointing out specific features on the building to look out for, and interesting parts of its history. Please describe the as if you are standing in front of it from the perspective of the image. Do not use phrases like 'Points to decorative details' => but instead phrases like 'look at the decorative details'. Please keep the answer to under 200 words. Please write in the second person and do not include the first person.";
 
-const model = "llama3";
+const model = "llama3.2";
 
 export const getAiTextFromListedBuildings = async () => {
-  const buildings = getListedBuildingFileFE();
-  console.log("buildings", buildings.length);
+  const buildings = getListedBuildingFileFE().slice(0, 2);
   const promptDb = getPromptData();
-  console.log("promptDb", promptDb.length);
   const filteredPromptDb = buildings.filter(
     (building) =>
       !promptDb.some(
@@ -24,7 +22,6 @@ export const getAiTextFromListedBuildings = async () => {
   console.log(filteredPromptDb.length);
   const aiText = await Promise.all(
     filteredPromptDb.map(async (building) => {
-      console.log(building.listEntry);
       const message = await generateMessageOllama({
         imageUrl: building.imageUrl ?? undefined,
         systemPrompt,

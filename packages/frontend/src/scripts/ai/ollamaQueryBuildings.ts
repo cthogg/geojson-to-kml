@@ -1,13 +1,6 @@
 import ollama from "ollama";
-import { z } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
-
-const Message = z.object({
-  message: z.string(),
-});
 
 export const generateMessageOllama = async ({
-  imageUrl,
   details,
   systemPrompt,
   model,
@@ -19,11 +12,13 @@ export const generateMessageOllama = async ({
 }) => {
   const response = await ollama.chat({
     model,
-    messages: [{ role: systemPrompt, content: details }],
-    format: zodToJsonSchema(Message),
+    messages: [
+      {
+        role: "user",
+        content: `${systemPrompt} ${details}`,
+      },
+    ],
   });
 
-  const message = Message.parse(JSON.parse(response.message.content));
-
-  return message.message;
+  return response.message.content;
 };
