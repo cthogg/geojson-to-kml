@@ -226,6 +226,13 @@ export function Map() {
               >
                 {isExpanded ? "↓" : "↑"}
               </button>
+              <a
+                href={`/listed-building/${selectedFeature.listedEntry}`}
+                className="text-gray-500 hover:text-gray-700 px-2 py-1"
+                title="View full details"
+              >
+                ℹ️
+              </a>
               <button
                 onClick={() => {
                   const currentIndex = markersd.findIndex(

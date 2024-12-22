@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ListedBuilding } from "../../backend/listedBuildingSources/listedBuildingFileTypes";
 import "./App.css";
 import { Map } from "./Map";
@@ -51,6 +52,7 @@ function getAllListedBuildingNamesAndNumbers(): {
 
 function App() {
   const listedBuildingNumber = getListedBuildingNumberFromRoute();
+  const [isSpeaking, setIsSpeaking] = useState(false);
   console.log("listedBuildingNumber", listedBuildingNumber);
   const allBuildings = getAllListedBuildingNamesAndNumbers();
   if (!listedBuildingNumber) {
@@ -105,11 +107,32 @@ function App() {
           {/* Audio Player */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-semibold mb-4">Audio Player</h2>
-            {audioUrl && (
+            {audioUrl ? (
               <audio controls className="w-full">
                 <source src={audioUrl} type="video/mp4" />
                 Your browser does not support the audio element.
               </audio>
+            ) : (
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    if (isSpeaking) {
+                      window.speechSynthesis.cancel();
+                      setIsSpeaking(false);
+                    } else {
+                      const speech = new SpeechSynthesisUtterance(
+                        aiSummary ?? "No text available for speech"
+                      );
+                      speech.onend = () => setIsSpeaking(false);
+                      window.speechSynthesis.speak(speech);
+                      setIsSpeaking(true);
+                    }
+                  }}
+                  className="flex-1 py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded text-gray-700"
+                >
+                  {isSpeaking ? "Stop" : "Play Text-to-Speech Message"}
+                </button>
+              </div>
             )}
           </div>
 
