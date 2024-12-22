@@ -183,49 +183,18 @@ export function Map() {
             isExpanded ? "h-[80vh]" : "h-400"
           }`}
         >
-          <div className="flex justify-between items-start">
-            <button
-              onClick={() => {
-                const currentIndex = markersd.findIndex(
-                  (feature) =>
-                    feature.latitude === selectedFeature.coordinates[0] &&
-                    feature.longitude === selectedFeature.coordinates[1]
-                );
-                const prevIndex =
-                  (currentIndex - 1 + markersd.length) % markersd.length;
-                const prevFeature = markersd[prevIndex];
-                const prevListedBuilding = getListedBuildingFileFE().find(
-                  (lb) => lb.listEntry === prevFeature.reference
-                );
-                const prevAudio = listedBuildingAudio.find(
-                  (lb) => lb.listEntry === prevFeature.reference
-                );
-
-                setSelectedFeature({
-                  name: prevFeature.name,
-                  imageUrl: prevListedBuilding?.imageUrl ?? undefined,
-                  audioUrl: prevAudio?.audioUrl ?? undefined,
-                  listedEntry: prevFeature.reference,
-                  coordinates: [prevFeature.latitude, prevFeature.longitude],
-                });
-                centerMapOnFeature(prevFeature.latitude, prevFeature.longitude);
+          {selectedFeature.imageUrl && (
+            <div
+              className="absolute inset-0 z-0"
+              style={{
+                backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url(${selectedFeature.imageUrl})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
               }}
-              className="text-gray-500 hover:text-gray-700 px-2 py-1"
-            >
-              ←
-            </button>
-
-            <h2 className="text-xl font-semibold mb-4">
-              {selectedFeature.name}
-            </h2>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="text-gray-500 hover:text-gray-700 px-2 py-1"
-              >
-                {isExpanded ? "↓" : "↑"}
-              </button>
+            />
+          )}
+          <div className="relative z-10">
+            <div className="flex justify-between items-start">
               <button
                 onClick={() => {
                   const currentIndex = markersd.findIndex(
@@ -233,77 +202,117 @@ export function Map() {
                       feature.latitude === selectedFeature.coordinates[0] &&
                       feature.longitude === selectedFeature.coordinates[1]
                   );
-                  const nextIndex = (currentIndex + 1) % markersd.length;
-                  const nextFeature = markersd[nextIndex];
-                  const nextListedBuilding = getListedBuildingFileFE().find(
-                    (lb) => lb.listEntry === nextFeature.reference
+                  const prevIndex =
+                    (currentIndex - 1 + markersd.length) % markersd.length;
+                  const prevFeature = markersd[prevIndex];
+                  const prevListedBuilding = getListedBuildingFileFE().find(
+                    (lb) => lb.listEntry === prevFeature.reference
                   );
-                  const nextAudio = listedBuildingAudio.find(
-                    (lb) => lb.listEntry === nextFeature.reference
+                  const prevAudio = listedBuildingAudio.find(
+                    (lb) => lb.listEntry === prevFeature.reference
                   );
 
                   setSelectedFeature({
-                    name: nextFeature.name,
-                    imageUrl: nextListedBuilding?.imageUrl ?? undefined,
-                    audioUrl: nextAudio?.audioUrl ?? undefined,
-                    listedEntry: nextFeature.reference,
-                    coordinates: [nextFeature.latitude, nextFeature.longitude],
+                    name: prevFeature.name,
+                    imageUrl: prevListedBuilding?.imageUrl ?? undefined,
+                    audioUrl: prevAudio?.audioUrl ?? undefined,
+                    listedEntry: prevFeature.reference,
+                    coordinates: [prevFeature.latitude, prevFeature.longitude],
                   });
                   centerMapOnFeature(
-                    nextFeature.latitude,
-                    nextFeature.longitude
+                    prevFeature.latitude,
+                    prevFeature.longitude
                   );
                 }}
                 className="text-gray-500 hover:text-gray-700 px-2 py-1"
               >
-                →
+                ←
               </button>
-              <button
-                onClick={() => setSelectedFeature(null)}
-                className="text-gray-500 hover:text-gray-700 ml-2"
-              >
-                ✕
-              </button>
-            </div>
-          </div>
-          <div className="flex flex-col gap-4">
-            {selectedFeature.imageUrl && (
-              <img
-                src={selectedFeature.imageUrl}
-                alt={selectedFeature.name}
-                className={`max-h-32 object-cover rounded-lg ${
-                  isExpanded ? "max-w-96" : "max-w-48"
-                } ${isExpanded ? "max-h-96" : "max-h-48"}`}
-              />
-            )}
-            {selectedFeature.audioUrl ? (
-              <audio controls className="w-full">
-                <source src={selectedFeature.audioUrl} type="video/mp4" />
-                Your browser does not support the audio element.
-              </audio>
-            ) : (
-              <div className="flex gap-2">
+
+              <h2 className="text-xl font-semibold mb-4">
+                {selectedFeature.name}
+              </h2>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className="text-gray-500 hover:text-gray-700 px-2 py-1"
+                >
+                  {isExpanded ? "↓" : "↑"}
+                </button>
                 <button
                   onClick={() => {
-                    if (isSpeaking) {
-                      window.speechSynthesis.cancel();
-                      setIsSpeaking(false);
-                    } else {
-                      const speech = new SpeechSynthesisUtterance(
-                        getAiSummary(selectedFeature.listedEntry) ??
-                          "Hello is no audio"
-                      );
-                      speech.onend = () => setIsSpeaking(false);
-                      window.speechSynthesis.speak(speech);
-                      setIsSpeaking(true);
-                    }
+                    const currentIndex = markersd.findIndex(
+                      (feature) =>
+                        feature.latitude === selectedFeature.coordinates[0] &&
+                        feature.longitude === selectedFeature.coordinates[1]
+                    );
+                    const nextIndex = (currentIndex + 1) % markersd.length;
+                    const nextFeature = markersd[nextIndex];
+                    const nextListedBuilding = getListedBuildingFileFE().find(
+                      (lb) => lb.listEntry === nextFeature.reference
+                    );
+                    const nextAudio = listedBuildingAudio.find(
+                      (lb) => lb.listEntry === nextFeature.reference
+                    );
+
+                    setSelectedFeature({
+                      name: nextFeature.name,
+                      imageUrl: nextListedBuilding?.imageUrl ?? undefined,
+                      audioUrl: nextAudio?.audioUrl ?? undefined,
+                      listedEntry: nextFeature.reference,
+                      coordinates: [
+                        nextFeature.latitude,
+                        nextFeature.longitude,
+                      ],
+                    });
+                    centerMapOnFeature(
+                      nextFeature.latitude,
+                      nextFeature.longitude
+                    );
                   }}
-                  className="flex-1 py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded text-gray-700"
+                  className="text-gray-500 hover:text-gray-700 px-2 py-1"
                 >
-                  {isSpeaking ? "Stop" : "Play Text-to-Speech Message"}
+                  →
+                </button>
+                <button
+                  onClick={() => setSelectedFeature(null)}
+                  className="text-gray-500 hover:text-gray-700 ml-2"
+                >
+                  ✕
                 </button>
               </div>
-            )}
+            </div>
+            <div className="flex flex-col gap-4">
+              {selectedFeature.audioUrl ? (
+                <audio controls className="w-full">
+                  <source src={selectedFeature.audioUrl} type="video/mp4" />
+                  Your browser does not support the audio element.
+                </audio>
+              ) : (
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      if (isSpeaking) {
+                        window.speechSynthesis.cancel();
+                        setIsSpeaking(false);
+                      } else {
+                        const speech = new SpeechSynthesisUtterance(
+                          getAiSummary(selectedFeature.listedEntry) ??
+                            "Hello is no audio"
+                        );
+                        speech.onend = () => setIsSpeaking(false);
+                        window.speechSynthesis.speak(speech);
+                        setIsSpeaking(true);
+                      }
+                    }}
+                    className="flex-1 py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded text-gray-700"
+                  >
+                    {isSpeaking ? "Stop" : "Play Text-to-Speech Message"}
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
