@@ -10,7 +10,7 @@ const endPrompt =
 const model = "llama3.2";
 
 export const getAiTextFromListedBuildings = async () => {
-  const buildings = getListedBuildingFileFE().slice(0, 2);
+  const buildings = getListedBuildingFileFE().slice(0, 10);
   const promptDb = getPromptData();
   const filteredPromptDb = buildings.filter(
     (building) =>
@@ -43,7 +43,7 @@ export const getAiTextFromListedBuildings = async () => {
     })
   );
   const newPromptDb: PromptInfo[] = [...promptDb, ...aiText];
-  Bun.write("prompData.json", JSON.stringify(newPromptDb));
+  Bun.write("promptData.json", JSON.stringify(newPromptDb));
 };
 
 await getAiTextFromListedBuildings();
