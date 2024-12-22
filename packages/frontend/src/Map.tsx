@@ -68,6 +68,7 @@ export function Map() {
   };
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   return (
     <div className="h-[100dvh] w-[100dvw] flex flex-col relative">
@@ -223,18 +224,27 @@ export function Map() {
                 Your browser does not support the audio element.
               </audio>
             ) : (
-              <button
-                onClick={() => {
-                  const speech = new SpeechSynthesisUtterance(
-                    getAiSummary(selectedFeature.listedEntry) ??
-                      "Hello is no audio"
-                  );
-                  window.speechSynthesis.speak(speech);
-                }}
-                className="w-full py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded text-gray-700"
-              >
-                Play Text-to-Speech Message
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    if (isSpeaking) {
+                      window.speechSynthesis.cancel();
+                      setIsSpeaking(false);
+                    } else {
+                      const speech = new SpeechSynthesisUtterance(
+                        getAiSummary(selectedFeature.listedEntry) ??
+                          "Hello is no audio"
+                      );
+                      speech.onend = () => setIsSpeaking(false);
+                      window.speechSynthesis.speak(speech);
+                      setIsSpeaking(true);
+                    }
+                  }}
+                  className="flex-1 py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded text-gray-700"
+                >
+                  {isSpeaking ? "Stop" : "Play Text-to-Speech Message"}
+                </button>
+              </div>
             )}
           </div>
         </div>
