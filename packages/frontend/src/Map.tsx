@@ -6,8 +6,17 @@ import { useEffect, useState } from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { getListedBuildingGeojson } from "./reactMap/listedBuildingsGeojsonTypes";
+import { getPromptData } from "./scripts/ai/getPromptData";
 import { listedBuildingAudio } from "./scripts/ai/listedBuildingAudio";
 import { getListedBuildingFileFE } from "./scripts/listedBuildingSources/getListedBuildingFE";
+
+function getAiSummary(listedBuildingNumber: string): string | undefined {
+  const promptData = getPromptData();
+  const prompt = promptData.find(
+    (prompt) => prompt.listEntry === listedBuildingNumber
+  );
+  return prompt?.aiGeneratedText ?? undefined;
+}
 
 export function Map() {
   // Add map ref to control map programmatically
@@ -19,8 +28,9 @@ export function Map() {
     imageUrl?: string;
     audioUrl?: string;
     coordinates: [number, number];
+    listedEntry: string;
   } | null>(null);
-
+  console.log(selectedFeature);
   // Set up default icon for Leaflet
   useEffect(() => {
     const DefaultIcon = L.icon({
@@ -96,6 +106,7 @@ export function Map() {
                       name: feature.name,
                       imageUrl: listedBuilding?.imageUrl ?? undefined,
                       audioUrl: audio?.audioUrl ?? undefined,
+                      listedEntry: feature.reference,
                       coordinates: [feature.latitude, feature.longitude],
                     });
                     centerMapOnFeature(feature.latitude, feature.longitude);
@@ -135,6 +146,7 @@ export function Map() {
                   name: prevFeature.name,
                   imageUrl: prevListedBuilding?.imageUrl ?? undefined,
                   audioUrl: prevAudio?.audioUrl ?? undefined,
+                  listedEntry: prevFeature.reference,
                   coordinates: [prevFeature.latitude, prevFeature.longitude],
                 });
                 centerMapOnFeature(prevFeature.latitude, prevFeature.longitude);
@@ -175,6 +187,7 @@ export function Map() {
                     name: nextFeature.name,
                     imageUrl: nextListedBuilding?.imageUrl ?? undefined,
                     audioUrl: nextAudio?.audioUrl ?? undefined,
+                    listedEntry: nextFeature.reference,
                     coordinates: [nextFeature.latitude, nextFeature.longitude],
                   });
                   centerMapOnFeature(
@@ -204,11 +217,24 @@ export function Map() {
                 } ${isExpanded ? "max-h-96" : "max-h-48"}`}
               />
             )}
-            {selectedFeature.audioUrl && (
+            {selectedFeature.audioUrl ? (
               <audio controls className="w-full">
                 <source src={selectedFeature.audioUrl} type="video/mp4" />
                 Your browser does not support the audio element.
               </audio>
+            ) : (
+              <button
+                onClick={() => {
+                  const speech = new SpeechSynthesisUtterance(
+                    getAiSummary(selectedFeature.listedEntry) ??
+                      "Hello is no audio"
+                  );
+                  window.speechSynthesis.speak(speech);
+                }}
+                className="w-full py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded text-gray-700"
+              >
+                Play Text-to-Speech Message
+              </button>
             )}
           </div>
         </div>

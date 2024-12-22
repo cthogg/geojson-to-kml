@@ -15,6 +15,7 @@ export type ListedBuildingGeojson = z.infer<typeof ListedBuildingGeojsonSchema>;
 
 export const getListedBuildingGeojson = (): ListedBuildingGeojson[] => {
   const allSources = getListedBuildingFileFE().map((s) => s.listEntry);
+  console.log("allSources", allSources);
   const geo = z
     .array(ListedBuildingGeojsonSchema)
     .parse(data)
