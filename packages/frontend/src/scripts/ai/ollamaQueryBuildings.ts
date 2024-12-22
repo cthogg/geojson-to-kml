@@ -4,18 +4,19 @@ export const generateMessageOllama = async ({
   details,
   systemPrompt,
   model,
+  endPrompt,
 }: {
-  imageUrl: string | undefined;
   details: string;
   systemPrompt: string;
   model: string;
+  endPrompt: string;
 }) => {
   const response = await ollama.chat({
     model,
     messages: [
       {
         role: "user",
-        content: `${systemPrompt} ${details}`,
+        content: `${systemPrompt} ${details} ${endPrompt}`,
       },
     ],
   });
