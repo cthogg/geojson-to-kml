@@ -10,13 +10,16 @@ import { listedBuildingAudio } from "./scripts/ai/listedBuildingAudio";
 import { getListedBuildingFileFE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 
 export function Map() {
-  // Add state for selected feature
+  // Add map ref to control map programmatically
+  const [map, setMap] = useState<L.Map | null>(null);
+
+  // Modify selected feature state to include coordinates
   const [selectedFeature, setSelectedFeature] = useState<{
     name: string;
     imageUrl?: string;
     audioUrl?: string;
+    coordinates: [number, number];
   } | null>(null);
-  console.log(selectedFeature);
 
   // Set up default icon for Leaflet
   useEffect(() => {
@@ -31,6 +34,24 @@ export function Map() {
 
   const markersd = getListedBuildingGeojson();
 
+  // Add custom yellow icon
+  const selectedIcon = L.icon({
+    iconUrl: icon,
+    shadowUrl: iconShadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    className: "selected-marker", // We'll use this to style the icon yellow
+  });
+
+  // Add custom yellow icon
+  const unseSelectedIcon = L.icon({
+    iconUrl: icon,
+    shadowUrl: iconShadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    className: "unselected-marker", // We'll use this to style the icon yellow
+  });
+
   return (
     <div className="h-screen w-screen flex flex-col relative">
       <MapContainer
@@ -38,6 +59,7 @@ export function Map() {
         center={[51.522333, -0.132239]}
         zoom={12}
         maxZoom={18}
+        ref={setMap}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -52,17 +74,28 @@ export function Map() {
             const audio = listedBuildingAudio.find(
               (lb) => lb.listEntry === feature.reference
             );
+            const isSelected =
+              selectedFeature?.coordinates[0] === feature.latitude &&
+              selectedFeature?.coordinates[1] === feature.longitude;
+
             return (
               <Marker
                 key={`marker-${feature.reference || index}`}
                 position={[feature.latitude, feature.longitude]}
+                icon={isSelected ? selectedIcon : unseSelectedIcon}
                 eventHandlers={{
                   click: () => {
                     setSelectedFeature({
                       name: feature.name,
                       imageUrl: listedBuilding?.imageUrl ?? undefined,
                       audioUrl: audio?.audioUrl ?? undefined,
+                      coordinates: [feature.latitude, feature.longitude],
                     });
+                    // Center map on selected marker
+                    map?.setView(
+                      [feature.latitude, feature.longitude],
+                      map.getZoom()
+                    );
                   },
                 }}
               />

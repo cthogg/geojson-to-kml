@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.selected-marker {
+  filter: hue-rotate(45deg) brightness(1.5);
+}
+
+.unselected-marker {
+  filter: hue-rotate(0deg) brightness(1);
+}
