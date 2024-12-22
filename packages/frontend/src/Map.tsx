@@ -68,7 +68,7 @@ export function Map() {
   // Modify the markers filter to use selectedRoute
   const markersd = allMarkers.filter((marker) =>
     selectedRoute === "All" || selectedRoute === null
-      ? routes.some((route) => route.listedBuildings.includes(marker.reference))
+      ? true
       : routes
           .find((route) => route.name === selectedRoute)
           ?.listedBuildings.includes(marker.reference)
