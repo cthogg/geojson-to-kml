@@ -72,6 +72,22 @@ export function Map() {
 
   return (
     <div className="h-[100dvh] w-[100dvw] flex flex-col relative">
+      {/* Add buttons container */}
+      <div className="absolute top-4 right-4 z-[1000] flex gap-2">
+        <button
+          onClick={() => alert("Walthamstow")}
+          className="bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap"
+        >
+          <span className="text-gray-700 font-medium">Walthamstow</span>
+        </button>
+        <button
+          onClick={() => alert("Bloomsbury")}
+          className="bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap"
+        >
+          <span className="text-gray-700 font-medium">Bloomsbury</span>
+        </button>
+      </div>
+
       <MapContainer
         className="h-[100dvh] w-[100dvw]"
         center={[51.522333, -0.132239]}
