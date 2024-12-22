@@ -53,9 +53,9 @@ export function Map() {
   });
 
   return (
-    <div className="h-screen w-screen flex flex-col relative">
+    <div className="h-[100dvh] w-[100dvw] flex flex-col relative">
       <MapContainer
-        className="h-screen w-screen"
+        className="h-[100dvh] w-[100dvw]"
         center={[51.522333, -0.132239]}
         zoom={12}
         maxZoom={18}
@@ -93,8 +93,8 @@ export function Map() {
                     });
                     // Center map on selected marker
                     map?.setView(
-                      [feature.latitude, feature.longitude],
-                      map.getZoom()
+                      [feature.latitude - 0.00045, feature.longitude],
+                      18
                     );
                   },
                 }}
@@ -103,12 +103,10 @@ export function Map() {
           })}
         </MarkerClusterGroup>
       </MapContainer>
-
-      {/* Bottom Card */}
       {selectedFeature && (
         <div
           style={{ zIndex: 1000 }}
-          className="h-800 absolute bottom-0 left-0 right-0 overflow-y-auto rounded-t-lg bg-white p-4 shadow-lg"
+          className="h-400 absolute bottom-0 left-0 right-0 overflow-y-auto rounded-t-lg bg-white p-4 shadow-lg"
         >
           <div className="flex justify-between items-start">
             <button
@@ -135,8 +133,8 @@ export function Map() {
                   coordinates: [prevFeature.latitude, prevFeature.longitude],
                 });
                 map?.setView(
-                  [prevFeature.latitude, prevFeature.longitude],
-                  map.getZoom()
+                  [prevFeature.latitude - 0.00045, prevFeature.longitude],
+                  18
                 );
               }}
               className="text-gray-500 hover:text-gray-700 px-2 py-1"
@@ -172,8 +170,8 @@ export function Map() {
                     coordinates: [nextFeature.latitude, nextFeature.longitude],
                   });
                   map?.setView(
-                    [nextFeature.latitude, nextFeature.longitude],
-                    map.getZoom()
+                    [nextFeature.latitude - 0.00045, nextFeature.longitude],
+                    18
                   );
                 }}
                 className="text-gray-500 hover:text-gray-700 px-2 py-1"
@@ -193,7 +191,7 @@ export function Map() {
               <img
                 src={selectedFeature.imageUrl}
                 alt={selectedFeature.name}
-                className="max-h-48 object-cover rounded-lg max-w-48"
+                className="max-h-32 object-cover rounded-lg max-w-48"
               />
             )}
             {selectedFeature.audioUrl && (
