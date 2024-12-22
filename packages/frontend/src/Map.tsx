@@ -229,8 +229,14 @@ export function Map() {
                 ←
               </button>
 
-              <h2 className="text-xl font-semibold mb-4">
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 {selectedFeature.name}
+                <a
+                  href={`/listed-building/${selectedFeature.listedEntry}`}
+                  className="text-blue-600 hover:text-blue-800 text-sm"
+                >
+                  ℹ️
+                </a>
               </h2>
 
               <div className="flex items-center gap-2">
