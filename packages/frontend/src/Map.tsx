@@ -179,7 +179,7 @@ export function Map() {
       {selectedFeature && (
         <div
           style={{ zIndex: 1000 }}
-          className={`absolute bottom-0 left-0 right-0 overflow-y-auto rounded-t-lg bg-white p-4 shadow-lg transition-all duration-300 ${
+          className={`absolute bottom-0 left-0 right-0 overflow-y-auto rounded-t-lg shadow-lg transition-all duration-300 ${
             isExpanded ? "h-[80vh]" : "h-400"
           }`}
         >
@@ -187,14 +187,14 @@ export function Map() {
             <div
               className="absolute inset-0 z-0"
               style={{
-                backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url(${selectedFeature.imageUrl})`,
+                backgroundImage: `url(${selectedFeature.imageUrl})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
             />
           )}
-          <div className="relative z-10">
-            <div className="flex justify-between items-start">
+          <div className="relative z-10 p-4 bg-black/50 backdrop-blur-sm">
+            <div className="flex justify-between items-start text-white">
               <button
                 onClick={() => {
                   const currentIndex = markersd.findIndex(
@@ -224,7 +224,7 @@ export function Map() {
                     prevFeature.longitude
                   );
                 }}
-                className="text-gray-500 hover:text-gray-700 px-2 py-1"
+                className="text-white hover:text-gray-200 px-2 py-1"
               >
                 ←
               </button>
@@ -233,7 +233,7 @@ export function Map() {
                 {selectedFeature.name}
                 <a
                   href={`/listed-building/${selectedFeature.listedEntry}`}
-                  className="text-blue-600 hover:text-blue-800 text-sm"
+                  className="text-white hover:text-gray-200 text-sm"
                 >
                   ℹ️
                 </a>
@@ -242,7 +242,7 @@ export function Map() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setIsExpanded(!isExpanded)}
-                  className="text-gray-500 hover:text-gray-700 px-2 py-1"
+                  className="text-white hover:text-gray-200 px-2 py-1"
                 >
                   {isExpanded ? "↓" : "↑"}
                 </button>
@@ -277,13 +277,13 @@ export function Map() {
                       nextFeature.longitude
                     );
                   }}
-                  className="text-gray-500 hover:text-gray-700 px-2 py-1"
+                  className="text-white hover:text-gray-200 px-2 py-1"
                 >
                   →
                 </button>
                 <button
                   onClick={() => setSelectedFeature(null)}
-                  className="text-gray-500 hover:text-gray-700 ml-2"
+                  className="text-white hover:text-gray-200 ml-2"
                 >
                   ✕
                 </button>
@@ -312,7 +312,7 @@ export function Map() {
                         setIsSpeaking(true);
                       }
                     }}
-                    className="flex-1 py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded text-gray-700"
+                    className="flex-1 py-2 px-4 bg-white/90 hover:bg-white rounded text-gray-700"
                   >
                     {isSpeaking ? "Stop" : "Play Text-to-Speech Message"}
                   </button>
