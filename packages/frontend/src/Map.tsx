@@ -108,18 +108,85 @@ export function Map() {
       {selectedFeature && (
         <div
           style={{ zIndex: 1000 }}
-          className=" z-50 absolute bottom-0 left-0 right-0 bg-white p-4 shadow-lg rounded-t-lg max-h-[40vh] overflow-y-auto"
+          className="z-50 absolute bottom-0 left-0 right-0 bg-white p-4 shadow-lg rounded-t-lg max-h-[40vh] overflow-y-auto"
         >
           <div className="flex justify-between items-start">
+            <button
+              onClick={() => {
+                const currentIndex = markersd.findIndex(
+                  (feature) =>
+                    feature.latitude === selectedFeature.coordinates[0] &&
+                    feature.longitude === selectedFeature.coordinates[1]
+                );
+                const prevIndex =
+                  (currentIndex - 1 + markersd.length) % markersd.length;
+                const prevFeature = markersd[prevIndex];
+                const prevListedBuilding = getListedBuildingFileFE().find(
+                  (lb) => lb.listEntry === prevFeature.reference
+                );
+                const prevAudio = listedBuildingAudio.find(
+                  (lb) => lb.listEntry === prevFeature.reference
+                );
+
+                setSelectedFeature({
+                  name: prevFeature.name,
+                  imageUrl: prevListedBuilding?.imageUrl ?? undefined,
+                  audioUrl: prevAudio?.audioUrl ?? undefined,
+                  coordinates: [prevFeature.latitude, prevFeature.longitude],
+                });
+                map?.setView(
+                  [prevFeature.latitude, prevFeature.longitude],
+                  map.getZoom()
+                );
+              }}
+              className="text-gray-500 hover:text-gray-700 px-2 py-1"
+            >
+              ←
+            </button>
+
             <h2 className="text-xl font-semibold mb-4">
               {selectedFeature.name}
             </h2>
-            <button
-              onClick={() => setSelectedFeature(null)}
-              className="text-gray-500 hover:text-gray-700"
-            >
-              ✕
-            </button>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  const currentIndex = markersd.findIndex(
+                    (feature) =>
+                      feature.latitude === selectedFeature.coordinates[0] &&
+                      feature.longitude === selectedFeature.coordinates[1]
+                  );
+                  const nextIndex = (currentIndex + 1) % markersd.length;
+                  const nextFeature = markersd[nextIndex];
+                  const nextListedBuilding = getListedBuildingFileFE().find(
+                    (lb) => lb.listEntry === nextFeature.reference
+                  );
+                  const nextAudio = listedBuildingAudio.find(
+                    (lb) => lb.listEntry === nextFeature.reference
+                  );
+
+                  setSelectedFeature({
+                    name: nextFeature.name,
+                    imageUrl: nextListedBuilding?.imageUrl ?? undefined,
+                    audioUrl: nextAudio?.audioUrl ?? undefined,
+                    coordinates: [nextFeature.latitude, nextFeature.longitude],
+                  });
+                  map?.setView(
+                    [nextFeature.latitude, nextFeature.longitude],
+                    map.getZoom()
+                  );
+                }}
+                className="text-gray-500 hover:text-gray-700 px-2 py-1"
+              >
+                →
+              </button>
+              <button
+                onClick={() => setSelectedFeature(null)}
+                className="text-gray-500 hover:text-gray-700 ml-2"
+              >
+                ✕
+              </button>
+            </div>
           </div>
           <div className="flex flex-col gap-4">
             {selectedFeature.imageUrl && (
