@@ -18,6 +18,24 @@ function getAiSummary(listedBuildingNumber: string): string | undefined {
   return prompt?.aiGeneratedText ?? undefined;
 }
 
+const routes = [
+  {
+    name: "Walthamstow",
+    listedBuildings: ["1065590", "1391928", "1191188", "1191062"],
+  },
+  {
+    name: "Bloomsbury",
+    listedBuildings: [
+      "1379009",
+      "1113038",
+      "1113106",
+      "1113107",
+      "1401342",
+      "1272403",
+    ],
+  },
+];
+
 export function Map() {
   // Add map ref to control map programmatically
   const [map, setMap] = useState<L.Map | null>(null);
@@ -42,7 +60,19 @@ export function Map() {
     L.Marker.prototype.options.icon = DefaultIcon;
   }, []);
 
-  const markersd = getListedBuildingGeojson();
+  const allMarkers = getListedBuildingGeojson();
+
+  // Add new state for selected route
+  const [selectedRoute, setSelectedRoute] = useState<string | null>(null);
+
+  // Modify the markers filter to use selectedRoute
+  const markersd = allMarkers.filter((marker) =>
+    selectedRoute === "All" || selectedRoute === null
+      ? routes.some((route) => route.listedBuildings.includes(marker.reference))
+      : routes
+          .find((route) => route.name === selectedRoute)
+          ?.listedBuildings.includes(marker.reference)
+  );
 
   // Add custom yellow icon
   const selectedIcon = L.icon({
@@ -75,16 +105,28 @@ export function Map() {
       {/* Add buttons container */}
       <div className="absolute top-4 right-4 z-[1000] flex gap-2">
         <button
-          onClick={() => alert("Walthamstow")}
-          className="bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap"
+          onClick={() => setSelectedRoute("Walthamstow")}
+          className={`bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
+            selectedRoute === "Walthamstow" ? "bg-gray-200" : ""
+          }`}
         >
           <span className="text-gray-700 font-medium">Walthamstow</span>
         </button>
         <button
-          onClick={() => alert("Bloomsbury")}
-          className="bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap"
+          onClick={() => setSelectedRoute("Bloomsbury")}
+          className={`bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
+            selectedRoute === "Bloomsbury" ? "bg-gray-200" : ""
+          }`}
         >
           <span className="text-gray-700 font-medium">Bloomsbury</span>
+        </button>
+        <button
+          onClick={() => setSelectedRoute("All")}
+          className={`bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
+            selectedRoute === "All" ? "bg-gray-200" : ""
+          }`}
+        >
+          <span className="text-gray-700 font-medium">All</span>
         </button>
       </div>
 
