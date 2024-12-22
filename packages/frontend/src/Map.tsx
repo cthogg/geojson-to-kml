@@ -2,14 +2,22 @@ import L from "leaflet";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/leaflet.css";
-import { useEffect } from "react";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { useEffect, useState } from "react";
+import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { getListedBuildingGeojson } from "./reactMap/listedBuildingsGeojsonTypes";
 import { listedBuildingAudio } from "./scripts/ai/listedBuildingAudio";
 import { getListedBuildingFileFE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 
 export function Map() {
+  // Add state for selected feature
+  const [selectedFeature, setSelectedFeature] = useState<{
+    name: string;
+    imageUrl?: string;
+    audioUrl?: string;
+  } | null>(null);
+  console.log(selectedFeature);
+
   // Set up default icon for Leaflet
   useEffect(() => {
     const DefaultIcon = L.icon({
@@ -24,7 +32,7 @@ export function Map() {
   const markersd = getListedBuildingGeojson();
 
   return (
-    <div className="h-full w-full flex flex-row">
+    <div className="h-screen w-screen flex flex-col relative">
       <MapContainer
         className="h-screen w-screen"
         center={[51.522333, -0.132239]}
@@ -48,26 +56,55 @@ export function Map() {
               <Marker
                 key={`marker-${feature.reference || index}`}
                 position={[feature.latitude, feature.longitude]}
-              >
-                <Popup minWidth={250}>
-                  {feature.name}
-                  <div className="flex flex-row">
-                    {listedBuilding?.imageUrl && (
-                      <img src={listedBuilding?.imageUrl} />
-                    )}
-                  </div>
-                  {audio?.audioUrl && (
-                    <audio controls className="w-full">
-                      <source src={audio?.audioUrl} type="video/mp4" />
-                      Your browser does not support the audio element.
-                    </audio>
-                  )}
-                </Popup>
-              </Marker>
+                eventHandlers={{
+                  click: () => {
+                    setSelectedFeature({
+                      name: feature.name,
+                      imageUrl: listedBuilding?.imageUrl ?? undefined,
+                      audioUrl: audio?.audioUrl ?? undefined,
+                    });
+                  },
+                }}
+              />
             );
           })}
         </MarkerClusterGroup>
       </MapContainer>
+
+      {/* Bottom Card */}
+      {selectedFeature && (
+        <div
+          style={{ zIndex: 1000 }}
+          className=" z-50 absolute bottom-0 left-0 right-0 bg-white p-4 shadow-lg rounded-t-lg max-h-[40vh] overflow-y-auto"
+        >
+          <div className="flex justify-between items-start">
+            <h2 className="text-xl font-semibold mb-4">
+              {selectedFeature.name}
+            </h2>
+            <button
+              onClick={() => setSelectedFeature(null)}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              ✕
+            </button>
+          </div>
+          <div className="flex flex-col gap-4">
+            {selectedFeature.imageUrl && (
+              <img
+                src={selectedFeature.imageUrl}
+                alt={selectedFeature.name}
+                className="max-h-48 object-cover rounded-lg max-w-48"
+              />
+            )}
+            {selectedFeature.audioUrl && (
+              <audio controls className="w-full">
+                <source src={selectedFeature.audioUrl} type="video/mp4" />
+                Your browser does not support the audio element.
+              </audio>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
