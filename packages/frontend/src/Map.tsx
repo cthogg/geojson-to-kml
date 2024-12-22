@@ -54,7 +54,7 @@ export function Map() {
   });
 
   // Add custom yellow icon
-  const unseSelectedIcon = L.icon({
+  const unselectedIcon = L.icon({
     iconUrl: icon,
     shadowUrl: iconShadow,
     iconSize: [25, 41],
@@ -116,7 +116,7 @@ export function Map() {
               <Marker
                 key={`marker-${feature.reference || index}`}
                 position={[feature.latitude, feature.longitude]}
-                icon={isSelected ? selectedIcon : unseSelectedIcon}
+                icon={isSelected ? selectedIcon : unselectedIcon}
                 eventHandlers={{
                   click: () => {
                     setSelectedFeature({
