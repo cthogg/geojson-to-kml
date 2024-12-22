@@ -2,7 +2,7 @@ import L from "leaflet";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/leaflet.css";
-import { TouchEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { getListedBuildingGeojson } from "./reactMap/listedBuildingsGeojsonTypes";
@@ -20,13 +20,6 @@ export function Map() {
     audioUrl?: string;
     coordinates: [number, number];
   } | null>(null);
-
-  // Add touch handling state
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-
-  // Minimum swipe distance (in px)
-  const minSwipeDistance = 50;
 
   // Set up default icon for Leaflet
   useEffect(() => {
@@ -58,79 +51,6 @@ export function Map() {
     iconAnchor: [12, 41],
     className: "unselected-marker", // We'll use this to style the icon yellow
   });
-
-  const onTouchStart = (e: TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const onTouchMove = (e: TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
-
-    if (isLeftSwipe) {
-      // Handle next
-      const currentIndex = markersd.findIndex(
-        (feature) =>
-          feature.latitude === selectedFeature?.coordinates[0] &&
-          feature.longitude === selectedFeature?.coordinates[1]
-      );
-      const nextIndex = (currentIndex + 1) % markersd.length;
-      const nextFeature = markersd[nextIndex];
-      const nextListedBuilding = getListedBuildingFileFE().find(
-        (lb) => lb.listEntry === nextFeature.reference
-      );
-      const nextAudio = listedBuildingAudio.find(
-        (lb) => lb.listEntry === nextFeature.reference
-      );
-
-      setSelectedFeature({
-        name: nextFeature.name,
-        imageUrl: nextListedBuilding?.imageUrl ?? undefined,
-        audioUrl: nextAudio?.audioUrl ?? undefined,
-        coordinates: [nextFeature.latitude, nextFeature.longitude],
-      });
-      map?.setView(
-        [nextFeature.latitude, nextFeature.longitude],
-        map.getZoom()
-      );
-    }
-
-    if (isRightSwipe) {
-      // Handle previous
-      const currentIndex = markersd.findIndex(
-        (feature) =>
-          feature.latitude === selectedFeature?.coordinates[0] &&
-          feature.longitude === selectedFeature?.coordinates[1]
-      );
-      const prevIndex = (currentIndex - 1 + markersd.length) % markersd.length;
-      const prevFeature = markersd[prevIndex];
-      const prevListedBuilding = getListedBuildingFileFE().find(
-        (lb) => lb.listEntry === prevFeature.reference
-      );
-      const prevAudio = listedBuildingAudio.find(
-        (lb) => lb.listEntry === prevFeature.reference
-      );
-
-      setSelectedFeature({
-        name: prevFeature.name,
-        imageUrl: prevListedBuilding?.imageUrl ?? undefined,
-        audioUrl: prevAudio?.audioUrl ?? undefined,
-        coordinates: [prevFeature.latitude, prevFeature.longitude],
-      });
-      map?.setView(
-        [prevFeature.latitude, prevFeature.longitude],
-        map.getZoom()
-      );
-    }
-  };
 
   return (
     <div className="h-screen w-screen flex flex-col relative">
@@ -188,10 +108,7 @@ export function Map() {
       {selectedFeature && (
         <div
           style={{ zIndex: 1000 }}
-          className="z-50 absolute bottom-0 left-0 right-0 bg-white p-4 shadow-lg rounded-t-lg max-h-[40vh] overflow-y-auto"
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
+          className="absolute bottom-0 left-0 right-0 bg-white p-4 shadow-lg rounded-t-lg overflow-y-auto"
         >
           <div className="flex justify-between items-start">
             <button
