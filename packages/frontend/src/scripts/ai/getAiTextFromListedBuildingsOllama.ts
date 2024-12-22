@@ -10,7 +10,7 @@ const endPrompt =
 const model = "llama3.2";
 
 export const getAiTextFromListedBuildings = async () => {
-  const buildings = getListedBuildingFileFE().slice(0, 10);
+  const buildings = getListedBuildingFileFE().slice(0, 5);
   const promptDb = getPromptData();
   const filteredPromptDb = buildings.filter(
     (building) =>
@@ -21,29 +21,73 @@ export const getAiTextFromListedBuildings = async () => {
           prompt.model === model
       )
   );
-  console.log(filteredPromptDb.length);
-  const aiText = await Promise.all(
+  console.log(`Processing ${filteredPromptDb.length} buildings`);
+
+  const results = await Promise.allSettled(
     filteredPromptDb.map(async (building) => {
-      const message = await generateMessageOllama({
-        systemPrompt,
-        endPrompt,
-        details: `${building.wikipediaText ?? ""} ${
-          building.historicalEnglandText ?? ""
-        }`,
-        model,
-      });
-      const promptInfo: PromptInfo = {
-        prompt: `${systemPrompt} ${endPrompt}`,
-        model: model,
-        listEntry: building.listEntry,
-        audioUrl: null,
-        aiGeneratedText: message,
-      };
-      return promptInfo;
+      try {
+        const message = await generateMessageOllama({
+          systemPrompt,
+          endPrompt,
+          details: `${building.wikipediaText ?? ""} ${
+            building.historicalEnglandText ?? ""
+          }`,
+          model,
+        });
+        console.log(`Successfully processed building: ${building.listEntry}`);
+
+        return {
+          success: true,
+          data: {
+            prompt: `${systemPrompt} ${endPrompt}`,
+            model: model,
+            listEntry: building.listEntry,
+            audioUrl: null,
+            aiGeneratedText: message,
+          } as PromptInfo,
+        };
+      } catch (error) {
+        return {
+          success: false,
+          listEntry: building.listEntry,
+          error: error instanceof Error ? error.message : String(error),
+        };
+      }
     })
   );
-  const newPromptDb: PromptInfo[] = [...promptDb, ...aiText];
-  Bun.write("promptData.json", JSON.stringify(newPromptDb));
+
+  const successfulResults = results
+    .filter(
+      (
+        result
+      ): result is PromiseFulfilledResult<{
+        success: true;
+        data: PromptInfo;
+      }> => result.status === "fulfilled" && result.value.success
+    )
+    .map((result) => result.value.data);
+
+  const failures = results
+    .filter(
+      (
+        result
+      ): result is PromiseFulfilledResult<{
+        success: false;
+        listEntry: string;
+        error: string;
+      }> => result.status === "fulfilled" && !result.value.success
+    )
+    .map((result) => result.value);
+
+  const newPromptDb: PromptInfo[] = [...promptDb, ...successfulResults];
+  await Bun.write("promptData.json", JSON.stringify(newPromptDb));
+
+  if (failures.length > 0) {
+    console.error(`Failed to process ${failures.length} buildings:`);
+    failures.forEach((failure) => {
+      console.error(`- Building ${failure.listEntry}: ${failure.error}`);
+    });
+  }
 };
 
 await getAiTextFromListedBuildings();

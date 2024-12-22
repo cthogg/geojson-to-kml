@@ -13,6 +13,7 @@ export const generateMessageOllama = async ({
 }) => {
   const response = await ollama.chat({
     model,
+    keep_alive: "10m",
     messages: [
       {
         role: "user",
