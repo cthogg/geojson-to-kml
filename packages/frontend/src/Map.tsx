@@ -52,6 +52,11 @@ export function Map() {
     className: "unselected-marker", // We'll use this to style the icon yellow
   });
 
+  // Add new helper function
+  const centerMapOnFeature = (latitude: number, longitude: number) => {
+    map?.setView([latitude - 0.00045, longitude], 18);
+  };
+
   return (
     <div className="h-[100dvh] w-[100dvw] flex flex-col relative">
       <MapContainer
@@ -91,11 +96,7 @@ export function Map() {
                       audioUrl: audio?.audioUrl ?? undefined,
                       coordinates: [feature.latitude, feature.longitude],
                     });
-                    // Center map on selected marker
-                    map?.setView(
-                      [feature.latitude - 0.00045, feature.longitude],
-                      18
-                    );
+                    centerMapOnFeature(feature.latitude, feature.longitude);
                   },
                 }}
               />
@@ -132,10 +133,7 @@ export function Map() {
                   audioUrl: prevAudio?.audioUrl ?? undefined,
                   coordinates: [prevFeature.latitude, prevFeature.longitude],
                 });
-                map?.setView(
-                  [prevFeature.latitude - 0.00045, prevFeature.longitude],
-                  18
-                );
+                centerMapOnFeature(prevFeature.latitude, prevFeature.longitude);
               }}
               className="text-gray-500 hover:text-gray-700 px-2 py-1"
             >
@@ -169,9 +167,9 @@ export function Map() {
                     audioUrl: nextAudio?.audioUrl ?? undefined,
                     coordinates: [nextFeature.latitude, nextFeature.longitude],
                   });
-                  map?.setView(
-                    [nextFeature.latitude - 0.00045, nextFeature.longitude],
-                    18
+                  centerMapOnFeature(
+                    nextFeature.latitude,
+                    nextFeature.longitude
                   );
                 }}
                 className="text-gray-500 hover:text-gray-700 px-2 py-1"
