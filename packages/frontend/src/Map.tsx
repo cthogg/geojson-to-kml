@@ -108,7 +108,7 @@ export function Map() {
       {selectedFeature && (
         <div
           style={{ zIndex: 1000 }}
-          className="absolute bottom-0 left-0 right-0 bg-white p-4 shadow-lg rounded-t-lg overflow-y-auto"
+          className="h-800 absolute bottom-0 left-0 right-0 overflow-y-auto rounded-t-lg bg-white p-4 shadow-lg"
         >
           <div className="flex justify-between items-start">
             <button
