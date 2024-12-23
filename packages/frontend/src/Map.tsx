@@ -105,7 +105,15 @@ export function Map() {
       {/* Add buttons container */}
       <div className="absolute top-4 right-4 z-[1000] flex gap-2">
         <button
-          onClick={() => setSelectedRoute("Walthamstow")}
+          onClick={() => {
+            setSelectedRoute("Walthamstow");
+            const marker = allMarkers.filter((marker) =>
+              routes
+                .find((route) => route.name === "Walthamstow")
+                ?.listedBuildings.includes(marker.reference)
+            );
+            centerMapOnFeature(marker[0].latitude, marker[0].longitude);
+          }}
           className={`bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
             selectedRoute === "Walthamstow" ? "bg-gray-200" : ""
           }`}
@@ -113,7 +121,15 @@ export function Map() {
           <span className="text-gray-700 font-medium">Walthamstow</span>
         </button>
         <button
-          onClick={() => setSelectedRoute("Bloomsbury")}
+          onClick={() => {
+            setSelectedRoute("Bloomsbury");
+            const marker = allMarkers.filter((marker) =>
+              routes
+                .find((route) => route.name === "Bloomsbury")
+                ?.listedBuildings.includes(marker.reference)
+            );
+            centerMapOnFeature(marker[0].latitude, marker[0].longitude);
+          }}
           className={`bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
             selectedRoute === "Bloomsbury" ? "bg-gray-200" : ""
           }`}
@@ -121,7 +137,10 @@ export function Map() {
           <span className="text-gray-700 font-medium">Bloomsbury</span>
         </button>
         <button
-          onClick={() => setSelectedRoute("All")}
+          onClick={() => {
+            setSelectedRoute("All");
+            map?.setView([51.5225, -0.129256], 12);
+          }}
           className={`bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
             selectedRoute === "All" ? "bg-gray-200" : ""
           }`}
