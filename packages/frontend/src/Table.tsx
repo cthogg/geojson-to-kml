@@ -9,7 +9,12 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 export const Table = ({ data }: { data: ListedBuilding[] }) => {
   const columnDefs: ColDef<ListedBuilding>[] = [
-    { field: "title", headerName: "Title", sortable: true, filter: true },
+    {
+      field: "title",
+      headerName: "Title",
+      filter: true,
+      filterParams: {},
+    },
     {
       field: "imageUrl",
       headerName: "Image",
