@@ -10,6 +10,7 @@ import { getListedBuildingGeojson } from "./reactMap/listedBuildingsGeojsonTypes
 import { getPromptData } from "./scripts/ai/getPromptData";
 import { listedBuildingAudio } from "./scripts/ai/listedBuildingAudio";
 import { getListedBuildingFileFE } from "./scripts/listedBuildingSources/getListedBuildingFE";
+import { Table } from "./Table";
 
 function getAiSummary(listedBuildingNumber: string): string | undefined {
   const promptData = getPromptData();
@@ -346,7 +347,7 @@ export function Map() {
       {/* Add Modal */}
       {isTableModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-[2000] flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-lg p-6 max-w-6xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Listed Buildings Table</h2>
               <button
@@ -356,47 +357,15 @@ export function Map() {
                 ✕
               </button>
             </div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead>
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Name
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Location
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Route
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {markersd.map((marker) => (
-                    <tr
-                      key={marker.reference}
-                      className="hover:bg-gray-50 cursor-pointer"
-                      onClick={() => {
-                        centerMapOnFeature(marker.latitude, marker.longitude);
-                        setIsTableModalOpen(false);
-                      }}
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {marker.name}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">{`${marker.latitude.toFixed(
-                        4
-                      )}, ${marker.longitude.toFixed(4)}`}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {routes.find((route) =>
-                          route.listedBuildings.includes(marker.reference)
-                        )?.name || "None"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <Table
+              data={getListedBuildingFileFE().filter((building) =>
+                selectedRoute === "All" || selectedRoute === null
+                  ? true
+                  : routes
+                      .find((route) => route.name === selectedRoute)
+                      ?.listedBuildings.includes(building.listEntry)
+              )}
+            />
           </div>
         </div>
       )}
