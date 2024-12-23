@@ -103,6 +103,32 @@ export function Map() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isTableModalOpen, setIsTableModalOpen] = useState(false);
 
+  const handleTableRowClick = ({
+    latitude,
+    longitude,
+    name,
+    listedEntry,
+    imageUrl,
+    audioUrl,
+  }: {
+    latitude: number;
+    longitude: number;
+    name: string;
+    listedEntry: string;
+    imageUrl?: string;
+    audioUrl?: string;
+  }) => {
+    setSelectedFeature({
+      name,
+      coordinates: [latitude, longitude],
+      listedEntry: listedEntry,
+      imageUrl: imageUrl,
+      audioUrl: audioUrl,
+    });
+    centerMapOnFeature(latitude, longitude);
+    setIsTableModalOpen(false); // Optionally close the modal after selection
+  };
+
   return (
     <div className="h-[100dvh] w-[100dvw] flex flex-col relative">
       {/* Add buttons container */}
@@ -365,6 +391,7 @@ export function Map() {
                       .find((route) => route.name === selectedRoute)
                       ?.listedBuildings.includes(building.listEntry)
               )}
+              onRowClick={handleTableRowClick}
             />
           </div>
         </div>

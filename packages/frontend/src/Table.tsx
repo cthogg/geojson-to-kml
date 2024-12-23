@@ -7,7 +7,24 @@ import { ClientSideRowModelModule, ModuleRegistry } from "ag-grid-community";
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
-export const Table = ({ data }: { data: ListedBuilding[] }) => {
+interface TableProps {
+  data: ListedBuilding[];
+  onRowClick: ({
+    latitude,
+    longitude,
+    name,
+    listedEntry,
+    imageUrl,
+  }: {
+    latitude: number;
+    longitude: number;
+    name: string;
+    listedEntry: string;
+    imageUrl?: string;
+  }) => void;
+}
+
+export const Table = ({ data, onRowClick }: TableProps) => {
   const columnDefs: ColDef<ListedBuilding>[] = [
     {
       field: "title",
@@ -54,16 +71,30 @@ export const Table = ({ data }: { data: ListedBuilding[] }) => {
         pagination={true}
         paginationPageSize={20}
         rowHeight={170}
+        onRowClicked={(event) => {
+          const row = event.data as ListedBuilding;
+          onRowClick({
+            latitude: row.coordinates?.[0] ?? 0,
+            longitude: row.coordinates?.[1] ?? 0,
+            name: row.title,
+            listedEntry: row.listEntry,
+            imageUrl: row.imageUrl ?? undefined,
+          });
+        }}
       />
     </div>
   );
 };
 
-export const TableWrapper = () => {
+export const TableWrapper = ({
+  onRowClick,
+}: {
+  onRowClick: (params: any) => void;
+}) => {
   const listedBuildings = getListedBuildingFileFE();
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <Table data={listedBuildings} />
+      <Table data={listedBuildings} onRowClick={onRowClick} />
     </div>
   );
 };
