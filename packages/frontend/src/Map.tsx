@@ -271,7 +271,7 @@ export function Map() {
                     prevFeature.longitude
                   );
                 }}
-                className="text-black hover:text-gray-200 px-2 py-1"
+                className="text-black  px-2 py-1"
               >
                 ←
               </button>
@@ -283,7 +283,7 @@ export function Map() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setIsExpanded(!isExpanded)}
-                  className="text-black hover:text-gray-200 px-2 py-1"
+                  className="text-black  px-2 py-1"
                 >
                   {isExpanded ? "↓" : "↑"}
                 </button>
@@ -318,13 +318,13 @@ export function Map() {
                       nextFeature.longitude
                     );
                   }}
-                  className="text-black hover:text-gray-200 px-2 py-1"
+                  className="text-black  px-2 py-1"
                 >
                   →
                 </button>
                 <button
                   onClick={() => setSelectedFeature(null)}
-                  className="text-black hover:text-gray-200 ml-2"
+                  className="text-black  ml-2"
                 >
                   ✕
                 </button>
