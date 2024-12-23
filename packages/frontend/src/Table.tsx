@@ -24,7 +24,7 @@ export const Table = ({ data }: { data: ListedBuilding[] }) => {
           <img
             src={params.value}
             alt="Building"
-            style={{ width: "100px", height: "100px" }}
+            style={{ width: "150px", height: "150px" }}
           />
         ) : null,
     },
@@ -53,7 +53,7 @@ export const Table = ({ data }: { data: ListedBuilding[] }) => {
         rowData={data}
         pagination={true}
         paginationPageSize={20}
-        rowHeight={120}
+        rowHeight={170}
       />
     </div>
   );
