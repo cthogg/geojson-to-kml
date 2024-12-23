@@ -132,58 +132,60 @@ export function Map() {
   return (
     <div className="h-[100dvh] w-[100dvw] flex flex-col relative">
       {/* Add buttons container */}
-      <div className="absolute top-4 right-4 z-[1000] flex gap-2">
-        <button
-          onClick={() => {
-            setSelectedRoute("Walthamstow");
-            const marker = allMarkers.filter((marker) =>
-              routes
-                .find((route) => route.name === "Walthamstow")
-                ?.listedBuildings.includes(marker.reference)
-            );
-            centerMapOnFeature(marker[0].latitude, marker[0].longitude);
-          }}
-          className={`bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
-            selectedRoute === "Walthamstow" ? "bg-gray-200" : ""
-          }`}
-        >
-          <span className="text-gray-700 font-medium">Walthamstow</span>
-        </button>
-        <button
-          onClick={() => {
-            setSelectedRoute("Bloomsbury");
-            const marker = allMarkers.filter((marker) =>
-              routes
-                .find((route) => route.name === "Bloomsbury")
-                ?.listedBuildings.includes(marker.reference)
-            );
-            centerMapOnFeature(marker[0].latitude, marker[0].longitude);
-          }}
-          className={`bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
-            selectedRoute === "Bloomsbury" ? "bg-gray-200" : ""
-          }`}
-        >
-          <span className="text-gray-700 font-medium">Bloomsbury</span>
-        </button>
-        <button
-          onClick={() => {
-            setSelectedRoute("All");
-            map?.setView([51.5225, -0.129256], 12);
-          }}
-          className={`bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
-            selectedRoute === "All" ? "bg-gray-200" : ""
-          }`}
-        >
-          <span className="text-gray-700 font-medium">All</span>
-        </button>
-        <button
-          onClick={() => {
-            setIsTableModalOpen(true);
-          }}
-          className={`bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap`}
-        >
-          <span className="text-gray-700 font-medium">Table 🧮</span>
-        </button>
+      <div className="absolute top-4 right-4 z-[1000] flex overflow-x-auto max-w-[calc(100%-2rem)] hide-scrollbar">
+        <div className="flex gap-2 px-1">
+          <button
+            onClick={() => {
+              setSelectedRoute("Walthamstow");
+              const marker = allMarkers.filter((marker) =>
+                routes
+                  .find((route) => route.name === "Walthamstow")
+                  ?.listedBuildings.includes(marker.reference)
+              );
+              centerMapOnFeature(marker[0].latitude, marker[0].longitude);
+            }}
+            className={`flex-shrink-0 bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
+              selectedRoute === "Walthamstow" ? "bg-gray-200" : ""
+            }`}
+          >
+            <span className="text-gray-700 font-medium">Walthamstow</span>
+          </button>
+          <button
+            onClick={() => {
+              setSelectedRoute("Bloomsbury");
+              const marker = allMarkers.filter((marker) =>
+                routes
+                  .find((route) => route.name === "Bloomsbury")
+                  ?.listedBuildings.includes(marker.reference)
+              );
+              centerMapOnFeature(marker[0].latitude, marker[0].longitude);
+            }}
+            className={`flex-shrink-0 bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
+              selectedRoute === "Bloomsbury" ? "bg-gray-200" : ""
+            }`}
+          >
+            <span className="text-gray-700 font-medium">Bloomsbury</span>
+          </button>
+          <button
+            onClick={() => {
+              setSelectedRoute("All");
+              map?.setView([51.5225, -0.129256], 12);
+            }}
+            className={`flex-shrink-0 bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
+              selectedRoute === "All" ? "bg-gray-200" : ""
+            }`}
+          >
+            <span className="text-gray-700 font-medium">All</span>
+          </button>
+          <button
+            onClick={() => {
+              setIsTableModalOpen(true);
+            }}
+            className={`flex-shrink-0 bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap`}
+          >
+            <span className="text-gray-700 font-medium">Table 🧮</span>
+          </button>
+        </div>
       </div>
 
       <MapContainer
