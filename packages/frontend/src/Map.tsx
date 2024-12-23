@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
+import { ListedBuildingInfo } from "./ListedBuildingInfo";
 import { getListedBuildingGeojson } from "./reactMap/listedBuildingsGeojsonTypes";
 import { getPromptData } from "./scripts/ai/getPromptData";
 import { listedBuildingAudio } from "./scripts/ai/listedBuildingAudio";
@@ -197,22 +198,12 @@ export function Map() {
       {selectedFeature && (
         <div
           style={{ zIndex: 1000 }}
-          className={`absolute bottom-0 left-0 right-0 overflow-y-auto rounded-t-lg shadow-lg transition-all duration-300 ${
+          className={`absolute bg-gray-100 bottom-0 left-0 right-0 overflow-y-auto rounded-t-lg shadow-lg transition-all duration-300 ${
             isExpanded ? "h-[80vh]" : "h-400"
           }`}
         >
-          {selectedFeature.imageUrl && (
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: `url(${selectedFeature.imageUrl})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            />
-          )}
-          <div className="relative z-10 p-4 bg-black/50 backdrop-blur-sm">
-            <div className="flex justify-between items-start text-white">
+          <div className="relative z-10 p-4  backdrop-blur-sm">
+            <div className="flex justify-between items-start text-black">
               <button
                 onClick={() => {
                   const currentIndex = markersd.findIndex(
@@ -242,25 +233,19 @@ export function Map() {
                     prevFeature.longitude
                   );
                 }}
-                className="text-white hover:text-gray-200 px-2 py-1"
+                className="text-black hover:text-gray-200 px-2 py-1"
               >
                 ←
               </button>
 
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 {selectedFeature.name}
-                <a
-                  href={`/listed-building/${selectedFeature.listedEntry}`}
-                  className="text-white hover:text-gray-200 text-sm"
-                >
-                  ℹ️
-                </a>
               </h2>
 
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setIsExpanded(!isExpanded)}
-                  className="text-white hover:text-gray-200 px-2 py-1"
+                  className="text-black hover:text-gray-200 px-2 py-1"
                 >
                   {isExpanded ? "↓" : "↑"}
                 </button>
@@ -295,13 +280,13 @@ export function Map() {
                       nextFeature.longitude
                     );
                   }}
-                  className="text-white hover:text-gray-200 px-2 py-1"
+                  className="text-black hover:text-gray-200 px-2 py-1"
                 >
                   →
                 </button>
                 <button
                   onClick={() => setSelectedFeature(null)}
-                  className="text-white hover:text-gray-200 ml-2"
+                  className="text-black hover:text-gray-200 ml-2"
                 >
                   ✕
                 </button>
@@ -337,6 +322,14 @@ export function Map() {
                 </div>
               )}
             </div>
+            {isExpanded && (
+              <ListedBuildingInfo
+                imageUrl={selectedFeature.imageUrl ?? null}
+                wikipediaText={""}
+                historicalEnglandText={""}
+                listedBuildingNumber={selectedFeature.listedEntry}
+              />
+            )}
           </div>
         </div>
       )}
