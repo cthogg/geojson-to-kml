@@ -24,7 +24,7 @@ export const ListedBuildingInfo = ({
   const aiSummary = getAiSummary(listedBuildingNumber);
   return (
     <>
-      ;{/* Main Content - add padding-top to account for fixed header */}
+      {/* Main Content - add padding-top to account for fixed header */}
       <div className="min-h-screen bg-gray-100 py-8 px-4 pt-16">
         <div className="max-w-2xl mx-auto space-y-8">
           {/* Image */}
