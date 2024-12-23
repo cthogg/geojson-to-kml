@@ -12,6 +12,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.1",
     "@types/leaflet": "^1.9.15",
+    "ag-grid-react": "^33.0.3",
     "cheerio": "^1.0.0",
     "leaflet": "^1.9.4",
     "maplibre-gl": "^4.7.1",

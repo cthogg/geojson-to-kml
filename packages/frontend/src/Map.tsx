@@ -148,6 +148,17 @@ export function Map() {
         >
           <span className="text-gray-700 font-medium">All</span>
         </button>
+        <button
+          onClick={() => {
+            setSelectedRoute("All");
+            map?.setView([51.5225, -0.129256], 12);
+          }}
+          className={`bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
+            selectedRoute === "All" ? "bg-gray-200" : ""
+          }`}
+        >
+          <span className="text-gray-700 font-medium">Table 🧮</span>
+        </button>
       </div>
 
       <MapContainer

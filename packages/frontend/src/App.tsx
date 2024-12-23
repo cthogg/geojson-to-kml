@@ -1,8 +1,8 @@
 import "./App.css";
-import { Map } from "./Map";
+import { TableWrapper } from "./Table";
 
 function App() {
-  return <Map />;
+  return <TableWrapper />;
 }
 
 export default App;
