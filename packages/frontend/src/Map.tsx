@@ -315,7 +315,7 @@ export function Map() {
                         setIsSpeaking(true);
                       }
                     }}
-                    className="flex-1 py-2 px-4 bg-white/90 hover:bg-white rounded text-gray-700"
+                    className="flex-1 py-2 px-4 bg-gray-200 hover:bg-white rounded text-gray-700"
                   >
                     {isSpeaking ? "Stop" : "Play Text-to-Speech Message"}
                   </button>
