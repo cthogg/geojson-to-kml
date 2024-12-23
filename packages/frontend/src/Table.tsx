@@ -10,6 +10,18 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
 export const Table = ({ data }: { data: ListedBuilding[] }) => {
   const columnDefs: ColDef<ListedBuilding>[] = [
     { field: "title", headerName: "Title", sortable: true, filter: true },
+    {
+      field: "imageUrl",
+      headerName: "Image",
+      cellRenderer: (params: any) =>
+        params.value ? (
+          <img
+            src={params.value}
+            alt="Building"
+            style={{ width: "100px", height: "100px" }}
+          />
+        ) : null,
+    },
     { field: "type", headerName: "Type", sortable: true, filter: true },
     { field: "grade", headerName: "Grade", sortable: true, filter: true },
     { field: "listEntry", headerName: "List Entry", sortable: true },
@@ -19,18 +31,6 @@ export const Table = ({ data }: { data: ListedBuilding[] }) => {
       headerName: "Coordinates",
       valueFormatter: (params) =>
         params.value ? `${params.value[0]}, ${params.value[1]}` : "-",
-    },
-    {
-      field: "imageUrl",
-      headerName: "Image",
-      cellRenderer: (params: any) =>
-        params.value ? (
-          <img
-            src={params.value}
-            alt="Building"
-            style={{ width: "50px", height: "50px" }}
-          />
-        ) : null,
     },
     {
       field: "historicalEnglandText",
@@ -47,6 +47,7 @@ export const Table = ({ data }: { data: ListedBuilding[] }) => {
         rowData={data}
         pagination={true}
         paginationPageSize={20}
+        rowHeight={120}
       />
     </div>
   );
