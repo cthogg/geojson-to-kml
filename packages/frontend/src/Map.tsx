@@ -160,7 +160,6 @@ export function Map() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-
         <MarkerClusterGroup>
           {markersd.map((feature, index) => {
             const listedBuilding = getListedBuildingFileFE().find(
