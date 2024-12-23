@@ -18,6 +18,7 @@ export const Table = ({ data }: { data: ListedBuilding[] }) => {
     {
       field: "imageUrl",
       headerName: "Image",
+      /*eslint-disable-next-line*/
       cellRenderer: (params: any) =>
         params.value ? (
           <img
