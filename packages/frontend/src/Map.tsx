@@ -100,6 +100,7 @@ export function Map() {
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isTableModalOpen, setIsTableModalOpen] = useState(false);
 
   return (
     <div className="h-[100dvh] w-[100dvw] flex flex-col relative">
@@ -150,12 +151,9 @@ export function Map() {
         </button>
         <button
           onClick={() => {
-            setSelectedRoute("All");
-            map?.setView([51.5225, -0.129256], 12);
+            setIsTableModalOpen(true);
           }}
-          className={`bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
-            selectedRoute === "All" ? "bg-gray-200" : ""
-          }`}
+          className={`bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap`}
         >
           <span className="text-gray-700 font-medium">Table 🧮</span>
         </button>
@@ -341,6 +339,64 @@ export function Map() {
                 listedBuildingNumber={selectedFeature.listedEntry}
               />
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Add Modal */}
+      {isTableModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[2000] flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">Listed Buildings Table</h2>
+              <button
+                onClick={() => setIsTableModalOpen(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Name
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Location
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Route
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {markersd.map((marker) => (
+                    <tr
+                      key={marker.reference}
+                      className="hover:bg-gray-50 cursor-pointer"
+                      onClick={() => {
+                        centerMapOnFeature(marker.latitude, marker.longitude);
+                        setIsTableModalOpen(false);
+                      }}
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {marker.name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">{`${marker.latitude.toFixed(
+                        4
+                      )}, ${marker.longitude.toFixed(4)}`}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {routes.find((route) =>
+                          route.listedBuildings.includes(marker.reference)
+                        )?.name || "None"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
