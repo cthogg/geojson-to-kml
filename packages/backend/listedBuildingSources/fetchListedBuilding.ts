@@ -11,8 +11,6 @@ const getGradeOfListedBuilding = (
   heritageDesignation: WikidataResponse["results"]["bindings"][0]["heritageDesignation"]
 ) => {
   const url = heritageDesignation?.value;
-  console.log("heritageDesignation", heritageDesignation);
-  console.log("url", url);
   //TODO: make this more robust by checking the url or getting a hashmap of the grades.
   if (url?.includes("Q15700834")) {
     return "II*";
