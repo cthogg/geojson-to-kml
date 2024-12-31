@@ -17,7 +17,7 @@ export const getAiTextFromListedBuildings = async () => {
       !promptDb.some(
         (prompt) =>
           prompt.listEntry === building.listEntry &&
-          prompt.prompt === systemPrompt &&
+          prompt.prompt === `${systemPrompt} ${endPrompt}` &&
           prompt.model === model
       )
   );
@@ -26,6 +26,7 @@ export const getAiTextFromListedBuildings = async () => {
   const results = await Promise.allSettled(
     filteredPromptDb.map(async (building) => {
       try {
+        console.log(`Processing building: ${building.listEntry}`);
         const message = await generateMessageOllama({
           systemPrompt,
           endPrompt,
