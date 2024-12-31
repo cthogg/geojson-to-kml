@@ -8,6 +8,7 @@ function extractOfficialListEntryText(html: string): string {
   // Then parse that content and find the overview
   const $inner = cheerio.load(sectionContent || "");
   const overview = $inner("#official-list-entry").text().trim();
+  console.log("overview", overview);
   return overview;
 }
 
