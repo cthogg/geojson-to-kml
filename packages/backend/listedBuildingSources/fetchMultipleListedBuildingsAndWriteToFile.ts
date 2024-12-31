@@ -51,6 +51,6 @@ const gradeIListedBuildingNumbers = [
   "1066371",
 ];
 const listedBuildings = await fetchMultipleListedBuildings(
-  gradeIListedBuildingNumbers
+  listedBuildingNumbers
 );
 writeToFile(listedBuildings);

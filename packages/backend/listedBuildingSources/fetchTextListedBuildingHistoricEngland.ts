@@ -8,7 +8,6 @@ function extractOfficialListEntryText(html: string): string {
   // Then parse that content and find the overview
   const $inner = cheerio.load(sectionContent || "");
   const overview = $inner("#official-list-entry").text().trim();
-  console.log("overview", overview);
   return overview;
 }
 
@@ -22,5 +21,3 @@ export const getTextOfListedBuilding = async ({
   const responseText = await response.text();
   return extractOfficialListEntryText(responseText);
 };
-
-console.log(await getTextOfListedBuilding({ listedBuildingNumber: "1055809" }));
