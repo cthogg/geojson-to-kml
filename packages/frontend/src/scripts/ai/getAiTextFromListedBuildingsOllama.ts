@@ -10,7 +10,7 @@ const endPrompt =
 const model = "llama3.2";
 
 export const getAiTextFromListedBuildings = async () => {
-  const buildings = getListedBuildingFileFE().slice(0, 10);
+  const buildings = getListedBuildingFileFE();
   const promptDb = getPromptData();
   const filteredPromptDb = buildings.filter(
     (building) =>
