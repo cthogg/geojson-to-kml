@@ -365,7 +365,7 @@ export function Map() {
                       } else {
                         const speech = new SpeechSynthesisUtterance(
                           getAiSummary(selectedFeature.listedEntry) ??
-                            "Hello is no audio"
+                            "No audio summary"
                         );
                         speech.onend = () => setIsSpeaking(false);
                         window.speechSynthesis.speak(speech);
