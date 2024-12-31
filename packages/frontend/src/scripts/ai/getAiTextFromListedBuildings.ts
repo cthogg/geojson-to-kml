@@ -7,9 +7,10 @@ const systemPrompt =
   "You are an architectural tour guide, giving a tour to a person with a lay interest in historical architecture. Describe the listed building in this text and images, pointing out specific features on the building to look out for. Please describe the as if you are standing in front of it from the perspective of the image. Do not use phrases like 'Points to decorative details' => but instead phrases like 'look at the decorative details'. Can you start with Welcome to. Please keep the answer to under 200 words.";
 
 const model: Anthropic.Messages.Model = "claude-3-5-haiku-20241022";
+const BATCH_SIZE = 4;
 
 export const getAiTextFromListedBuildings = async () => {
-  const buildings = getListedBuildingFileFE().slice(0, 100);
+  const buildings = getListedBuildingFileFE().slice(0, 116);
   const promptDb = getPromptData();
   const filteredPromptDb = buildings.filter(
     (building) =>
@@ -22,12 +23,12 @@ export const getAiTextFromListedBuildings = async () => {
   );
   console.log(`Processing ${filteredPromptDb.length} buildings`);
 
-  // Process in batches of 2
-  for (let i = 0; i < filteredPromptDb.length; i += 2) {
-    const batch = filteredPromptDb.slice(i, i + 2);
+  // Process in batches
+  for (let i = 0; i < filteredPromptDb.length; i += BATCH_SIZE) {
+    const batch = filteredPromptDb.slice(i, i + BATCH_SIZE);
     console.log(
-      `Processing batch ${i / 2 + 1} of ${Math.ceil(
-        filteredPromptDb.length / 2
+      `Processing batch ${i / BATCH_SIZE + 1} of ${Math.ceil(
+        filteredPromptDb.length / BATCH_SIZE
       )}`
     );
 
