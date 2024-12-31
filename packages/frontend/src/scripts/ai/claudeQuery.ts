@@ -50,6 +50,7 @@ export const generateMessage = async ({
                 type: "text",
                 text: details,
               },
+              //TODO: Add image but it is around 4x more expensive.
               // {
               //   type: "image",
               //   source: {
