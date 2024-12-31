@@ -3,9 +3,13 @@ import { AgGridReact } from "ag-grid-react";
 import { ListedBuilding } from "./backendSync/listedBuildingFileTypes";
 import { getListedBuildingFileFE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 
-import { ClientSideRowModelModule, ModuleRegistry } from "ag-grid-community";
+import {
+  ClientSideRowModelModule,
+  ModuleRegistry,
+  TextFilterModule,
+} from "ag-grid-community";
 
-ModuleRegistry.registerModules([ClientSideRowModelModule]);
+ModuleRegistry.registerModules([ClientSideRowModelModule, TextFilterModule]);
 
 interface TableProps {
   data: ListedBuilding[];
@@ -30,7 +34,6 @@ export const Table = ({ data, onRowClick }: TableProps) => {
       field: "title",
       headerName: "Title",
       filter: true,
-      filterParams: {},
     },
     {
       field: "imageUrl",
