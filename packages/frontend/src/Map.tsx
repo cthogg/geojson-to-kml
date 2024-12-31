@@ -50,6 +50,7 @@ export function Map() {
     coordinates: [number, number];
     listedEntry: string;
     wikipediaText?: string;
+    historicalEnglandText?: string;
   } | null>(null);
   console.log(selectedFeature);
   // Set up default icon for Leaflet
@@ -112,6 +113,7 @@ export function Map() {
     imageUrl,
     audioUrl,
     wikipediaText,
+    historicalEnglandText,
   }: {
     latitude: number;
     longitude: number;
@@ -120,6 +122,7 @@ export function Map() {
     imageUrl?: string;
     audioUrl?: string;
     wikipediaText?: string;
+    historicalEnglandText?: string;
   }) => {
     setSelectedFeature({
       name,
@@ -128,6 +131,7 @@ export function Map() {
       imageUrl: imageUrl,
       audioUrl: audioUrl,
       wikipediaText: wikipediaText,
+      historicalEnglandText: historicalEnglandText,
     });
     centerMapOnFeature(latitude, longitude);
     setIsTableModalOpen(false); // Optionally close the modal after selection
@@ -229,6 +233,8 @@ export function Map() {
                       listedEntry: feature.reference,
                       coordinates: [feature.latitude, feature.longitude],
                       wikipediaText: listedBuilding?.wikipediaText ?? undefined,
+                      historicalEnglandText:
+                        listedBuilding?.historicalEnglandText ?? undefined,
                     });
                     centerMapOnFeature(feature.latitude, feature.longitude);
                   },
@@ -272,6 +278,8 @@ export function Map() {
                     coordinates: [prevFeature.latitude, prevFeature.longitude],
                     wikipediaText:
                       prevListedBuilding?.wikipediaText ?? undefined,
+                    historicalEnglandText:
+                      prevListedBuilding?.historicalEnglandText ?? undefined,
                   });
                   centerMapOnFeature(
                     prevFeature.latitude,
@@ -321,6 +329,8 @@ export function Map() {
                       ],
                       wikipediaText:
                         nextListedBuilding?.wikipediaText ?? undefined,
+                      historicalEnglandText:
+                        nextListedBuilding?.historicalEnglandText ?? undefined,
                     });
                     centerMapOnFeature(
                       nextFeature.latitude,
@@ -373,7 +383,9 @@ export function Map() {
               <ListedBuildingInfo
                 imageUrl={selectedFeature.imageUrl ?? null}
                 wikipediaText={selectedFeature.wikipediaText ?? ""}
-                historicalEnglandText={""}
+                historicalEnglandText={
+                  selectedFeature.historicalEnglandText ?? ""
+                }
                 listedBuildingNumber={selectedFeature.listedEntry}
               />
             )}

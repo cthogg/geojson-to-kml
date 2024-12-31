@@ -20,6 +20,7 @@ interface TableProps {
     listedEntry,
     imageUrl,
     wikipediaText,
+    historicalEnglandText,
   }: {
     latitude: number;
     longitude: number;
@@ -27,6 +28,7 @@ interface TableProps {
     listedEntry: string;
     imageUrl?: string;
     wikipediaText?: string;
+    historicalEnglandText?: string;
   }) => void;
 }
 
@@ -85,6 +87,7 @@ export const Table = ({ data, onRowClick }: TableProps) => {
             listedEntry: row.listEntry,
             imageUrl: row.imageUrl ?? undefined,
             wikipediaText: row.wikipediaText ?? undefined,
+            historicalEnglandText: row.historicalEnglandText ?? undefined,
           });
         }}
       />
