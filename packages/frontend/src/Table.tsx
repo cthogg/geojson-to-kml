@@ -52,10 +52,10 @@ export const Table = ({ data, onRowClick }: TableProps) => {
           />
         ) : null,
     },
-    { field: "type", headerName: "Type", sortable: true, filter: true },
-    { field: "grade", headerName: "Grade", sortable: true, filter: true },
-    { field: "listEntry", headerName: "List Entry", sortable: true },
-    { field: "wikidataEntry", headerName: "Wikidata Entry", sortable: true },
+    { field: "type", headerName: "Type" },
+    { field: "grade", headerName: "Grade" },
+    { field: "listEntry", headerName: "List Entry", filter: true },
+    { field: "wikidataEntry", headerName: "Wikidata Entry" },
     {
       field: "coordinates",
       headerName: "Coordinates",
@@ -65,9 +65,8 @@ export const Table = ({ data, onRowClick }: TableProps) => {
     {
       field: "historicalEnglandText",
       headerName: "Historical England Text",
-      sortable: true,
     },
-    { field: "wikipediaText", headerName: "Wikipedia Text", sortable: true },
+    { field: "wikipediaText", headerName: "Wikipedia Text" },
   ];
 
   return (
