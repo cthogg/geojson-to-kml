@@ -1,3 +1,4 @@
+import * as changeCase from "change-case";
 import L from "leaflet";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
@@ -11,7 +12,6 @@ import { getPromptData } from "./scripts/ai/getPromptData";
 import { listedBuildingAudio } from "./scripts/ai/listedBuildingAudio";
 import { getListedBuildingFileFE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 import { Table } from "./Table";
-
 function getAiSummary(listedBuildingNumber: string): string | undefined {
   const promptData = getPromptData();
   const prompt = promptData.find(
@@ -292,7 +292,7 @@ export function Map() {
               </button>
 
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                {selectedFeature.name}
+                {changeCase.capitalCase(selectedFeature.name)}
               </h2>
 
               <div className="flex items-center gap-2">
