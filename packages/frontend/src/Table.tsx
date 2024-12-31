@@ -19,12 +19,14 @@ interface TableProps {
     name,
     listedEntry,
     imageUrl,
+    wikipediaText,
   }: {
     latitude: number;
     longitude: number;
     name: string;
     listedEntry: string;
     imageUrl?: string;
+    wikipediaText?: string;
   }) => void;
 }
 
@@ -82,6 +84,7 @@ export const Table = ({ data, onRowClick }: TableProps) => {
             name: row.title,
             listedEntry: row.listEntry,
             imageUrl: row.imageUrl ?? undefined,
+            wikipediaText: row.wikipediaText ?? undefined,
           });
         }}
       />
