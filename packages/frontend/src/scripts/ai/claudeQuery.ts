@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
-// import { CLAUDE_API_KEY } from "../../secrets/claudeApiKey";
+import { CLAUDE_API_KEY } from "../../secrets/claudeApiKey";
 
-const CLAUDE_API_KEY = "BLABLABLA_DO_NOT_USE";
+// const CLAUDE_API_KEY = "BLABLABLA_DO_NOT_USE";
 
 const anthropic = new Anthropic({
   apiKey: CLAUDE_API_KEY,
@@ -50,14 +50,14 @@ export const generateMessage = async ({
                 type: "text",
                 text: details,
               },
-              {
-                type: "image",
-                source: {
-                  media_type: "image/jpeg",
-                  type: "base64",
-                  data: imageData,
-                },
-              },
+              // {
+              //   type: "image",
+              //   source: {
+              //     media_type: "image/jpeg",
+              //     type: "base64",
+              //     data: imageData,
+              //   },
+              // },
             ],
           },
         ],
