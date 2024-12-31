@@ -9,7 +9,7 @@ const systemPrompt =
 const model: Anthropic.Messages.Model = "claude-3-5-haiku-20241022";
 
 export const getAiTextFromListedBuildings = async () => {
-  const buildings = getListedBuildingFileFE().slice(10, 20);
+  const buildings = getListedBuildingFileFE().slice(0, 100);
   const promptDb = getPromptData();
   const filteredPromptDb = buildings.filter(
     (building) =>
