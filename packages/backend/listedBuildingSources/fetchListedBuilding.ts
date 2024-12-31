@@ -15,6 +15,9 @@ const getGradeOfListedBuilding = (
   if (url?.includes("www.wikidata.org/wiki/Q15700834")) {
     return "II*";
   }
+  if (url?.includes("www.wikidata.org/wiki/Q15700818")) {
+    return "I";
+  }
   return "Grade Unknown";
 };
 
