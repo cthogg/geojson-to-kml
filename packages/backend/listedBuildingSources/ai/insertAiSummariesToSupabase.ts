@@ -34,20 +34,6 @@ async function insertAiSummaries(summaries: AiSummary[]) {
   return data;
 }
 
-async function insertSingleAiSummary(summary: AiSummary) {
-  const { data, error } = await supabase
-    .from("ai_summaries")
-    .insert(summary)
-    .select();
-
-  if (error) {
-    console.error("Error inserting AI summary:", error);
-    throw error;
-  }
-
-  return data;
-}
-
 async function insertAllAiSummaries() {
   const summaries = await getAiSummariesFile();
   await insertAiSummaries(summaries);
