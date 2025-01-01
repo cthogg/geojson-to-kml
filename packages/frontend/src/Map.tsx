@@ -47,7 +47,8 @@ export function Map() {
     name: string;
     imageUrl?: string;
     audioUrl?: string;
-    coordinates: [number, number];
+    latitude: number;
+    longitude: number;
     listedEntry: string;
     wikipediaText?: string;
     historicalEnglandText?: string;
@@ -131,7 +132,8 @@ export function Map() {
   }) => {
     setSelectedFeature({
       name,
-      coordinates: [latitude, longitude],
+      latitude,
+      longitude,
       listedEntry: listedEntry,
       imageUrl: imageUrl,
       audioUrl: audioUrl,
@@ -155,10 +157,7 @@ export function Map() {
                   .find((route) => route.name === "Walthamstow")
                   ?.listedBuildings.includes(marker.listEntry)
               );
-              centerMapOnFeature(
-                marker[0].coordinates[0],
-                marker[0].coordinates[1]
-              );
+              centerMapOnFeature(marker[0].latitude, marker[0].longitude);
             }}
             className={`flex-shrink-0 bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
               selectedRoute === "Walthamstow" ? "bg-gray-200" : ""
@@ -174,10 +173,7 @@ export function Map() {
                   .find((route) => route.name === "Bloomsbury")
                   ?.listedBuildings.includes(marker.listEntry)
               );
-              centerMapOnFeature(
-                marker[0].coordinates[0],
-                marker[0].coordinates[1]
-              );
+              centerMapOnFeature(marker[0].latitude, marker[0].longitude);
             }}
             className={`flex-shrink-0 bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
               selectedRoute === "Bloomsbury" ? "bg-gray-200" : ""
@@ -227,13 +223,13 @@ export function Map() {
               (lb) => lb.listEntry === feature.listEntry
             );
             const isSelected =
-              selectedFeature?.coordinates[0] === feature.coordinates[0] &&
-              selectedFeature?.coordinates[1] === feature.coordinates[1];
+              selectedFeature?.latitude === feature.latitude &&
+              selectedFeature?.longitude === feature.longitude;
 
             return (
               <Marker
                 key={`marker-${feature.listEntry || index}`}
-                position={[feature.coordinates[0], feature.coordinates[1]]}
+                position={[feature.latitude, feature.longitude]}
                 icon={isSelected ? selectedIcon : unselectedIcon}
                 eventHandlers={{
                   click: () => {
@@ -242,18 +238,13 @@ export function Map() {
                       imageUrl: listedBuilding?.imageUrl ?? undefined,
                       audioUrl: audio?.audioUrl ?? undefined,
                       listedEntry: feature.listEntry,
-                      coordinates: [
-                        feature.coordinates[0],
-                        feature.coordinates[1],
-                      ],
+                      latitude: feature.latitude,
+                      longitude: feature.longitude,
                       wikipediaText: listedBuilding?.wikipediaText ?? undefined,
                       historicalEnglandText:
                         listedBuilding?.historicalEnglandText ?? undefined,
                     });
-                    centerMapOnFeature(
-                      feature.coordinates[0],
-                      feature.coordinates[1]
-                    );
+                    centerMapOnFeature(feature.latitude, feature.longitude);
                   },
                 }}
               />
@@ -274,9 +265,8 @@ export function Map() {
                 onClick={() => {
                   const currentIndex = markersd.findIndex(
                     (feature) =>
-                      feature.coordinates[0] ===
-                        selectedFeature.coordinates[0] &&
-                      feature.coordinates[1] === selectedFeature.coordinates[1]
+                      feature.latitude === selectedFeature.latitude &&
+                      feature.longitude === selectedFeature.longitude
                   );
                   const prevIndex =
                     (currentIndex - 1 + markersd.length) % markersd.length;
@@ -293,18 +283,16 @@ export function Map() {
                     imageUrl: prevListedBuilding?.imageUrl ?? undefined,
                     audioUrl: prevAudio?.audioUrl ?? undefined,
                     listedEntry: prevFeature.listEntry,
-                    coordinates: [
-                      prevFeature.coordinates[0],
-                      prevFeature.coordinates[1],
-                    ],
+                    latitude: prevFeature.latitude,
+                    longitude: prevFeature.longitude,
                     wikipediaText:
                       prevListedBuilding?.wikipediaText ?? undefined,
                     historicalEnglandText:
                       prevListedBuilding?.historicalEnglandText ?? undefined,
                   });
                   centerMapOnFeature(
-                    prevFeature.coordinates[0],
-                    prevFeature.coordinates[1]
+                    prevFeature.latitude,
+                    prevFeature.longitude
                   );
                 }}
                 className="text-black  px-2 py-1"
@@ -327,10 +315,8 @@ export function Map() {
                   onClick={() => {
                     const currentIndex = markersd.findIndex(
                       (feature) =>
-                        feature.coordinates[0] ===
-                          selectedFeature.coordinates[0] &&
-                        feature.coordinates[1] ===
-                          selectedFeature.coordinates[1]
+                        feature.latitude === selectedFeature.latitude &&
+                        feature.longitude === selectedFeature.longitude
                     );
                     const nextIndex = (currentIndex + 1) % markersd.length;
                     const nextFeature = markersd[nextIndex];
@@ -346,18 +332,16 @@ export function Map() {
                       imageUrl: nextListedBuilding?.imageUrl ?? undefined,
                       audioUrl: nextAudio?.audioUrl ?? undefined,
                       listedEntry: nextFeature.listEntry,
-                      coordinates: [
-                        nextFeature.coordinates[0],
-                        nextFeature.coordinates[1],
-                      ],
+                      latitude: nextFeature.latitude,
+                      longitude: nextFeature.longitude,
                       wikipediaText:
                         nextListedBuilding?.wikipediaText ?? undefined,
                       historicalEnglandText:
                         nextListedBuilding?.historicalEnglandText ?? undefined,
                     });
                     centerMapOnFeature(
-                      nextFeature.coordinates[0],
-                      nextFeature.coordinates[1]
+                      nextFeature.latitude,
+                      nextFeature.longitude
                     );
                   }}
                   className="text-black  px-2 py-1"

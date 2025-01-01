@@ -58,10 +58,12 @@ export const Table = ({ data, onRowClick }: TableProps) => {
     { field: "listEntry", headerName: "List Entry", filter: true },
     { field: "wikidataEntry", headerName: "Wikidata Entry" },
     {
-      field: "coordinates",
-      headerName: "Coordinates",
-      valueFormatter: (params) =>
-        params.value ? `${params.value[0]}, ${params.value[1]}` : "-",
+      field: "latitude",
+      headerName: "Latitude",
+    },
+    {
+      field: "longitude",
+      headerName: "Longitude",
     },
     {
       field: "historicalEnglandText",
@@ -81,8 +83,8 @@ export const Table = ({ data, onRowClick }: TableProps) => {
         onRowClicked={(event) => {
           const row = event.data as ListedBuilding;
           onRowClick({
-            latitude: row.coordinates?.[0] ?? 0,
-            longitude: row.coordinates?.[1] ?? 0,
+            latitude: row.latitude ?? 0,
+            longitude: row.longitude ?? 0,
             name: row.title,
             listedEntry: row.listEntry,
             imageUrl: row.imageUrl ?? undefined,
