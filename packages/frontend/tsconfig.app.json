@@ -22,9 +22,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": [
-    "src",
-    "../backend/listedBuildingSources/ai",
-    "../backend/secrets"
-  ]
+  "include": ["src"]
 }
