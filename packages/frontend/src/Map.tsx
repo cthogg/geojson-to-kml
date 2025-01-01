@@ -151,6 +151,18 @@ export function Map() {
     setIsTableModalOpen(false); // Optionally close the modal after selection
   };
 
+  if (query.isLoading || promptDataQuery.isLoading) {
+    return (
+      <div className="h-[100dvh] w-[100dvw] flex flex-col relative">
+        <div className="flex justify-center items-center h-full">
+          <div className="text-2xl font-bold animate-pulse">
+            Loading your next tour...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="h-[100dvh] w-[100dvw] flex flex-col relative">
       {/* Add buttons container */}
