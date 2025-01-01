@@ -1,7 +1,6 @@
 import {
   ListedBuilding,
   ListedBuildingArraySchema,
-  ListedBuildingSchema,
 } from "./listedBuildingFileTypes";
 import { SUPABASE_API_KEY, SUPABASE_URL } from "./supabaseApiKey";
 
@@ -41,6 +40,6 @@ export async function fetchSingleListedBuilding(id: string) {
 export const getSingleListedBuilding = async (id: string) => {
   const data = await fetchSingleListedBuilding(id);
   const listedBuilding = data;
-  const parseListedBuilding = ListedBuildingSchema.parse(listedBuilding);
+  const parseListedBuilding = ListedBuildingArraySchema.parse(listedBuilding);
   return parseListedBuilding;
 };

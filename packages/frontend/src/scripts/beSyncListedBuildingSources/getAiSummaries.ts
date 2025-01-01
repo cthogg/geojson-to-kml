@@ -1,6 +1,5 @@
 import {
   PromptInfoBE,
-  PromptInfoSchemaBE,
   PromptInfoSchemaBEArray,
 } from "./listedBuildingAiInformation";
 import { SUPABASE_API_KEY, SUPABASE_URL } from "./supabaseApiKey";
@@ -40,6 +39,6 @@ const fetchSingleAiSummary = async (listEntry: string) => {
 export const getSingleAiSummary = async (listEntry: string) => {
   const data = await fetchSingleAiSummary(listEntry);
   const promptData = data;
-  const parsePromptData = PromptInfoSchemaBE.parse(promptData);
+  const parsePromptData = PromptInfoSchemaBEArray.parse(promptData);
   return parsePromptData;
 };

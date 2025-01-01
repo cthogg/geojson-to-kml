@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import * as changeCase from "change-case";
 import { ListedBuildingInfo } from "./ListedBuildingInfo";
 import { getSingleAiSummary } from "./scripts/beSyncListedBuildingSources/getAiSummaries";
@@ -27,21 +27,18 @@ export function BuildingDetailsPanel({
   setIsSpeaking,
   centerMapOnFeature,
 }: BuildingDetailsPanelProps) {
-  const query = useQuery({
+  const query = useSuspenseQuery({
     queryKey: ["getSingleListedBuilding", selectedFeature.list_entry],
     queryFn: () => getSingleListedBuilding(selectedFeature.id),
   });
 
-  const queryA = useQuery({
+  const queryA = useSuspenseQuery({
     queryKey: ["getSingleAiSummary", selectedFeature.list_entry],
     queryFn: () => getSingleAiSummary(selectedFeature.list_entry),
   });
-  if (query.isLoading || queryA.isLoading || !query.data || !queryA.data) {
-    return <div>Loading...</div>;
-  }
 
-  const selectedFeature2: ListedBuilding = query.data;
-  const promptData: PromptInfo = queryA.data;
+  const selectedFeature2: ListedBuilding = query.data[0];
+  const promptData: PromptInfo = queryA.data[0];
   return (
     <div className="relative z-10 p-4 backdrop-blur-sm">
       <div className="flex justify-between items-start text-black">

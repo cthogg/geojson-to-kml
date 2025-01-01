@@ -3,7 +3,7 @@ import L from "leaflet";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/leaflet.css";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { BuildingDetailsPanel } from "./BuildingDetailsPanel";
@@ -148,16 +148,22 @@ export function Map() {
             isExpanded ? "h-[80vh]" : "h-400"
           }`}
         >
-          <BuildingDetailsPanel
-            selectedFeature={selectedFeature}
-            isExpanded={isExpanded}
-            isSpeaking={isSpeaking}
-            markersd={markersd}
-            setSelectedFeature={setSelectedFeature}
-            setIsExpanded={setIsExpanded}
-            setIsSpeaking={setIsSpeaking}
-            centerMapOnFeature={centerMapOnFeature}
-          />
+          <React.Suspense
+            fallback={
+              <div className="text-2xl font-bold animate-pulse">Loading...</div>
+            }
+          >
+            <BuildingDetailsPanel
+              selectedFeature={selectedFeature}
+              isExpanded={isExpanded}
+              isSpeaking={isSpeaking}
+              markersd={markersd}
+              setSelectedFeature={setSelectedFeature}
+              setIsExpanded={setIsExpanded}
+              setIsSpeaking={setIsSpeaking}
+              centerMapOnFeature={centerMapOnFeature}
+            />
+          </React.Suspense>
         </div>
       )}
 
