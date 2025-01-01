@@ -7,7 +7,11 @@
     "generate-listed-buildings": "bun kmlGeneration/listedBuildings/index.ts",
     "generate-blue-plaque-wiki-links": "bun kmlGeneration/bluePlaques/bluePlaqueWikiLinks.ts",
     "fetch-listed-buildings": "bun listedBuildingSources/fetchMultipleListedBuildingsAndWriteToFile.ts",
-    "insert-listed-buildings": "bun listedBuildingSources/insertListedBuildingsJsonToSupabase.ts"
+    "insert-listed-buildings": "bun listedBuildingSources/insertListedBuildingsJsonToSupabase.ts",
+    "get-ai-text": "bun listedBuildingSources/ai/getAiTextFromListedBuildings.ts",
+    "parse-prompts": "bun listedBuildingSources/ai/parsePromptsToUpload.ts",
+    "insert-ai-summaries": "bun listedBuildingSources/ai/insertAiSummariesToSupabase.ts",
+    "generate-and-insert-summaries": "bun get-ai-text && bun parse-prompts && bun insert-ai-summaries"
   },
   "devDependencies": {
     "bun-types": "latest"

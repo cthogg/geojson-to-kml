@@ -39,7 +39,6 @@ export function Map() {
   const [selectedFeature, setSelectedFeature] = useState<{
     name: string;
     imageUrl?: string;
-    audioUrl?: string;
     latitude: number;
     longitude: number;
     listedEntry: string;
@@ -124,7 +123,6 @@ export function Map() {
     name,
     listedEntry,
     imageUrl,
-    audioUrl,
     wikipediaText,
     historicalEnglandText,
   }: {
@@ -133,7 +131,6 @@ export function Map() {
     name: string;
     listedEntry: string;
     imageUrl?: string;
-    audioUrl?: string;
     wikipediaText?: string;
     historicalEnglandText?: string;
   }) => {
@@ -143,7 +140,6 @@ export function Map() {
       longitude,
       listedEntry: listedEntry,
       imageUrl: imageUrl,
-      audioUrl: audioUrl,
       wikipediaText: wikipediaText,
       historicalEnglandText: historicalEnglandText,
     });
@@ -366,34 +362,27 @@ export function Map() {
               </div>
             </div>
             <div className="flex flex-col gap-4">
-              {selectedFeature.audioUrl ? (
-                <audio controls className="w-full">
-                  <source src={selectedFeature.audioUrl} type="video/mp4" />
-                  Your browser does not support the audio element.
-                </audio>
-              ) : (
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => {
-                      if (isSpeaking) {
-                        window.speechSynthesis.cancel();
-                        setIsSpeaking(false);
-                      } else {
-                        const speech = new SpeechSynthesisUtterance(
-                          getAiSummary(selectedFeature.listedEntry) ??
-                            "No audio summary"
-                        );
-                        speech.onend = () => setIsSpeaking(false);
-                        window.speechSynthesis.speak(speech);
-                        setIsSpeaking(true);
-                      }
-                    }}
-                    className="flex-1 py-2 px-4 bg-gray-200 hover:bg-white rounded text-gray-700"
-                  >
-                    {isSpeaking ? "Stop" : "Play Text-to-Speech Message"}
-                  </button>
-                </div>
-              )}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    if (isSpeaking) {
+                      window.speechSynthesis.cancel();
+                      setIsSpeaking(false);
+                    } else {
+                      const speech = new SpeechSynthesisUtterance(
+                        getAiSummary(selectedFeature.listedEntry) ??
+                          "No audio summary"
+                      );
+                      speech.onend = () => setIsSpeaking(false);
+                      window.speechSynthesis.speak(speech);
+                      setIsSpeaking(true);
+                    }
+                  }}
+                  className="flex-1 py-2 px-4 bg-gray-200 hover:bg-white rounded text-gray-700"
+                >
+                  {isSpeaking ? "Stop" : "Play Text-to-Speech Message"}
+                </button>
+              </div>
             </div>
             {isExpanded && (
               <ListedBuildingInfo

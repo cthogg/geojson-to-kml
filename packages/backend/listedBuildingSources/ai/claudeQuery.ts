@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { CLAUDE_API_KEY } from "../../../frontend/src/secrets/claudeApiKey";
+import { CLAUDE_API_KEY } from "../../secrets/claudeApiKey";
 
 // const CLAUDE_API_KEY = "BLABLABLA_DO_NOT_USE";
 

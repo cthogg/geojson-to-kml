@@ -25,7 +25,7 @@ export const getAiTextFromListedBuildings = async () => {
             prompt.model === model
         )
     )
-    .slice(0, 1);
+    .slice(0, 5);
   console.log(
     `Filterting out ${buildings.length - filteredPromptDb.length} buildings`
   );
@@ -62,7 +62,6 @@ export const getAiTextFromListedBuildings = async () => {
               prompt: systemPrompt,
               model: model,
               list_entry: building.list_entry,
-              audioUrl: null,
               ai_summary: message,
             } as PromptInfo,
           };
@@ -107,7 +106,10 @@ export const getAiTextFromListedBuildings = async () => {
 
     // Write to file after each batch
     const newPromptDb: PromptInfo[] = [...successfulResults];
-    await Bun.write("promptData.json", JSON.stringify(newPromptDb));
+    await Bun.write(
+      "./listedBuildingSources/ai/promptData.json",
+      JSON.stringify(newPromptDb)
+    );
 
     // Update promptDb for next batch
     promptDb.push(...successfulResults);
