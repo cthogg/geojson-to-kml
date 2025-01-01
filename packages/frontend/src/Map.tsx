@@ -4,7 +4,7 @@ import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/leaflet.css";
 import React, { useEffect, useState } from "react";
-import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { BuildingDetailsPanel } from "./BuildingDetailsPanel";
 import { getAiSummaries } from "./scripts/beSyncListedBuildingSources/getAiSummaries";
@@ -75,12 +75,35 @@ export function Map() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isTableModalOpen, setIsTableModalOpen] = useState(false);
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(
+    null
+  );
 
   const handleTableRowClick = (feature: ListedBuilding) => {
     setSelectedFeature(feature);
     centerMapOnFeature(feature.latitude, feature.longitude);
     setIsTableModalOpen(false); // Optionally close the modal after selection
   };
+
+  function LocationMarker() {
+    useMapEvents({
+      locationfound(e) {
+        setUserLocation([e.latlng.lat, e.latlng.lng]);
+        map?.flyTo(e.latlng, map.getZoom());
+      },
+    });
+
+    return userLocation ? (
+      <Marker
+        position={userLocation}
+        icon={L.divIcon({
+          className: "user-location-marker",
+          html: '<div class="ping"></div>',
+          iconSize: [20, 20],
+        })}
+      />
+    ) : null;
+  }
 
   if (query.isLoading || promptDataQuery.isLoading) {
     return (
@@ -99,6 +122,12 @@ export function Map() {
       {/* Add buttons container */}
       <div className="absolute top-4 right-4 z-[1000] flex overflow-x-auto max-w-[calc(100%-2rem)] hide-scrollbar">
         <div className="flex gap-2 px-1">
+          <button
+            onClick={() => map?.locate()}
+            className="flex-shrink-0 bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap"
+          >
+            <span className="text-gray-700 font-medium">📍 My Location</span>
+          </button>
           <button
             onClick={() => {
               setIsTableModalOpen(true);
@@ -121,6 +150,7 @@ export function Map() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
+        <LocationMarker />
         <MarkerClusterGroup>
           {markersd.map((feature, index) => {
             const isSelected =
