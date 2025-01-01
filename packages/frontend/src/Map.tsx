@@ -8,8 +8,11 @@ import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { BuildingDetailsPanel } from "./BuildingDetailsPanel";
 import { getAiSummaries } from "./scripts/beSyncListedBuildingSources/getAiSummaries";
-import { getListedBuildingFileBE } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
-import { ListedBuilding } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
+import { getListedBuildingsMinimal } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
+import {
+  ListedBuilding,
+  ListedBuildingMinimal,
+} from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
 import { TableWrapper } from "./Table";
 
 export function Map() {
@@ -17,9 +20,8 @@ export function Map() {
   const [map, setMap] = useState<L.Map | null>(null);
 
   // Modify selected feature state to include coordinates
-  const [selectedFeature, setSelectedFeature] = useState<ListedBuilding | null>(
-    null
-  );
+  const [selectedFeature, setSelectedFeature] =
+    useState<ListedBuildingMinimal | null>(null);
   // Set up default icon for Leaflet
   useEffect(() => {
     const DefaultIcon = L.icon({
@@ -33,8 +35,8 @@ export function Map() {
 
   //FIXME: put query into own file
   const query = useQuery({
-    queryKey: ["getListedBuildingFileBE"],
-    queryFn: getListedBuildingFileBE,
+    queryKey: ["getListedBuildingsMinimal"],
+    queryFn: getListedBuildingsMinimal,
   });
 
   const promptDataQuery = useQuery({
@@ -127,7 +129,7 @@ export function Map() {
 
             return (
               <Marker
-                key={`marker-${feature.list_entry || index}`}
+                key={`marker-${feature.id || index}`}
                 position={[feature.latitude, feature.longitude]}
                 icon={isSelected ? selectedIcon : unselectedIcon}
                 eventHandlers={{

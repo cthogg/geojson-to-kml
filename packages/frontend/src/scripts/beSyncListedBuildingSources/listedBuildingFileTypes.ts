@@ -17,3 +17,15 @@ export const ListedBuildingSchema = z.object({
 export type ListedBuilding = z.infer<typeof ListedBuildingSchema>;
 
 export const ListedBuildingArraySchema = z.array(ListedBuildingSchema);
+
+export const ListedBuildingMinimalSchema = ListedBuildingSchema.pick({
+  latitude: true,
+  longitude: true,
+  id: true,
+  title: true,
+});
+
+export type ListedBuildingMinimal = z.infer<typeof ListedBuildingMinimalSchema>;
+export const ListedBuildingMinimalArraySchema = z.array(
+  ListedBuildingMinimalSchema
+);

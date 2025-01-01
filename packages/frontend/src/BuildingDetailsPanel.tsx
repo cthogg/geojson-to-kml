@@ -4,13 +4,16 @@ import { ListedBuildingInfo } from "./ListedBuildingInfo";
 import { getSingleAiSummary } from "./scripts/beSyncListedBuildingSources/getAiSummaries";
 import { getSingleListedBuilding } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
 import { PromptInfo } from "./scripts/beSyncListedBuildingSources/listedBuildingAiInformation";
-import { ListedBuilding } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
+import {
+  ListedBuilding,
+  ListedBuildingMinimal,
+} from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
 
 interface BuildingDetailsPanelProps {
-  selectedFeature: ListedBuilding;
+  selectedFeature: ListedBuildingMinimal;
   isExpanded: boolean;
   isSpeaking: boolean;
-  setSelectedFeature: (feature: ListedBuilding | null) => void;
+  setSelectedFeature: (feature: ListedBuildingMinimal | null) => void;
   setIsExpanded: (expanded: boolean) => void;
   setIsSpeaking: (speaking: boolean) => void;
 }
@@ -24,13 +27,14 @@ export function BuildingDetailsPanel({
   setIsSpeaking,
 }: BuildingDetailsPanelProps) {
   const query = useSuspenseQuery({
-    queryKey: ["getSingleListedBuilding", selectedFeature.list_entry],
+    queryKey: ["getSingleListedBuilding", selectedFeature.id],
     queryFn: () => getSingleListedBuilding(selectedFeature.id),
   });
 
+  //FIXME: get the actual list entry
   const queryA = useSuspenseQuery({
-    queryKey: ["getSingleAiSummary", selectedFeature.list_entry],
-    queryFn: () => getSingleAiSummary(selectedFeature.list_entry),
+    queryKey: ["getSingleAiSummary", "1379336"],
+    queryFn: () => getSingleAiSummary("1379336"),
   });
 
   const selectedFeature2: ListedBuilding = query.data[0];

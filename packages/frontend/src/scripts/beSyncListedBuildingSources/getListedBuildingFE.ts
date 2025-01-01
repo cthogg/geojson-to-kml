@@ -1,6 +1,8 @@
 import {
   ListedBuilding,
   ListedBuildingArraySchema,
+  ListedBuildingMinimal,
+  ListedBuildingMinimalArraySchema,
 } from "./listedBuildingFileTypes";
 import { SUPABASE_API_KEY, SUPABASE_URL } from "./supabaseApiKey";
 
@@ -19,6 +21,30 @@ export const getListedBuildingFileBE = async (): Promise<ListedBuilding[]> => {
   const data = await fetchListedBuildings();
   const listedBuildings = data;
   const parseListedBuildings = ListedBuildingArraySchema.parse(listedBuildings);
+  return parseListedBuildings;
+};
+
+const fetchListedBuildingsMinimal = async () => {
+  const response = await fetch(
+    `${SUPABASE_URL}/places?select=id,title,latitude,longitude`,
+    {
+      headers: {
+        apikey: SUPABASE_API_KEY,
+        Authorization: `Bearer ${SUPABASE_API_KEY}`,
+      },
+    }
+  );
+  const data = await response.json();
+  return data;
+};
+
+export const getListedBuildingsMinimal = async (): Promise<
+  ListedBuildingMinimal[]
+> => {
+  const data = await fetchListedBuildingsMinimal();
+  const listedBuildings = data;
+  const parseListedBuildings =
+    ListedBuildingMinimalArraySchema.parse(listedBuildings);
   return parseListedBuildings;
 };
 
