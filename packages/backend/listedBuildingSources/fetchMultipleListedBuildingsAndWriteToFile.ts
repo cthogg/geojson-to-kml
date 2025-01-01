@@ -14,7 +14,7 @@ const fetchMultipleListedBuildings = async (
       `Fetching listed building ${i} of ${listedBuildingNumbers.length}`
     );
     const listedBuilding = listedBuildings.find(
-      (listedBuilding) => listedBuilding.list_entry === number
+      (lb) => lb.list_entry === number
     );
     if (listedBuilding) {
       console.log(`Listed building ${number} already exists`);
@@ -28,10 +28,13 @@ const fetchMultipleListedBuildings = async (
 };
 
 const writeToFile = (listedBuildings: ListedBuilding[]) => {
-  Bun.write("listedBuildings.json", JSON.stringify(listedBuildings, null, 2));
+  Bun.write(
+    "./listedBuildingSources/listedBuildings.json",
+    JSON.stringify(listedBuildings, null, 2)
+  );
 };
 
-const gradeIListedBuildingNumbers = ["1033380"];
+const gradeIListedBuildingNumbers = ["1021941"];
 const listedBuildings = await fetchMultipleListedBuildings(
   gradeIListedBuildingNumbers
 );

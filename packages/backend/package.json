@@ -5,7 +5,9 @@
   "scripts": {
     "generate-blue-plaques": "bun kmlGeneration/bluePlaques/index.ts",
     "generate-listed-buildings": "bun kmlGeneration/listedBuildings/index.ts",
-    "generate-blue-plaque-wiki-links": "bun kmlGeneration/bluePlaques/bluePlaqueWikiLinks.ts"
+    "generate-blue-plaque-wiki-links": "bun kmlGeneration/bluePlaques/bluePlaqueWikiLinks.ts",
+    "fetch-listed-buildings": "bun listedBuildingSources/fetchMultipleListedBuildingsAndWriteToFile.ts",
+    "insert-listed-buildings": "bun listedBuildingSources/insertListedBuildingsJsonToSupabase.ts"
   },
   "devDependencies": {
     "bun-types": "latest"
@@ -14,6 +16,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.47.10",
     "zod": "^3.23.8"
   }
 }
