@@ -1,4 +1,5 @@
-import { getPromptData } from "./scripts/ai/getPromptData";
+import { useQuery } from "@tanstack/react-query";
+import { getPromptDataBE } from "./scripts/ai/getPromptData";
 
 interface ListedBuildingInfoProps {
   imageUrl: string | null;
@@ -7,21 +8,28 @@ interface ListedBuildingInfoProps {
   listedBuildingNumber: string;
 }
 
-function getAiSummary(listedBuildingNumber: string): string | undefined {
-  const promptData = getPromptData();
-  const prompt = promptData.find(
-    (prompt) => prompt.list_entry === listedBuildingNumber
-  );
-  return prompt?.ai_generated_text ?? undefined;
-}
-
 export const ListedBuildingInfo = ({
   imageUrl,
   wikipediaText,
   historicalEnglandText,
   listedBuildingNumber,
 }: ListedBuildingInfoProps) => {
+  const promptDataQuery = useQuery({
+    queryKey: ["getPromptDataBE"],
+    queryFn: getPromptDataBE,
+  });
+
+  const promptData = promptDataQuery.data ?? [];
+
+  function getAiSummary(listedBuildingNumber: string): string | undefined {
+    const prompt = promptData.find(
+      (prompt) => prompt.list_entry === listedBuildingNumber
+    );
+    return prompt?.ai_summary ?? undefined;
+  }
+
   const aiSummary = getAiSummary(listedBuildingNumber);
+
   return (
     <>
       {/* Main Content - add padding-top to account for fixed header */}

@@ -8,16 +8,9 @@ import { useEffect, useState } from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { ListedBuildingInfo } from "./ListedBuildingInfo";
-import { getPromptData } from "./scripts/ai/getPromptData";
+import { getPromptDataBE } from "./scripts/ai/getPromptData";
 import { getListedBuildingFileBE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 import { Table } from "./Table";
-function getAiSummary(listedBuildingNumber: string): string | undefined {
-  const promptData = getPromptData();
-  const prompt = promptData.find(
-    (prompt) => prompt.list_entry === listedBuildingNumber
-  );
-  return prompt?.ai_generated_text ?? undefined;
-}
 
 const routes = [
   {
@@ -69,6 +62,20 @@ export function Map() {
     queryKey: ["getListedBuildingFileBE"],
     queryFn: getListedBuildingFileBE,
   });
+
+  const promptDataQuery = useQuery({
+    queryKey: ["getPromptDataBE"],
+    queryFn: getPromptDataBE,
+  });
+
+  const promptData = promptDataQuery.data ?? [];
+
+  function getAiSummary(listedBuildingNumber: string): string | undefined {
+    const prompt = promptData.find(
+      (prompt) => prompt.list_entry === listedBuildingNumber
+    );
+    return prompt?.ai_summary ?? undefined;
+  }
 
   const allMarkers = query.data ?? [];
 
