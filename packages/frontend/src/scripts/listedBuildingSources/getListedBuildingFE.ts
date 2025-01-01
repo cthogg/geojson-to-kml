@@ -1,5 +1,4 @@
 import {
-  convertListedBuildingBEToFE,
   ListedBuilding,
   ListedBuildingArraySchemaBE,
 } from "../../backendSync/listedBuildingFileTypes";
@@ -31,5 +30,5 @@ export const getListedBuildingFileBE = async () => {
 
 export const getListedBuildingFileFE = async (): Promise<ListedBuilding[]> => {
   const listedBuildingsBE = await getListedBuildingFileBE();
-  return listedBuildingsBE.map(convertListedBuildingBEToFE);
+  return listedBuildingsBE;
 };

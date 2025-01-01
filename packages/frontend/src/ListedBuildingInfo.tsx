@@ -10,7 +10,7 @@ interface ListedBuildingInfoProps {
 function getAiSummary(listedBuildingNumber: string): string | undefined {
   const promptData = getPromptData();
   const prompt = promptData.find(
-    (prompt) => prompt.listEntry === listedBuildingNumber
+    (prompt) => prompt.list_entry === listedBuildingNumber
   );
   return prompt?.aiGeneratedText ?? undefined;
 }

@@ -15,7 +15,7 @@ import { Table } from "./Table";
 function getAiSummary(listedBuildingNumber: string): string | undefined {
   const promptData = getPromptData();
   const prompt = promptData.find(
-    (prompt) => prompt.listEntry === listedBuildingNumber
+    (prompt) => prompt.list_entry === listedBuildingNumber
   );
   return prompt?.aiGeneratedText ?? undefined;
 }
@@ -43,6 +43,7 @@ export function Map() {
   const [map, setMap] = useState<L.Map | null>(null);
 
   // Modify selected feature state to include coordinates
+  //FIXME: I think this type should be a ListedBuilding from listedBuildingFileTypes.ts
   const [selectedFeature, setSelectedFeature] = useState<{
     name: string;
     imageUrl?: string;
@@ -81,7 +82,7 @@ export function Map() {
       ? true
       : routes
           .find((route) => route.name === selectedRoute)
-          ?.listedBuildings.includes(marker.listEntry)
+          ?.listedBuildings.includes(marker.list_entry)
   );
 
   // Add custom yellow icon
@@ -155,7 +156,7 @@ export function Map() {
               const marker = allMarkers.filter((marker) =>
                 routes
                   .find((route) => route.name === "Walthamstow")
-                  ?.listedBuildings.includes(marker.listEntry)
+                  ?.listedBuildings.includes(marker.list_entry)
               );
               centerMapOnFeature(marker[0].latitude, marker[0].longitude);
             }}
@@ -171,7 +172,7 @@ export function Map() {
               const marker = allMarkers.filter((marker) =>
                 routes
                   .find((route) => route.name === "Bloomsbury")
-                  ?.listedBuildings.includes(marker.listEntry)
+                  ?.listedBuildings.includes(marker.list_entry)
               );
               centerMapOnFeature(marker[0].latitude, marker[0].longitude);
             }}
@@ -217,10 +218,10 @@ export function Map() {
         <MarkerClusterGroup>
           {markersd.map((feature, index) => {
             const listedBuilding = allMarkers.find(
-              (lb) => lb.listEntry === feature.listEntry
+              (lb) => lb.list_entry === feature.list_entry
             );
             const audio = listedBuildingAudio.find(
-              (lb) => lb.listEntry === feature.listEntry
+              (lb) => lb.list_entry === feature.list_entry
             );
             const isSelected =
               selectedFeature?.latitude === feature.latitude &&
@@ -228,21 +229,22 @@ export function Map() {
 
             return (
               <Marker
-                key={`marker-${feature.listEntry || index}`}
+                key={`marker-${feature.list_entry || index}`}
                 position={[feature.latitude, feature.longitude]}
                 icon={isSelected ? selectedIcon : unselectedIcon}
                 eventHandlers={{
                   click: () => {
                     setSelectedFeature({
                       name: feature.title,
-                      imageUrl: listedBuilding?.imageUrl ?? undefined,
+                      imageUrl: listedBuilding?.image_url ?? undefined,
                       audioUrl: audio?.audioUrl ?? undefined,
-                      listedEntry: feature.listEntry,
+                      listedEntry: feature.list_entry,
                       latitude: feature.latitude,
                       longitude: feature.longitude,
-                      wikipediaText: listedBuilding?.wikipediaText ?? undefined,
+                      wikipediaText:
+                        listedBuilding?.wikipedia_text ?? undefined,
                       historicalEnglandText:
-                        listedBuilding?.historicalEnglandText ?? undefined,
+                        listedBuilding?.historical_england_text ?? undefined,
                     });
                     centerMapOnFeature(feature.latitude, feature.longitude);
                   },
@@ -272,23 +274,23 @@ export function Map() {
                     (currentIndex - 1 + markersd.length) % markersd.length;
                   const prevFeature = markersd[prevIndex];
                   const prevListedBuilding = allMarkers.find(
-                    (lb) => lb.listEntry === prevFeature.listEntry
+                    (lb) => lb.list_entry === prevFeature.list_entry
                   );
                   const prevAudio = listedBuildingAudio.find(
-                    (lb) => lb.listEntry === prevFeature.listEntry
+                    (lb) => lb.list_entry === prevFeature.list_entry
                   );
 
                   setSelectedFeature({
                     name: prevFeature.title,
-                    imageUrl: prevListedBuilding?.imageUrl ?? undefined,
+                    imageUrl: prevListedBuilding?.image_url ?? undefined,
                     audioUrl: prevAudio?.audioUrl ?? undefined,
-                    listedEntry: prevFeature.listEntry,
+                    listedEntry: prevFeature.list_entry,
                     latitude: prevFeature.latitude,
                     longitude: prevFeature.longitude,
                     wikipediaText:
-                      prevListedBuilding?.wikipediaText ?? undefined,
+                      prevListedBuilding?.wikipedia_text ?? undefined,
                     historicalEnglandText:
-                      prevListedBuilding?.historicalEnglandText ?? undefined,
+                      prevListedBuilding?.historical_england_text ?? undefined,
                   });
                   centerMapOnFeature(
                     prevFeature.latitude,
@@ -321,23 +323,24 @@ export function Map() {
                     const nextIndex = (currentIndex + 1) % markersd.length;
                     const nextFeature = markersd[nextIndex];
                     const nextListedBuilding = allMarkers.find(
-                      (lb) => lb.listEntry === nextFeature.listEntry
+                      (lb) => lb.list_entry === nextFeature.list_entry
                     );
                     const nextAudio = listedBuildingAudio.find(
-                      (lb) => lb.listEntry === nextFeature.listEntry
+                      (lb) => lb.list_entry === nextFeature.list_entry
                     );
 
                     setSelectedFeature({
                       name: nextFeature.title,
-                      imageUrl: nextListedBuilding?.imageUrl ?? undefined,
+                      imageUrl: nextListedBuilding?.image_url ?? undefined,
                       audioUrl: nextAudio?.audioUrl ?? undefined,
-                      listedEntry: nextFeature.listEntry,
+                      listedEntry: nextFeature.list_entry,
                       latitude: nextFeature.latitude,
                       longitude: nextFeature.longitude,
                       wikipediaText:
-                        nextListedBuilding?.wikipediaText ?? undefined,
+                        nextListedBuilding?.wikipedia_text ?? undefined,
                       historicalEnglandText:
-                        nextListedBuilding?.historicalEnglandText ?? undefined,
+                        nextListedBuilding?.historical_england_text ??
+                        undefined,
                     });
                     centerMapOnFeature(
                       nextFeature.latitude,
@@ -419,7 +422,7 @@ export function Map() {
                   ? true
                   : routes
                       .find((route) => route.name === selectedRoute)
-                      ?.listedBuildings.includes(building.listEntry)
+                      ?.listedBuildings.includes(building.list_entry)
               )}
               onRowClick={handleTableRowClick}
             />

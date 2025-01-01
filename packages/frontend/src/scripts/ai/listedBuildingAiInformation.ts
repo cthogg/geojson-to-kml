@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const PromptInfoSchema = z.object({
-  listEntry: z.string(),
+  list_entry: z.string(),
   audioUrl: z.string().nullable(),
   prompt: z.string().nullable(),
   aiGeneratedText: z.string().nullable(),

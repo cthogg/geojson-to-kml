@@ -41,7 +41,7 @@ export const Table = ({ data, onRowClick }: TableProps) => {
       filter: true,
     },
     {
-      field: "imageUrl",
+      field: "image_url",
       headerName: "Image",
       /*eslint-disable-next-line*/
       cellRenderer: (params: any) =>
@@ -55,8 +55,8 @@ export const Table = ({ data, onRowClick }: TableProps) => {
     },
     { field: "type", headerName: "Type" },
     { field: "grade", headerName: "Grade" },
-    { field: "listEntry", headerName: "List Entry", filter: true },
-    { field: "wikidataEntry", headerName: "Wikidata Entry" },
+    { field: "list_entry", headerName: "List Entry", filter: true },
+    { field: "wikidata_entry", headerName: "Wikidata Entry" },
     {
       field: "latitude",
       headerName: "Latitude",
@@ -66,10 +66,10 @@ export const Table = ({ data, onRowClick }: TableProps) => {
       headerName: "Longitude",
     },
     {
-      field: "historicalEnglandText",
+      field: "historical_england_text",
       headerName: "Historical England Text",
     },
-    { field: "wikipediaText", headerName: "Wikipedia Text" },
+    { field: "wikipedia_text", headerName: "Wikipedia Text" },
   ];
 
   return (
@@ -86,10 +86,10 @@ export const Table = ({ data, onRowClick }: TableProps) => {
             latitude: row.latitude ?? 0,
             longitude: row.longitude ?? 0,
             name: row.title,
-            listedEntry: row.listEntry,
-            imageUrl: row.imageUrl ?? undefined,
-            wikipediaText: row.wikipediaText ?? undefined,
-            historicalEnglandText: row.historicalEnglandText ?? undefined,
+            listedEntry: row.list_entry,
+            imageUrl: row.image_url ?? undefined,
+            wikipediaText: row.wikipedia_text ?? undefined,
+            historicalEnglandText: row.historical_england_text ?? undefined,
           });
         }}
       />
