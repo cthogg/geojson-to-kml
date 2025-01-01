@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { getListedBuildingFileBE } from "../listedBuildingSources/getListedBuildingFE";
 import { generateMessage } from "./claudeQuery";
-import { getPromptData } from "./getPromptData";
+import { getAiSummaries } from "./getAiSummaries";
 import { PromptInfo } from "./listedBuildingAiInformation";
 const systemPrompt =
   "You are an architectural tour guide, giving a tour to a person with a lay interest in historical architecture. Describe the listed building in this text and images, pointing out specific features on the building to look out for. Please describe the as if you are standing in front of it from the perspective of the image. Do not use phrases like 'Points to decorative details' => but instead phrases like 'look at the decorative details'. Can you start with Welcome to. Please keep the answer to under 200 words.";
@@ -11,7 +11,7 @@ const BATCH_SIZE = 20;
 
 export const getAiTextFromListedBuildings = async () => {
   const buildings = await getListedBuildingFileBE();
-  const promptDb = getPromptData();
+  const promptDb = await getAiSummaries();
   const filteredPromptDb = buildings.filter(
     (building) =>
       !promptDb.some(
@@ -55,7 +55,7 @@ export const getAiTextFromListedBuildings = async () => {
               model: model,
               list_entry: building.list_entry,
               audioUrl: null,
-              ai_generated_text: message,
+              ai_summary: message,
             } as PromptInfo,
           };
         } catch (error) {

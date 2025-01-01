@@ -1,17 +1,7 @@
-import { z } from "zod";
 import {
-  PromptInfo,
   PromptInfoBE,
-  PromptInfoSchema,
   PromptInfoSchemaBEArray,
 } from "./listedBuildingAiInformation";
-import promptData from "./promptData.json";
-export const getPromptData = (): PromptInfo[] => {
-  const promptDataParsed = z.array(PromptInfoSchema).parse(promptData);
-  return promptDataParsed.filter(
-    (prompt) => prompt.model === "claude-3-5-haiku-20241022"
-  );
-};
 
 //FIXME: need to just get the basic id and latitude and longitude. Only on click should get full data.
 const fetchAiSummaries = async () => {
@@ -30,7 +20,7 @@ const fetchAiSummaries = async () => {
   return data;
 };
 
-export const getPromptDataBE = async (): Promise<PromptInfoBE[]> => {
+export const getAiSummaries = async (): Promise<PromptInfoBE[]> => {
   const data = await fetchAiSummaries();
   const promptData = data;
   const parsePromptData = PromptInfoSchemaBEArray.parse(promptData);

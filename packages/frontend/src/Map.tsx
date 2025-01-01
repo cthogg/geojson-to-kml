@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { ListedBuildingInfo } from "./ListedBuildingInfo";
-import { getPromptDataBE } from "./scripts/ai/getPromptData";
+import { getAiSummaries } from "./scripts/ai/getAiSummaries";
 import { getListedBuildingFileBE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 import { Table } from "./Table";
 
@@ -64,8 +64,8 @@ export function Map() {
   });
 
   const promptDataQuery = useQuery({
-    queryKey: ["getPromptDataBE"],
-    queryFn: getPromptDataBE,
+    queryKey: ["getAiSummaries"],
+    queryFn: getAiSummaries,
   });
 
   const promptData = promptDataQuery.data ?? [];

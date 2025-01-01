@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getPromptDataBE } from "./scripts/ai/getPromptData";
+import { getAiSummaries } from "./scripts/ai/getAiSummaries";
 
 interface ListedBuildingInfoProps {
   imageUrl: string | null;
@@ -15,8 +15,8 @@ export const ListedBuildingInfo = ({
   listedBuildingNumber,
 }: ListedBuildingInfoProps) => {
   const promptDataQuery = useQuery({
-    queryKey: ["getPromptDataBE"],
-    queryFn: getPromptDataBE,
+    queryKey: ["getAiSummaries"],
+    queryFn: getAiSummaries,
   });
 
   const promptData = promptDataQuery.data ?? [];
