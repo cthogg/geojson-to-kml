@@ -1,7 +1,7 @@
+import gradeIIBoundsStartListedBuildingNumbers from "../kmlGeneration/output/bounds-grade-II-star.json";
 import { getListedBuildingFileBE } from "./beSyncListedBuildingSources/getListedBuildingFE";
 import { ListedBuilding } from "./beSyncListedBuildingSources/listedBuildingFileTypes";
 import { fetchListedBuilding } from "./fetchListedBuilding";
-
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const fetchMultipleListedBuildings = async (
@@ -34,7 +34,8 @@ const writeToFile = (listedBuildings: ListedBuilding[]) => {
   );
 };
 
-const gradeIListedBuildingNumbers = ["1021941"];
+const gradeIListedBuildingNumbers =
+  gradeIIBoundsStartListedBuildingNumbers.slice(0, 100);
 const listedBuildings = await fetchMultipleListedBuildings(
   gradeIListedBuildingNumbers
 );
