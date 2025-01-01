@@ -63,14 +63,13 @@ export function Map() {
     });
     L.Marker.prototype.options.icon = DefaultIcon;
   }, []);
-
+  //FIXME: put query into own file
   const query = useQuery({
     queryKey: ["listedBuildingsGeojson"],
     queryFn: getListedBuildingGeojson,
   });
 
   const allMarkers = query.data ?? [];
-  console.log("allMarkers", allMarkers);
 
   // Add new state for selected route
   const [selectedRoute, setSelectedRoute] = useState<string | null>(null);

@@ -1,13 +1,14 @@
 import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { ListedBuilding } from "./backendSync/listedBuildingFileTypes";
-import { getListedBuildingFileFE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 
+import { useQuery } from "@tanstack/react-query";
 import {
   ClientSideRowModelModule,
   ModuleRegistry,
   TextFilterModule,
 } from "ag-grid-community";
+import { getListedBuildingGeojson } from "./reactMap/listedBuildingsGeojsonTypes";
 
 ModuleRegistry.registerModules([ClientSideRowModelModule, TextFilterModule]);
 
@@ -97,9 +98,14 @@ export const Table = ({ data, onRowClick }: TableProps) => {
 export const TableWrapper = ({
   onRowClick,
 }: {
-  onRowClick: (params: any) => void;
+  onRowClick: (params: unknown) => void;
 }) => {
-  const listedBuildings = getListedBuildingFileFE();
+  const query = useQuery({
+    queryKey: ["listedBuildingsGeojson"],
+    queryFn: getListedBuildingGeojson,
+  });
+
+  const listedBuildings = query.data ?? [];
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <Table data={listedBuildings} onRowClick={onRowClick} />
