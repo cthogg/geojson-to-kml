@@ -39,7 +39,6 @@ export function Map() {
   const [selectedFeature, setSelectedFeature] = useState<ListedBuilding | null>(
     null
   );
-  console.log(selectedFeature);
   // Set up default icon for Leaflet
   useEffect(() => {
     const DefaultIcon = L.icon({
@@ -341,16 +340,7 @@ export function Map() {
                 ✕
               </button>
             </div>
-            <Table
-              data={allMarkers.filter((building) =>
-                selectedRoute === "All" || selectedRoute === null
-                  ? true
-                  : routes
-                      .find((route) => route.name === selectedRoute)
-                      ?.listedBuildings.includes(building.list_entry)
-              )}
-              onRowClick={handleTableRowClick}
-            />
+            <Table data={allMarkers} onRowClick={handleTableRowClick} />
           </div>
         </div>
       )}

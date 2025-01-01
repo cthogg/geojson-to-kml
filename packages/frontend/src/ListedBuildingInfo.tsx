@@ -1,6 +1,38 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAiSummaries } from "./scripts/beSyncListedBuildingSources/getAiSummaries";
 
+/**
+ * Compresses Wikimedia image URLs to a smaller size (320px width)
+ * Returns original URL if not a Wikimedia image
+ */
+function compressImageUrl(imageUrl: string): string {
+  console.log("imageUrl", imageUrl);
+  // Check if it's a Wikimedia image
+  if (!imageUrl.includes("wikimedia.org")) {
+    return imageUrl;
+  }
+
+  try {
+    // Check if already a thumbnail version
+    if (imageUrl.includes("/thumb/")) {
+      return imageUrl;
+    }
+
+    // Convert original URL to thumbnail URL
+    const parts = imageUrl.split("/wikipedia/commons/");
+    if (parts.length !== 2) {
+      return imageUrl;
+    }
+
+    const [base, filename] = parts;
+    return `${base}/wikipedia/commons/thumb/${filename}/320px-${filename}`;
+  } catch (error: unknown) {
+    // Return original URL if any error occurs during processing
+    console.error("Error compressing image URL:", error);
+    return imageUrl;
+  }
+}
+
 interface ListedBuildingInfoProps {
   imageUrl: string | null;
   wikipediaText: string | null;
@@ -40,7 +72,7 @@ export const ListedBuildingInfo = ({
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold mb-4">Image</h2>
               <img
-                src={imageUrl}
+                src={compressImageUrl(imageUrl)}
                 alt="Description of your image"
                 className="w-full h-auto rounded-lg"
               />
