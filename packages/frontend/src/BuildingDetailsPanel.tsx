@@ -30,14 +30,12 @@ export function BuildingDetailsPanel({
     queryKey: ["getSingleListedBuilding", selectedFeature.id],
     queryFn: () => getSingleListedBuilding(selectedFeature.id),
   });
-
-  //FIXME: get the actual list entry
+  const selectedFeature2: ListedBuilding = query.data[0];
   const queryA = useSuspenseQuery({
-    queryKey: ["getSingleAiSummary", "1379336"],
-    queryFn: () => getSingleAiSummary("1379336"),
+    queryKey: ["getSingleAiSummary", selectedFeature2.list_entry],
+    queryFn: () => getSingleAiSummary(selectedFeature2.list_entry),
   });
 
-  const selectedFeature2: ListedBuilding = query.data[0];
   const promptData: PromptInfo = queryA.data[0];
   return (
     <div className="relative z-10 p-4 backdrop-blur-sm">
