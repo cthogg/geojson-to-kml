@@ -1,5 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
 import * as changeCase from "change-case";
 import { ListedBuildingInfo } from "./ListedBuildingInfo";
+import { getSingleAiSummary } from "./scripts/beSyncListedBuildingSources/getAiSummaries";
+import { getSingleListedBuilding } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
+import { PromptInfo } from "./scripts/beSyncListedBuildingSources/listedBuildingAiInformation";
 import { ListedBuilding } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
 
 interface BuildingDetailsPanelProps {
@@ -11,7 +15,6 @@ interface BuildingDetailsPanelProps {
   setIsExpanded: (expanded: boolean) => void;
   setIsSpeaking: (speaking: boolean) => void;
   centerMapOnFeature: (latitude: number, longitude: number) => void;
-  getAiSummary: (listedBuildingNumber: string) => string | undefined;
 }
 
 export function BuildingDetailsPanel({
@@ -23,8 +26,22 @@ export function BuildingDetailsPanel({
   setIsExpanded,
   setIsSpeaking,
   centerMapOnFeature,
-  getAiSummary,
 }: BuildingDetailsPanelProps) {
+  const query = useQuery({
+    queryKey: ["getSingleListedBuilding", selectedFeature.list_entry],
+    queryFn: () => getSingleListedBuilding(selectedFeature.id),
+  });
+
+  const queryA = useQuery({
+    queryKey: ["getSingleAiSummary", selectedFeature.list_entry],
+    queryFn: () => getSingleAiSummary(selectedFeature.list_entry),
+  });
+  if (query.isLoading || queryA.isLoading || !query.data || !queryA.data) {
+    return <div>Loading...</div>;
+  }
+
+  const selectedFeature2: ListedBuilding = query.data;
+  const promptData: PromptInfo = queryA.data;
   return (
     <div className="relative z-10 p-4 backdrop-blur-sm">
       <div className="flex justify-between items-start text-black">
@@ -32,8 +49,8 @@ export function BuildingDetailsPanel({
           onClick={() => {
             const currentIndex = markersd.findIndex(
               (feature) =>
-                feature.latitude === selectedFeature.latitude &&
-                feature.longitude === selectedFeature.longitude
+                feature.latitude === selectedFeature2.latitude &&
+                feature.longitude === selectedFeature2.longitude
             );
             const prevIndex =
               (currentIndex - 1 + markersd.length) % markersd.length;
@@ -48,7 +65,7 @@ export function BuildingDetailsPanel({
         </button>
 
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-          {changeCase.capitalCase(selectedFeature.title)}
+          {changeCase.capitalCase(selectedFeature2.title)}
         </h2>
 
         <div className="flex items-center gap-2">
@@ -62,8 +79,8 @@ export function BuildingDetailsPanel({
             onClick={() => {
               const currentIndex = markersd.findIndex(
                 (feature) =>
-                  feature.latitude === selectedFeature.latitude &&
-                  feature.longitude === selectedFeature.longitude
+                  feature.latitude === selectedFeature2.latitude &&
+                  feature.longitude === selectedFeature2.longitude
               );
               const nextIndex = (currentIndex + 1) % markersd.length;
               const nextFeature = markersd[nextIndex];
@@ -92,7 +109,7 @@ export function BuildingDetailsPanel({
                 setIsSpeaking(false);
               } else {
                 const speech = new SpeechSynthesisUtterance(
-                  getAiSummary(selectedFeature.list_entry) ?? "No audio summary"
+                  promptData.ai_summary ?? "No audio summary"
                 );
                 speech.onend = () => setIsSpeaking(false);
                 window.speechSynthesis.speak(speech);
@@ -107,10 +124,10 @@ export function BuildingDetailsPanel({
       </div>
       {isExpanded && (
         <ListedBuildingInfo
-          imageUrl={selectedFeature.image_url ?? null}
-          wikipediaText={selectedFeature.wikipedia_text ?? ""}
-          historicalEnglandText={selectedFeature.historical_england_text ?? ""}
-          listedBuildingNumber={selectedFeature.list_entry}
+          imageUrl={selectedFeature2.image_url ?? null}
+          wikipediaText={selectedFeature2.wikipedia_text ?? ""}
+          historicalEnglandText={selectedFeature2.historical_england_text ?? ""}
+          listedBuildingNumber={selectedFeature2.list_entry}
         />
       )}
     </div>

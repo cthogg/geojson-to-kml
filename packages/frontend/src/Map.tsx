@@ -42,15 +42,6 @@ export function Map() {
     queryFn: getAiSummaries,
   });
 
-  const promptData = promptDataQuery.data ?? [];
-
-  function getAiSummary(listedBuildingNumber: string): string | undefined {
-    const prompt = promptData.find(
-      (prompt) => prompt.list_entry === listedBuildingNumber
-    );
-    return prompt?.ai_summary ?? undefined;
-  }
-
   const allMarkers = query.data ?? [];
 
   // Modify the markers filter to use selectedRoute
@@ -166,7 +157,6 @@ export function Map() {
             setIsExpanded={setIsExpanded}
             setIsSpeaking={setIsSpeaking}
             centerMapOnFeature={centerMapOnFeature}
-            getAiSummary={getAiSummary}
           />
         </div>
       )}
