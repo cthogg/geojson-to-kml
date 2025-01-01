@@ -4,7 +4,6 @@ import {
 } from "./listedBuildingAiInformation";
 import { SUPABASE_API_KEY, SUPABASE_URL } from "./supabaseApiKey";
 
-//FIXME: need to just get the basic id and latitude and longitude. Only on click should get full data.
 const fetchAiSummaries = async () => {
   const response = await fetch(`${SUPABASE_URL}/ai_summaries`, {
     headers: {

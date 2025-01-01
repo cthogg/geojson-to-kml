@@ -1,7 +1,6 @@
 import { PromptArray, PromptSchemaArray } from "./promptTypes";
 
 //FIXME: change the db so the prompt and model in ai_summaries should always be unique.
-//FIXME: need to just get the basic id and latitude and longitude. Only on click should get full data.
 const fetchPrompts = async () => {
   const response = await fetch(
     "https://yvrmwbxbhglycwnckely.supabase.co/rest/v1/prompts",

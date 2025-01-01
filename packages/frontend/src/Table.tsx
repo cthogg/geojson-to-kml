@@ -14,23 +14,7 @@ ModuleRegistry.registerModules([ClientSideRowModelModule, TextFilterModule]);
 
 interface TableProps {
   data: ListedBuilding[];
-  onRowClick: ({
-    latitude,
-    longitude,
-    name,
-    listedEntry,
-    imageUrl,
-    wikipediaText,
-    historicalEnglandText,
-  }: {
-    latitude: number;
-    longitude: number;
-    name: string;
-    listedEntry: string;
-    imageUrl?: string;
-    wikipediaText?: string;
-    historicalEnglandText?: string;
-  }) => void;
+  onRowClick: (feature: ListedBuilding) => void;
 }
 
 export const Table = ({ data, onRowClick }: TableProps) => {
@@ -82,15 +66,7 @@ export const Table = ({ data, onRowClick }: TableProps) => {
         rowHeight={170}
         onRowClicked={(event) => {
           const row = event.data as ListedBuilding;
-          onRowClick({
-            latitude: row.latitude ?? 0,
-            longitude: row.longitude ?? 0,
-            name: row.title,
-            listedEntry: row.list_entry,
-            imageUrl: row.image_url ?? undefined,
-            wikipediaText: row.wikipedia_text ?? undefined,
-            historicalEnglandText: row.historical_england_text ?? undefined,
-          });
+          onRowClick(row);
         }}
       />
     </div>

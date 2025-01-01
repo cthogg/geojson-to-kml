@@ -10,6 +10,7 @@ import MarkerClusterGroup from "react-leaflet-markercluster";
 import { ListedBuildingInfo } from "./ListedBuildingInfo";
 import { getAiSummaries } from "./scripts/beSyncListedBuildingSources/getAiSummaries";
 import { getListedBuildingFileBE } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
+import { ListedBuilding } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
 import { Table } from "./Table";
 
 const routes = [
@@ -35,16 +36,9 @@ export function Map() {
   const [map, setMap] = useState<L.Map | null>(null);
 
   // Modify selected feature state to include coordinates
-  //FIXME: I think this type should be a ListedBuilding from listedBuildingFileTypes.ts
-  const [selectedFeature, setSelectedFeature] = useState<{
-    name: string;
-    imageUrl?: string;
-    latitude: number;
-    longitude: number;
-    listedEntry: string;
-    wikipediaText?: string;
-    historicalEnglandText?: string;
-  } | null>(null);
+  const [selectedFeature, setSelectedFeature] = useState<ListedBuilding | null>(
+    null
+  );
   console.log(selectedFeature);
   // Set up default icon for Leaflet
   useEffect(() => {
@@ -117,33 +111,9 @@ export function Map() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isTableModalOpen, setIsTableModalOpen] = useState(false);
 
-  const handleTableRowClick = ({
-    latitude,
-    longitude,
-    name,
-    listedEntry,
-    imageUrl,
-    wikipediaText,
-    historicalEnglandText,
-  }: {
-    latitude: number;
-    longitude: number;
-    name: string;
-    listedEntry: string;
-    imageUrl?: string;
-    wikipediaText?: string;
-    historicalEnglandText?: string;
-  }) => {
-    setSelectedFeature({
-      name,
-      latitude,
-      longitude,
-      listedEntry: listedEntry,
-      imageUrl: imageUrl,
-      wikipediaText: wikipediaText,
-      historicalEnglandText: historicalEnglandText,
-    });
-    centerMapOnFeature(latitude, longitude);
+  const handleTableRowClick = (feature: ListedBuilding) => {
+    setSelectedFeature(feature);
+    centerMapOnFeature(feature.latitude, feature.longitude);
     setIsTableModalOpen(false); // Optionally close the modal after selection
   };
 
@@ -231,9 +201,6 @@ export function Map() {
         />
         <MarkerClusterGroup>
           {markersd.map((feature, index) => {
-            const listedBuilding = allMarkers.find(
-              (lb) => lb.list_entry === feature.list_entry
-            );
             const isSelected =
               selectedFeature?.latitude === feature.latitude &&
               selectedFeature?.longitude === feature.longitude;
@@ -245,17 +212,7 @@ export function Map() {
                 icon={isSelected ? selectedIcon : unselectedIcon}
                 eventHandlers={{
                   click: () => {
-                    setSelectedFeature({
-                      name: feature.title,
-                      imageUrl: listedBuilding?.image_url ?? undefined,
-                      listedEntry: feature.list_entry,
-                      latitude: feature.latitude,
-                      longitude: feature.longitude,
-                      wikipediaText:
-                        listedBuilding?.wikipedia_text ?? undefined,
-                      historicalEnglandText:
-                        listedBuilding?.historical_england_text ?? undefined,
-                    });
+                    setSelectedFeature(feature);
                     centerMapOnFeature(feature.latitude, feature.longitude);
                   },
                 }}
@@ -283,21 +240,8 @@ export function Map() {
                   const prevIndex =
                     (currentIndex - 1 + markersd.length) % markersd.length;
                   const prevFeature = markersd[prevIndex];
-                  const prevListedBuilding = allMarkers.find(
-                    (lb) => lb.list_entry === prevFeature.list_entry
-                  );
 
-                  setSelectedFeature({
-                    name: prevFeature.title,
-                    imageUrl: prevListedBuilding?.image_url ?? undefined,
-                    listedEntry: prevFeature.list_entry,
-                    latitude: prevFeature.latitude,
-                    longitude: prevFeature.longitude,
-                    wikipediaText:
-                      prevListedBuilding?.wikipedia_text ?? undefined,
-                    historicalEnglandText:
-                      prevListedBuilding?.historical_england_text ?? undefined,
-                  });
+                  setSelectedFeature(prevFeature);
                   centerMapOnFeature(
                     prevFeature.latitude,
                     prevFeature.longitude
@@ -309,7 +253,7 @@ export function Map() {
               </button>
 
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                {changeCase.capitalCase(selectedFeature.name)}
+                {changeCase.capitalCase(selectedFeature.title)}
               </h2>
 
               <div className="flex items-center gap-2">
@@ -328,22 +272,8 @@ export function Map() {
                     );
                     const nextIndex = (currentIndex + 1) % markersd.length;
                     const nextFeature = markersd[nextIndex];
-                    const nextListedBuilding = allMarkers.find(
-                      (lb) => lb.list_entry === nextFeature.list_entry
-                    );
 
-                    setSelectedFeature({
-                      name: nextFeature.title,
-                      imageUrl: nextListedBuilding?.image_url ?? undefined,
-                      listedEntry: nextFeature.list_entry,
-                      latitude: nextFeature.latitude,
-                      longitude: nextFeature.longitude,
-                      wikipediaText:
-                        nextListedBuilding?.wikipedia_text ?? undefined,
-                      historicalEnglandText:
-                        nextListedBuilding?.historical_england_text ??
-                        undefined,
-                    });
+                    setSelectedFeature(nextFeature);
                     centerMapOnFeature(
                       nextFeature.latitude,
                       nextFeature.longitude
@@ -370,7 +300,7 @@ export function Map() {
                       setIsSpeaking(false);
                     } else {
                       const speech = new SpeechSynthesisUtterance(
-                        getAiSummary(selectedFeature.listedEntry) ??
+                        getAiSummary(selectedFeature.list_entry) ??
                           "No audio summary"
                       );
                       speech.onend = () => setIsSpeaking(false);
@@ -386,12 +316,12 @@ export function Map() {
             </div>
             {isExpanded && (
               <ListedBuildingInfo
-                imageUrl={selectedFeature.imageUrl ?? null}
-                wikipediaText={selectedFeature.wikipediaText ?? ""}
+                imageUrl={selectedFeature.image_url ?? null}
+                wikipediaText={selectedFeature.wikipedia_text ?? ""}
                 historicalEnglandText={
-                  selectedFeature.historicalEnglandText ?? ""
+                  selectedFeature.historical_england_text ?? ""
                 }
-                listedBuildingNumber={selectedFeature.listedEntry}
+                listedBuildingNumber={selectedFeature.list_entry}
               />
             )}
           </div>
