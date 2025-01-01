@@ -43,13 +43,13 @@ function convertToCSV(buildings: ListedBuilding[]): string {
   return [headers, ...rows].join("\n");
 }
 
-// Read and convert the file
 try {
-  const buildings = getListedBuildingFile();
-  const csv = convertToCSV(buildings);
+  const buildings = await getListedBuildingFile();
+  const buildingsToTry = buildings;
+  const csv = convertToCSV(buildingsToTry);
 
   // Write to new file
-  Bun.write("listedBuildings.csv", csv);
+  Bun.write("listedBuildings2.csv", csv);
   console.log("Successfully converted JSON to CSV");
 } catch (error) {
   console.error("Error converting file:", error);
