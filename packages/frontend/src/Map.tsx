@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import * as changeCase from "change-case";
 import L from "leaflet";
 import icon from "leaflet/dist/images/marker-icon.png";
@@ -10,7 +11,6 @@ import { ListedBuildingInfo } from "./ListedBuildingInfo";
 import { getListedBuildingGeojson } from "./reactMap/listedBuildingsGeojsonTypes";
 import { getPromptData } from "./scripts/ai/getPromptData";
 import { listedBuildingAudio } from "./scripts/ai/listedBuildingAudio";
-import { getListedBuildingFileFE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 import { Table } from "./Table";
 function getAiSummary(listedBuildingNumber: string): string | undefined {
   const promptData = getPromptData();
@@ -64,7 +64,13 @@ export function Map() {
     L.Marker.prototype.options.icon = DefaultIcon;
   }, []);
 
-  const allMarkers = getListedBuildingGeojson();
+  const query = useQuery({
+    queryKey: ["listedBuildingsGeojson"],
+    queryFn: getListedBuildingGeojson,
+  });
+
+  const allMarkers = query.data ?? [];
+  console.log("allMarkers", allMarkers);
 
   // Add new state for selected route
   const [selectedRoute, setSelectedRoute] = useState<string | null>(null);
@@ -75,7 +81,7 @@ export function Map() {
       ? true
       : routes
           .find((route) => route.name === selectedRoute)
-          ?.listedBuildings.includes(marker.reference)
+          ?.listedBuildings.includes(marker.listEntry)
   );
 
   // Add custom yellow icon
@@ -148,9 +154,12 @@ export function Map() {
               const marker = allMarkers.filter((marker) =>
                 routes
                   .find((route) => route.name === "Walthamstow")
-                  ?.listedBuildings.includes(marker.reference)
+                  ?.listedBuildings.includes(marker.listEntry)
               );
-              centerMapOnFeature(marker[0].latitude, marker[0].longitude);
+              centerMapOnFeature(
+                marker[0].coordinates[0],
+                marker[0].coordinates[1]
+              );
             }}
             className={`flex-shrink-0 bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
               selectedRoute === "Walthamstow" ? "bg-gray-200" : ""
@@ -164,9 +173,12 @@ export function Map() {
               const marker = allMarkers.filter((marker) =>
                 routes
                   .find((route) => route.name === "Bloomsbury")
-                  ?.listedBuildings.includes(marker.reference)
+                  ?.listedBuildings.includes(marker.listEntry)
               );
-              centerMapOnFeature(marker[0].latitude, marker[0].longitude);
+              centerMapOnFeature(
+                marker[0].coordinates[0],
+                marker[0].coordinates[1]
+              );
             }}
             className={`flex-shrink-0 bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap ${
               selectedRoute === "Bloomsbury" ? "bg-gray-200" : ""
@@ -209,34 +221,40 @@ export function Map() {
         />
         <MarkerClusterGroup>
           {markersd.map((feature, index) => {
-            const listedBuilding = getListedBuildingFileFE().find(
-              (lb) => lb.listEntry === feature.reference
+            const listedBuilding = allMarkers.find(
+              (lb) => lb.listEntry === feature.listEntry
             );
             const audio = listedBuildingAudio.find(
-              (lb) => lb.listEntry === feature.reference
+              (lb) => lb.listEntry === feature.listEntry
             );
             const isSelected =
-              selectedFeature?.coordinates[0] === feature.latitude &&
-              selectedFeature?.coordinates[1] === feature.longitude;
+              selectedFeature?.coordinates[0] === feature.coordinates[0] &&
+              selectedFeature?.coordinates[1] === feature.coordinates[1];
 
             return (
               <Marker
-                key={`marker-${feature.reference || index}`}
-                position={[feature.latitude, feature.longitude]}
+                key={`marker-${feature.listEntry || index}`}
+                position={[feature.coordinates[0], feature.coordinates[1]]}
                 icon={isSelected ? selectedIcon : unselectedIcon}
                 eventHandlers={{
                   click: () => {
                     setSelectedFeature({
-                      name: feature.name,
+                      name: feature.title,
                       imageUrl: listedBuilding?.imageUrl ?? undefined,
                       audioUrl: audio?.audioUrl ?? undefined,
-                      listedEntry: feature.reference,
-                      coordinates: [feature.latitude, feature.longitude],
+                      listedEntry: feature.listEntry,
+                      coordinates: [
+                        feature.coordinates[0],
+                        feature.coordinates[1],
+                      ],
                       wikipediaText: listedBuilding?.wikipediaText ?? undefined,
                       historicalEnglandText:
                         listedBuilding?.historicalEnglandText ?? undefined,
                     });
-                    centerMapOnFeature(feature.latitude, feature.longitude);
+                    centerMapOnFeature(
+                      feature.coordinates[0],
+                      feature.coordinates[1]
+                    );
                   },
                 }}
               />
@@ -257,33 +275,37 @@ export function Map() {
                 onClick={() => {
                   const currentIndex = markersd.findIndex(
                     (feature) =>
-                      feature.latitude === selectedFeature.coordinates[0] &&
-                      feature.longitude === selectedFeature.coordinates[1]
+                      feature.coordinates[0] ===
+                        selectedFeature.coordinates[0] &&
+                      feature.coordinates[1] === selectedFeature.coordinates[1]
                   );
                   const prevIndex =
                     (currentIndex - 1 + markersd.length) % markersd.length;
                   const prevFeature = markersd[prevIndex];
-                  const prevListedBuilding = getListedBuildingFileFE().find(
-                    (lb) => lb.listEntry === prevFeature.reference
+                  const prevListedBuilding = allMarkers.find(
+                    (lb) => lb.listEntry === prevFeature.listEntry
                   );
                   const prevAudio = listedBuildingAudio.find(
-                    (lb) => lb.listEntry === prevFeature.reference
+                    (lb) => lb.listEntry === prevFeature.listEntry
                   );
 
                   setSelectedFeature({
-                    name: prevFeature.name,
+                    name: prevFeature.title,
                     imageUrl: prevListedBuilding?.imageUrl ?? undefined,
                     audioUrl: prevAudio?.audioUrl ?? undefined,
-                    listedEntry: prevFeature.reference,
-                    coordinates: [prevFeature.latitude, prevFeature.longitude],
+                    listedEntry: prevFeature.listEntry,
+                    coordinates: [
+                      prevFeature.coordinates[0],
+                      prevFeature.coordinates[1],
+                    ],
                     wikipediaText:
                       prevListedBuilding?.wikipediaText ?? undefined,
                     historicalEnglandText:
                       prevListedBuilding?.historicalEnglandText ?? undefined,
                   });
                   centerMapOnFeature(
-                    prevFeature.latitude,
-                    prevFeature.longitude
+                    prevFeature.coordinates[0],
+                    prevFeature.coordinates[1]
                   );
                 }}
                 className="text-black  px-2 py-1"
@@ -306,26 +328,28 @@ export function Map() {
                   onClick={() => {
                     const currentIndex = markersd.findIndex(
                       (feature) =>
-                        feature.latitude === selectedFeature.coordinates[0] &&
-                        feature.longitude === selectedFeature.coordinates[1]
+                        feature.coordinates[0] ===
+                          selectedFeature.coordinates[0] &&
+                        feature.coordinates[1] ===
+                          selectedFeature.coordinates[1]
                     );
                     const nextIndex = (currentIndex + 1) % markersd.length;
                     const nextFeature = markersd[nextIndex];
-                    const nextListedBuilding = getListedBuildingFileFE().find(
-                      (lb) => lb.listEntry === nextFeature.reference
+                    const nextListedBuilding = allMarkers.find(
+                      (lb) => lb.listEntry === nextFeature.listEntry
                     );
                     const nextAudio = listedBuildingAudio.find(
-                      (lb) => lb.listEntry === nextFeature.reference
+                      (lb) => lb.listEntry === nextFeature.listEntry
                     );
 
                     setSelectedFeature({
-                      name: nextFeature.name,
+                      name: nextFeature.title,
                       imageUrl: nextListedBuilding?.imageUrl ?? undefined,
                       audioUrl: nextAudio?.audioUrl ?? undefined,
-                      listedEntry: nextFeature.reference,
+                      listedEntry: nextFeature.listEntry,
                       coordinates: [
-                        nextFeature.latitude,
-                        nextFeature.longitude,
+                        nextFeature.coordinates[0],
+                        nextFeature.coordinates[1],
                       ],
                       wikipediaText:
                         nextListedBuilding?.wikipediaText ?? undefined,
@@ -333,8 +357,8 @@ export function Map() {
                         nextListedBuilding?.historicalEnglandText ?? undefined,
                     });
                     centerMapOnFeature(
-                      nextFeature.latitude,
-                      nextFeature.longitude
+                      nextFeature.coordinates[0],
+                      nextFeature.coordinates[1]
                     );
                   }}
                   className="text-black  px-2 py-1"
@@ -407,7 +431,7 @@ export function Map() {
               </button>
             </div>
             <Table
-              data={getListedBuildingFileFE().filter((building) =>
+              data={allMarkers.filter((building) =>
                 selectedRoute === "All" || selectedRoute === null
                   ? true
                   : routes

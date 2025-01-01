@@ -1,14 +1,12 @@
-import { z } from "zod";
 import {
+  convertListedBuildingBEToFE,
   ListedBuilding,
-  ListedBuildingArraySchema,
+  ListedBuildingArraySchemaBE,
 } from "../../backendSync/listedBuildingFileTypes";
-
-// ... existing imports ...
 
 const fetchListedBuildings = async () => {
   const response = await fetch(
-    "https://yvrmwbxbhglycwnckely.supabase.co/rest/v1/places?select=id,latitude,longitude",
+    "https://yvrmwbxbhglycwnckely.supabase.co/rest/v1/places",
     {
       headers: {
         apikey:
@@ -22,23 +20,6 @@ const fetchListedBuildings = async () => {
   return data;
 };
 
-export const getListedBuildingFileFE = (): ListedBuilding[] => {
-  const listedBuildings = data;
-  const parseListedBuildings = ListedBuildingArraySchema.parse(listedBuildings);
-  console.log(`parseListedBuildings.length: ${parseListedBuildings.length}`);
-  return parseListedBuildings;
-};
-
-export const ListedBuildingSchemaBE = z.object({
-  latitude: z.number(),
-  longitude: z.number(),
-  id: z.string(),
-});
-
-export const ListedBuildingArraySchemaBE = z.array(ListedBuildingSchemaBE);
-
-export type ListedBuildingBE = z.infer<typeof ListedBuildingSchemaBE>;
-
 export const getListedBuildingFileBE = async () => {
   const data = await fetchListedBuildings();
   const listedBuildings = data;
@@ -48,4 +29,7 @@ export const getListedBuildingFileBE = async () => {
   return parseListedBuildings;
 };
 
-console.log(await getListedBuildingFileBE());
+export const getListedBuildingFileFE = async (): Promise<ListedBuilding[]> => {
+  const listedBuildingsBE = await getListedBuildingFileBE();
+  return listedBuildingsBE.map(convertListedBuildingBEToFE);
+};
