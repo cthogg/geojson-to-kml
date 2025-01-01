@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { ListedBuildingInfo } from "./ListedBuildingInfo";
-import { getAiSummaries } from "./scripts/ai/getAiSummaries";
+import { getAiSummaries } from "./scripts/beSyncListedBuildingSources/getAiSummaries";
 import { getListedBuildingFileBE } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
 import { Table } from "./Table";
 

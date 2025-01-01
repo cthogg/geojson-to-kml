@@ -1,9 +1,9 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { getAiSummaries } from "../beSyncListedBuildingSources/getAiSummaries";
 import { getListedBuildingFileBE } from "../beSyncListedBuildingSources/getListedBuildingFE";
+import { PromptInfo } from "../beSyncListedBuildingSources/listedBuildingAiInformation";
 import { generateMessage } from "./claudeQuery";
-import { getAiSummaries } from "./getAiSummaries";
 import { getPrompts } from "./getPrompts";
-import { PromptInfo } from "./listedBuildingAiInformation";
 const systemPrompt =
   "You are an architectural tour guide, giving a tour to a person with a lay interest in historical architecture. Describe the listed building in this text and images, pointing out specific features on the building to look out for. Please describe the as if you are standing in front of it from the perspective of the image. Do not use phrases like 'Points to decorative details' => but instead phrases like 'look at the decorative details'. Can you start with Welcome to. Please keep the answer to under 200 words.";
 

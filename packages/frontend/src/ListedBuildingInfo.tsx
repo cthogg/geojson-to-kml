@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAiSummaries } from "./scripts/ai/getAiSummaries";
+import { getAiSummaries } from "./scripts/beSyncListedBuildingSources/getAiSummaries";
 
 interface ListedBuildingInfoProps {
   imageUrl: string | null;
