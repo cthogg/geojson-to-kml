@@ -74,5 +74,3 @@ export const generateMessage = async ({
   const msg = await anthropic.messages.create(message);
   return msg.content[0].type === "text" ? msg.content[0].text : "";
 };
-
-// console.log(await generateMessage({ imageUrl, details }));
