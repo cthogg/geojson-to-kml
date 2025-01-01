@@ -32,10 +32,7 @@ const fetchAiSummaries = async () => {
 
 export const getPromptDataBE = async (): Promise<PromptInfoBE[]> => {
   const data = await fetchAiSummaries();
-  console.log("data", data);
   const promptData = data;
-  console.log("promptData", promptData);
   const parsePromptData = PromptInfoSchemaBEArray.parse(promptData);
-  console.log("parsePromptData", parsePromptData);
   return parsePromptData;
 };
