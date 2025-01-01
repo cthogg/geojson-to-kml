@@ -17,6 +17,3 @@ export const ListedBuildingSchemaBE = z.object({
 export type ListedBuilding = z.infer<typeof ListedBuildingSchemaBE>;
 
 export const ListedBuildingArraySchemaBE = z.array(ListedBuildingSchemaBE);
-export type ListedBuildingArrayBE = z.infer<typeof ListedBuildingArraySchemaBE>;
-
-export type ListedBuildingBE = z.infer<typeof ListedBuildingSchemaBE>;

@@ -3,6 +3,7 @@ import {
   ListedBuildingArraySchemaBE,
 } from "../../backendSync/listedBuildingFileTypes";
 
+//FIXME: need to just get the basic id and latitude and longitude. Only on click should get full data.
 const fetchListedBuildings = async () => {
   const response = await fetch(
     "https://yvrmwbxbhglycwnckely.supabase.co/rest/v1/places",
@@ -19,16 +20,10 @@ const fetchListedBuildings = async () => {
   return data;
 };
 
-export const getListedBuildingFileBE = async () => {
+export const getListedBuildingFileBE = async (): Promise<ListedBuilding[]> => {
   const data = await fetchListedBuildings();
   const listedBuildings = data;
   const parseListedBuildings =
     ListedBuildingArraySchemaBE.parse(listedBuildings);
-  console.log(`parseListedBuildings.length: ${parseListedBuildings.length}`);
   return parseListedBuildings;
-};
-
-export const getListedBuildingFileFE = async (): Promise<ListedBuilding[]> => {
-  const listedBuildingsBE = await getListedBuildingFileBE();
-  return listedBuildingsBE;
 };

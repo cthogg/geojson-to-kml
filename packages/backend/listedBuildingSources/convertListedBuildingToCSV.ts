@@ -1,5 +1,5 @@
-import { ListedBuilding } from "../../backendSync/listedBuildingFileTypes";
-import { getListedBuildingFileFE } from "./getListedBuildingFE";
+import { getListedBuildingFile } from "./listedBuildingFile";
+import { ListedBuilding } from "./listedBuildingFileTypes";
 
 function convertToCSV(buildings: ListedBuilding[]): string {
   // Define headers
@@ -45,7 +45,7 @@ function convertToCSV(buildings: ListedBuilding[]): string {
 
 // Read and convert the file
 try {
-  const buildings = getListedBuildingFileFE();
+  const buildings = getListedBuildingFile();
   const csv = convertToCSV(buildings);
 
   // Write to new file

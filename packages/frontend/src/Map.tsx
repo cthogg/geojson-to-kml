@@ -8,9 +8,9 @@ import { useEffect, useState } from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { ListedBuildingInfo } from "./ListedBuildingInfo";
-import { getListedBuildingGeojson } from "./reactMap/listedBuildingsGeojsonTypes";
 import { getPromptData } from "./scripts/ai/getPromptData";
 import { listedBuildingAudio } from "./scripts/ai/listedBuildingAudio";
+import { getListedBuildingFileBE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 import { Table } from "./Table";
 function getAiSummary(listedBuildingNumber: string): string | undefined {
   const promptData = getPromptData();
@@ -67,8 +67,8 @@ export function Map() {
   }, []);
   //FIXME: put query into own file
   const query = useQuery({
-    queryKey: ["listedBuildingsGeojson"],
-    queryFn: getListedBuildingGeojson,
+    queryKey: ["getListedBuildingFileBE"],
+    queryFn: getListedBuildingFileBE,
   });
 
   const allMarkers = query.data ?? [];

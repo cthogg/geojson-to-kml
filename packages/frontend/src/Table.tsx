@@ -8,7 +8,7 @@ import {
   ModuleRegistry,
   TextFilterModule,
 } from "ag-grid-community";
-import { getListedBuildingGeojson } from "./reactMap/listedBuildingsGeojsonTypes";
+import { getListedBuildingFileBE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 
 ModuleRegistry.registerModules([ClientSideRowModelModule, TextFilterModule]);
 
@@ -103,8 +103,8 @@ export const TableWrapper = ({
   onRowClick: (params: unknown) => void;
 }) => {
   const query = useQuery({
-    queryKey: ["listedBuildingsGeojson"],
-    queryFn: getListedBuildingGeojson,
+    queryKey: ["getListedBuildingFileBE"],
+    queryFn: getListedBuildingFileBE,
   });
 
   const listedBuildings = query.data ?? [];
