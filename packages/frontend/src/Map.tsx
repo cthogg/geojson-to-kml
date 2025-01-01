@@ -157,11 +157,9 @@ export function Map() {
               selectedFeature={selectedFeature}
               isExpanded={isExpanded}
               isSpeaking={isSpeaking}
-              markersd={markersd}
               setSelectedFeature={setSelectedFeature}
               setIsExpanded={setIsExpanded}
               setIsSpeaking={setIsSpeaking}
-              centerMapOnFeature={centerMapOnFeature}
             />
           </React.Suspense>
         </div>

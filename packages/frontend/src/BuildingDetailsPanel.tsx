@@ -10,22 +10,18 @@ interface BuildingDetailsPanelProps {
   selectedFeature: ListedBuilding;
   isExpanded: boolean;
   isSpeaking: boolean;
-  markersd: ListedBuilding[];
   setSelectedFeature: (feature: ListedBuilding | null) => void;
   setIsExpanded: (expanded: boolean) => void;
   setIsSpeaking: (speaking: boolean) => void;
-  centerMapOnFeature: (latitude: number, longitude: number) => void;
 }
 
 export function BuildingDetailsPanel({
   selectedFeature,
   isExpanded,
   isSpeaking,
-  markersd,
   setSelectedFeature,
   setIsExpanded,
   setIsSpeaking,
-  centerMapOnFeature,
 }: BuildingDetailsPanelProps) {
   const query = useSuspenseQuery({
     queryKey: ["getSingleListedBuilding", selectedFeature.list_entry],
@@ -42,25 +38,6 @@ export function BuildingDetailsPanel({
   return (
     <div className="relative z-10 p-4 backdrop-blur-sm">
       <div className="flex justify-between items-start text-black">
-        <button
-          onClick={() => {
-            const currentIndex = markersd.findIndex(
-              (feature) =>
-                feature.latitude === selectedFeature2.latitude &&
-                feature.longitude === selectedFeature2.longitude
-            );
-            const prevIndex =
-              (currentIndex - 1 + markersd.length) % markersd.length;
-            const prevFeature = markersd[prevIndex];
-
-            setSelectedFeature(prevFeature);
-            centerMapOnFeature(prevFeature.latitude, prevFeature.longitude);
-          }}
-          className="text-black px-2 py-1"
-        >
-          ←
-        </button>
-
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
           {changeCase.capitalCase(selectedFeature2.title)}
         </h2>
@@ -71,23 +48,6 @@ export function BuildingDetailsPanel({
             className="text-black px-2 py-1"
           >
             {isExpanded ? "↓" : "↑"}
-          </button>
-          <button
-            onClick={() => {
-              const currentIndex = markersd.findIndex(
-                (feature) =>
-                  feature.latitude === selectedFeature2.latitude &&
-                  feature.longitude === selectedFeature2.longitude
-              );
-              const nextIndex = (currentIndex + 1) % markersd.length;
-              const nextFeature = markersd[nextIndex];
-
-              setSelectedFeature(nextFeature);
-              centerMapOnFeature(nextFeature.latitude, nextFeature.longitude);
-            }}
-            className="text-black px-2 py-1"
-          >
-            →
           </button>
           <button
             onClick={() => setSelectedFeature(null)}
