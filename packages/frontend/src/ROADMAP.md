@@ -5,3 +5,4 @@
 5. Get blue plaques on it as well.
 6. Get cheaper audio => perhaps from Amazon Polly or Google TTS or Unreal Speech. Elevenlabs is the best but very expensive.
 7. In the AI summary, link to not the list entry but the placeId.
+8. Make an easier way to get al of the points of interest in a particular location. Using the bounding boxes.
