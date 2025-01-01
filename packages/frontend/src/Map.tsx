@@ -9,7 +9,6 @@ import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { ListedBuildingInfo } from "./ListedBuildingInfo";
 import { getPromptData } from "./scripts/ai/getPromptData";
-import { listedBuildingAudio } from "./scripts/ai/listedBuildingAudio";
 import { getListedBuildingFileBE } from "./scripts/listedBuildingSources/getListedBuildingFE";
 import { Table } from "./Table";
 function getAiSummary(listedBuildingNumber: string): string | undefined {
@@ -17,7 +16,7 @@ function getAiSummary(listedBuildingNumber: string): string | undefined {
   const prompt = promptData.find(
     (prompt) => prompt.list_entry === listedBuildingNumber
   );
-  return prompt?.aiGeneratedText ?? undefined;
+  return prompt?.ai_generated_text ?? undefined;
 }
 
 const routes = [
@@ -220,9 +219,6 @@ export function Map() {
             const listedBuilding = allMarkers.find(
               (lb) => lb.list_entry === feature.list_entry
             );
-            const audio = listedBuildingAudio.find(
-              (lb) => lb.list_entry === feature.list_entry
-            );
             const isSelected =
               selectedFeature?.latitude === feature.latitude &&
               selectedFeature?.longitude === feature.longitude;
@@ -237,7 +233,6 @@ export function Map() {
                     setSelectedFeature({
                       name: feature.title,
                       imageUrl: listedBuilding?.image_url ?? undefined,
-                      audioUrl: audio?.audioUrl ?? undefined,
                       listedEntry: feature.list_entry,
                       latitude: feature.latitude,
                       longitude: feature.longitude,
@@ -276,14 +271,10 @@ export function Map() {
                   const prevListedBuilding = allMarkers.find(
                     (lb) => lb.list_entry === prevFeature.list_entry
                   );
-                  const prevAudio = listedBuildingAudio.find(
-                    (lb) => lb.list_entry === prevFeature.list_entry
-                  );
 
                   setSelectedFeature({
                     name: prevFeature.title,
                     imageUrl: prevListedBuilding?.image_url ?? undefined,
-                    audioUrl: prevAudio?.audioUrl ?? undefined,
                     listedEntry: prevFeature.list_entry,
                     latitude: prevFeature.latitude,
                     longitude: prevFeature.longitude,
@@ -325,14 +316,10 @@ export function Map() {
                     const nextListedBuilding = allMarkers.find(
                       (lb) => lb.list_entry === nextFeature.list_entry
                     );
-                    const nextAudio = listedBuildingAudio.find(
-                      (lb) => lb.list_entry === nextFeature.list_entry
-                    );
 
                     setSelectedFeature({
                       name: nextFeature.title,
                       imageUrl: nextListedBuilding?.image_url ?? undefined,
-                      audioUrl: nextAudio?.audioUrl ?? undefined,
                       listedEntry: nextFeature.list_entry,
                       latitude: nextFeature.latitude,
                       longitude: nextFeature.longitude,

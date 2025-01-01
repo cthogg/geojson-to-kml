@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const ListedBuildingSchemaBE = z.object({
+export const ListedBuildingSchema = z.object({
   latitude: z.number(),
   longitude: z.number(),
   id: z.string(),
@@ -14,6 +14,6 @@ export const ListedBuildingSchemaBE = z.object({
   wikipedia_text: z.string().nullable(),
 });
 
-export type ListedBuilding = z.infer<typeof ListedBuildingSchemaBE>;
+export type ListedBuilding = z.infer<typeof ListedBuildingSchema>;
 
-export const ListedBuildingArraySchemaBE = z.array(ListedBuildingSchemaBE);
+export const ListedBuildingArraySchema = z.array(ListedBuildingSchema);

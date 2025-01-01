@@ -12,7 +12,7 @@ function getAiSummary(listedBuildingNumber: string): string | undefined {
   const prompt = promptData.find(
     (prompt) => prompt.list_entry === listedBuildingNumber
   );
-  return prompt?.aiGeneratedText ?? undefined;
+  return prompt?.ai_generated_text ?? undefined;
 }
 
 export const ListedBuildingInfo = ({

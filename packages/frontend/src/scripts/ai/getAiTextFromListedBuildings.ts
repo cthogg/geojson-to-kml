@@ -55,7 +55,7 @@ export const getAiTextFromListedBuildings = async () => {
               model: model,
               list_entry: building.list_entry,
               audioUrl: null,
-              aiGeneratedText: message,
+              ai_generated_text: message,
             } as PromptInfo,
           };
         } catch (error) {

@@ -1,6 +1,4 @@
-import { PromptInfoFE } from "./listedBuildingAiInformation";
-
-export const listedBuildingAudio: PromptInfoFE[] = [
+export const listedBuildingAudio: unknown[] = [
   {
     list_entry: "1065590",
     audioUrl:

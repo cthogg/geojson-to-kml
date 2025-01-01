@@ -1,6 +1,6 @@
 import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import { ListedBuilding } from "./backendSync/listedBuildingFileTypes";
+import { ListedBuilding } from "./scripts/listedBuildingSources/listedBuildingFileTypes";
 
 import { useQuery } from "@tanstack/react-query";
 import {
