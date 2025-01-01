@@ -76,7 +76,7 @@ export const Table = ({ data, onRowClick }: TableProps) => {
 export const TableWrapper = ({
   onRowClick,
 }: {
-  onRowClick: (params: unknown) => void;
+  onRowClick: (feature: ListedBuilding) => void;
 }) => {
   const query = useQuery({
     queryKey: ["getListedBuildingFileBE"],
@@ -84,9 +84,5 @@ export const TableWrapper = ({
   });
 
   const listedBuildings = query.data ?? [];
-  return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <Table data={listedBuildings} onRowClick={onRowClick} />
-    </div>
-  );
+  return <Table data={listedBuildings} onRowClick={onRowClick} />;
 };

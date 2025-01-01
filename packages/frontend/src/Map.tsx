@@ -11,7 +11,7 @@ import { ListedBuildingInfo } from "./ListedBuildingInfo";
 import { getAiSummaries } from "./scripts/beSyncListedBuildingSources/getAiSummaries";
 import { getListedBuildingFileBE } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
 import { ListedBuilding } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
-import { Table } from "./Table";
+import { TableWrapper } from "./Table";
 
 export function Map() {
   // Add map ref to control map programmatically
@@ -271,7 +271,7 @@ export function Map() {
                 ✕
               </button>
             </div>
-            <Table data={allMarkers} onRowClick={handleTableRowClick} />
+            <TableWrapper onRowClick={handleTableRowClick} />
           </div>
         </div>
       )}
