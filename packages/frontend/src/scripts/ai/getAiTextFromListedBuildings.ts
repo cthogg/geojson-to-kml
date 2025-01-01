@@ -14,16 +14,18 @@ export const getAiTextFromListedBuildings = async () => {
   const prompts = await getPrompts();
   const buildings = await getListedBuildingFileBE();
   const promptDb = await getAiSummaries();
-  const filteredPromptDb = buildings.filter(
-    (building) =>
-      !promptDb.some(
-        (prompt) =>
-          prompt.list_entry === building.list_entry &&
-          prompts.find((p) => p.id === prompt.prompt)?.prompt ===
-            systemPrompt &&
-          prompt.model === model
-      )
-  );
+  const filteredPromptDb = buildings
+    .filter(
+      (building) =>
+        !promptDb.some(
+          (prompt) =>
+            prompt.list_entry === building.list_entry &&
+            prompts.find((p) => p.id === prompt.prompt)?.prompt ===
+              systemPrompt &&
+            prompt.model === model
+        )
+    )
+    .slice(0, 1);
   console.log(
     `Filterting out ${buildings.length - filteredPromptDb.length} buildings`
   );
@@ -104,7 +106,7 @@ export const getAiTextFromListedBuildings = async () => {
     }
 
     // Write to file after each batch
-    const newPromptDb: PromptInfo[] = [...promptDb, ...successfulResults];
+    const newPromptDb: PromptInfo[] = [...successfulResults];
     await Bun.write("promptData.json", JSON.stringify(newPromptDb));
 
     // Update promptDb for next batch
