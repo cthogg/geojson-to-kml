@@ -1,6 +1,6 @@
 import { z } from "zod";
+import { ListedBuilding } from "./beSyncListedBuildingSources/listedBuildingFileTypes";
 import { getTextOfListedBuilding } from "./fetchTextListedBuildingHistoricEngland";
-import { ListedBuilding } from "./listedBuildingFileTypes";
 import {
   WikidataResponse,
   WikidataResponseSchema,
@@ -17,6 +17,9 @@ const getGradeOfListedBuilding = (
   }
   if (url?.includes("Q15700818")) {
     return "I";
+  }
+  if (url?.includes("Q15700831")) {
+    return "II*";
   }
   return "Grade Unknown";
 };
@@ -67,17 +70,19 @@ export async function fetchListedBuilding(
   const building = validatedData.results.bindings[0];
 
   const listedBuilding: ListedBuilding = {
+    id: "manual-id",
     title: building.itemLabel.value,
     type: "Listed Building", // Default value
     grade: getGradeOfListedBuilding(building.heritageDesignation),
-    listEntry: listedBuildingNumber,
-    wikidataEntry: building.item.value,
-    coordinates: parseCoordinates(building.coordinateLocation) ?? null,
-    imageUrl: building.image?.value ?? null,
-    historicalEnglandText: await getTextOfListedBuilding({
+    list_entry: listedBuildingNumber,
+    wikidata_entry: building.item.value,
+    latitude: parseCoordinates(building.coordinateLocation)?.[0] ?? 0,
+    longitude: parseCoordinates(building.coordinateLocation)?.[1] ?? 0,
+    image_url: building.image?.value ?? null,
+    historical_england_text: await getTextOfListedBuilding({
       listedBuildingNumber: listedBuildingNumber,
     }),
-    wikipediaText: building.wikipediaTitle?.value
+    wikipedia_text: building.wikipediaTitle?.value
       ? await fetchWikipediaText(building.wikipediaTitle.value)
       : null,
   };

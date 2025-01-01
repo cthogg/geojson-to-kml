@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { getListedBuildingFileBE } from "../listedBuildingSources/getListedBuildingFE";
+import { getListedBuildingFileBE } from "../beSyncListedBuildingSources/getListedBuildingFE";
 import { generateMessage } from "./claudeQuery";
 import { getAiSummaries } from "./getAiSummaries";
 import { PromptInfo } from "./listedBuildingAiInformation";

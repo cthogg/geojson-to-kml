@@ -1,5 +1,5 @@
-import { getListedBuildingFile } from "./listedBuildingFile";
-import { ListedBuilding } from "./listedBuildingFileTypes";
+import { ListedBuilding } from "./beSyncListedBuildingSources/listedBuildingFileTypes";
+import { getListedBuildingFile } from "./getListedBuilding";
 
 function convertToCSV(buildings: ListedBuilding[]): string {
   // Define headers
@@ -23,16 +23,16 @@ function convertToCSV(buildings: ListedBuilding[]): string {
       `"${building.title.replace(/"/g, '""')}"`,
       `"${building.type.replace(/"/g, '""')}"`,
       `"${building.grade.replace(/"/g, '""')}"`,
-      building.listEntry,
-      building.wikidataEntry,
-      building.coordinates?.[0] ?? "",
-      building.coordinates?.[1] ?? "",
-      building.imageUrl ? `"${building.imageUrl.replace(/"/g, '""')}"` : "",
-      building.historicalEnglandText
-        ? `"${building.historicalEnglandText.replace(/"/g, '""')}"`
+      building.list_entry,
+      building.wikidata_entry,
+      building.latitude,
+      building.longitude,
+      building.image_url ? `"${building.image_url.replace(/"/g, '""')}"` : "",
+      building.historical_england_text
+        ? `"${building.historical_england_text.replace(/"/g, '""')}"`
         : "",
-      building.wikipediaText
-        ? `"${building.wikipediaText.replace(/"/g, '""')}"`
+      building.wikipedia_text
+        ? `"${building.wikipedia_text.replace(/"/g, '""')}"`
         : "",
     ];
 
@@ -44,6 +44,7 @@ function convertToCSV(buildings: ListedBuilding[]): string {
 }
 
 try {
+  //FIXME: make this the frontend file.
   const buildings = await getListedBuildingFile();
   const buildingsToTry = buildings;
   const csv = convertToCSV(buildingsToTry);

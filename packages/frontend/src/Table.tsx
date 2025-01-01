@@ -1,6 +1,6 @@
 import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import { ListedBuilding } from "./scripts/listedBuildingSources/listedBuildingFileTypes";
+import { ListedBuilding } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
 
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -8,7 +8,7 @@ import {
   ModuleRegistry,
   TextFilterModule,
 } from "ag-grid-community";
-import { getListedBuildingFileBE } from "./scripts/listedBuildingSources/getListedBuildingFE";
+import { getListedBuildingFileBE } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
 
 ModuleRegistry.registerModules([ClientSideRowModelModule, TextFilterModule]);
 

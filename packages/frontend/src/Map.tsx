@@ -9,7 +9,7 @@ import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { ListedBuildingInfo } from "./ListedBuildingInfo";
 import { getAiSummaries } from "./scripts/ai/getAiSummaries";
-import { getListedBuildingFileBE } from "./scripts/listedBuildingSources/getListedBuildingFE";
+import { getListedBuildingFileBE } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
 import { Table } from "./Table";
 
 const routes = [
