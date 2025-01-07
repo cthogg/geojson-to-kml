@@ -12,10 +12,6 @@ export const ListedBuildingSchema = z.object({
   image_url: z.string().nullable(),
 });
 
-export type ListedBuilding = z.infer<typeof ListedBuildingSchema>;
-
-export const ListedBuildingArraySchema = z.array(ListedBuildingSchema);
-
 export const ListedBuildingMinimalSchema = ListedBuildingSchema.pick({
   latitude: true,
   longitude: true,
