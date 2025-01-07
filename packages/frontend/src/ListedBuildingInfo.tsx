@@ -35,15 +35,11 @@ function compressImageUrl(imageUrl: string): string {
 
 interface ListedBuildingInfoProps {
   imageUrl: string | null;
-  wikipediaText: string | null;
-  historicalEnglandText: string | null;
   listedBuildingNumber: string;
 }
 
 export const ListedBuildingInfo = ({
   imageUrl,
-  wikipediaText,
-  historicalEnglandText,
   listedBuildingNumber,
 }: ListedBuildingInfoProps) => {
   const promptDataQuery = useQuery({
@@ -95,43 +91,6 @@ export const ListedBuildingInfo = ({
                 </summary>
                 <p className="text-gray-700 leading-relaxed mt-2">
                   {aiSummary}
-                </p>
-              </details>
-            </div>
-          )}
-
-          {/* Description */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <details className="group">
-              <summary className="text-xl font-semibold mb-4 cursor-pointer list-none">
-                <span className="ml-2 mr-2 text-gray-500 group-open:hidden inline-block">
-                  ►
-                </span>
-                <span className="ml-2 mr-2 text-gray-500 hidden group-open:inline-block">
-                  ▼
-                </span>
-                Wikipedia text
-              </summary>
-              <p className="text-gray-700 leading-relaxed mt-2">
-                {wikipediaText}
-              </p>
-            </details>
-          </div>
-
-          {historicalEnglandText && (
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <details className="group">
-                <summary className="text-xl font-semibold mb-4 cursor-pointer list-none">
-                  <span className="ml-2 mr-2 text-gray-500 group-open:hidden inline-block">
-                    ►
-                  </span>
-                  <span className="ml-2 mr-2 text-gray-500 hidden group-open:inline-block">
-                    ▼
-                  </span>
-                  Historical England text
-                </summary>
-                <p className="text-gray-700 leading-relaxed mt-2">
-                  {historicalEnglandText}
                 </p>
               </details>
             </div>

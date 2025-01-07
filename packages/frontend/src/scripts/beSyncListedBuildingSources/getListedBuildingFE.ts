@@ -7,12 +7,15 @@ import {
 import { SUPABASE_API_KEY, SUPABASE_URL } from "./supabaseApiKey";
 
 const fetchListedBuildings = async () => {
-  const response = await fetch(`${SUPABASE_URL}/places`, {
-    headers: {
-      apikey: SUPABASE_API_KEY,
-      Authorization: `Bearer ${SUPABASE_API_KEY}`,
-    },
-  });
+  const response = await fetch(
+    `${SUPABASE_URL}/places?select=id,title,latitude,longitude,type,grade,list_entry,wikidata_entry,image_url`,
+    {
+      headers: {
+        apikey: SUPABASE_API_KEY,
+        Authorization: `Bearer ${SUPABASE_API_KEY}`,
+      },
+    }
+  );
   const data = await response.json();
   return data;
 };

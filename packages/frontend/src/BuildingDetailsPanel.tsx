@@ -84,8 +84,6 @@ export function BuildingDetailsPanel({
       {isExpanded && (
         <ListedBuildingInfo
           imageUrl={selectedFeature2.image_url ?? null}
-          wikipediaText={selectedFeature2.wikipedia_text ?? ""}
-          historicalEnglandText={selectedFeature2.historical_england_text ?? ""}
           listedBuildingNumber={selectedFeature2.list_entry}
         />
       )}
