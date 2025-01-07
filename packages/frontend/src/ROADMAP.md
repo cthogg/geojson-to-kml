@@ -3,7 +3,7 @@
 3. Get all Grade II\* buildings in a smaller area.
 4. Get all wiki map details too (so get everywhere where there is a wikipedia entry).
 5. Get blue plaques on it as well.
-6. Get cheaper audio => perhaps from Amazon Polly or Google TTS or Unreal Speech. Elevenlabs is the best but very expensive.
+6. Get cheaper audio => perhaps from Amazon Polly or Google TTS or Unreal Speech or play.ht. Elevenlabs is the best but very expensive.
 7. In the AI summary, link to not the list entry but the placeId.
 8. Make an easier way to get al of the points of interest in a particular location. Using the bounding boxes.
 9. Remove wikiepdia and historical england text and the expand/collapse. Instead find a way to show the image as a thumbnail and on click show just the full image.
