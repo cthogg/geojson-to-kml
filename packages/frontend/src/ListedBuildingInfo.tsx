@@ -3,7 +3,6 @@
  * Returns original URL if not a Wikimedia image
  */
 function compressImageUrl(imageUrl: string): string {
-  console.log("imageUrl", imageUrl);
   // Check if it's a Wikimedia image
   if (!imageUrl.includes("wikimedia.org")) {
     return imageUrl;

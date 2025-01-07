@@ -8,7 +8,7 @@ import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { BuildingDetailsPanel } from "./BuildingDetailsPanel";
 import { getListedBuildingsMinimal } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
-import { ListedBuildingMinimal } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
+import { ListedBuilding } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
 import { TableWrapper } from "./Table";
 
 export function Map() {
@@ -16,8 +16,9 @@ export function Map() {
   const [map, setMap] = useState<L.Map | null>(null);
 
   // Modify selected feature state to include coordinates
-  const [selectedFeature, setSelectedFeature] =
-    useState<ListedBuildingMinimal | null>(null);
+  const [selectedFeature, setSelectedFeature] = useState<ListedBuilding | null>(
+    null
+  );
   // Set up default icon for Leaflet
   useEffect(() => {
     const DefaultIcon = L.icon({
@@ -29,7 +30,6 @@ export function Map() {
     L.Marker.prototype.options.icon = DefaultIcon;
   }, []);
 
-  //FIXME: put query into own file
   const query = useQuery({
     queryKey: ["getListedBuildingsMinimal"],
     queryFn: getListedBuildingsMinimal,
@@ -70,7 +70,7 @@ export function Map() {
     null
   );
 
-  const handleTableRowClick = (feature: ListedBuildingMinimal) => {
+  const handleTableRowClick = (feature: ListedBuilding) => {
     setSelectedFeature(feature);
     centerMapOnFeature(feature.latitude, feature.longitude);
     setIsTableModalOpen(false); // Optionally close the modal after selection

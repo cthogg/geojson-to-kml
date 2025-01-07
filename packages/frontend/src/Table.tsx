@@ -1,6 +1,6 @@
 import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import { ListedBuildingMinimal } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
+import { ListedBuilding } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
 
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -13,12 +13,12 @@ import { getListedBuildingsMinimal } from "./scripts/beSyncListedBuildingSources
 ModuleRegistry.registerModules([ClientSideRowModelModule, TextFilterModule]);
 
 interface TableProps {
-  data: ListedBuildingMinimal[];
-  onRowClick: (feature: ListedBuildingMinimal) => void;
+  data: ListedBuilding[];
+  onRowClick: (feature: ListedBuilding) => void;
 }
 
 export const Table = ({ data, onRowClick }: TableProps) => {
-  const columnDefs: ColDef<ListedBuildingMinimal>[] = [
+  const columnDefs: ColDef<ListedBuilding>[] = [
     {
       field: "title",
       headerName: "Title",
@@ -57,7 +57,7 @@ export const Table = ({ data, onRowClick }: TableProps) => {
         paginationPageSize={20}
         rowHeight={170}
         onRowClicked={(event) => {
-          const row = event.data as ListedBuildingMinimal;
+          const row = event.data as ListedBuilding;
           onRowClick(row);
         }}
       />
@@ -68,7 +68,7 @@ export const Table = ({ data, onRowClick }: TableProps) => {
 export const TableWrapper = ({
   onRowClick,
 }: {
-  onRowClick: (feature: ListedBuildingMinimal) => void;
+  onRowClick: (feature: ListedBuilding) => void;
 }) => {
   const query = useQuery({
     queryKey: ["getListedBuildingMinimal"],

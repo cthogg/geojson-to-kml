@@ -10,16 +10,6 @@ export const ListedBuildingSchema = z.object({
   list_entry: z.string(),
   wikidata_entry: z.string(),
   image_url: z.string().nullable(),
-});
-
-export const ListedBuildingMinimalSchema = ListedBuildingSchema.pick({
-  latitude: true,
-  longitude: true,
-  id: true,
-  title: true,
-  image_url: true,
-  list_entry: true,
-}).extend({
   ai_summaries: z.array(
     z.object({
       ai_summary: z.string(),
@@ -27,7 +17,5 @@ export const ListedBuildingMinimalSchema = ListedBuildingSchema.pick({
   ),
 });
 
-export type ListedBuildingMinimal = z.infer<typeof ListedBuildingMinimalSchema>;
-export const ListedBuildingMinimalArraySchema = z.array(
-  ListedBuildingMinimalSchema
-);
+export type ListedBuilding = z.infer<typeof ListedBuildingSchema>;
+export const ListedBuildingArraySchema = z.array(ListedBuildingSchema);

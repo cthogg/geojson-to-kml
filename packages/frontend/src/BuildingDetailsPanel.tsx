@@ -1,12 +1,12 @@
 import * as changeCase from "change-case";
 import { ListedBuildingInfo } from "./ListedBuildingInfo";
-import { ListedBuildingMinimal } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
+import { ListedBuilding } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
 
 interface BuildingDetailsPanelProps {
-  selectedFeature: ListedBuildingMinimal;
+  selectedFeature: ListedBuilding;
   isExpanded: boolean;
   isSpeaking: boolean;
-  setSelectedFeature: (feature: ListedBuildingMinimal | null) => void;
+  setSelectedFeature: (feature: ListedBuilding | null) => void;
   setIsExpanded: (expanded: boolean) => void;
   setIsSpeaking: (speaking: boolean) => void;
 }
