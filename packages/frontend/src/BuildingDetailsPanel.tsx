@@ -1,5 +1,4 @@
 import * as changeCase from "change-case";
-import { ListedBuildingInfo } from "./ListedBuildingInfo";
 import { ListedBuilding } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
 
 interface BuildingDetailsPanelProps {
@@ -16,7 +15,6 @@ export function BuildingDetailsPanel({
   isExpanded,
   isSpeaking,
   setSelectedFeature,
-  setIsExpanded,
   setIsSpeaking,
 }: BuildingDetailsPanelProps) {
   return (
@@ -28,12 +26,6 @@ export function BuildingDetailsPanel({
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="text-black px-2 py-1"
-          >
-            {isExpanded ? "↓" : "↑"}
-          </button>
-          <button
             onClick={() => setSelectedFeature(null)}
             className="text-black ml-2"
           >
@@ -42,6 +34,22 @@ export function BuildingDetailsPanel({
         </div>
       </div>
       <div className="flex flex-col gap-4">
+        <div className="flex gap-4">
+          {selectedFeature.image_url && (
+            <div className="w-1/3">
+              <img
+                src={selectedFeature.image_url}
+                alt={selectedFeature.title}
+                className="max-h-48 max-w-full h-auto object-contain rounded"
+              />
+            </div>
+          )}
+          <div className="flex-1">
+            <p className="text-sm text-gray-700">
+              {selectedFeature.ai_summaries[0].ai_summary}
+            </p>
+          </div>
+        </div>
         <div className="flex gap-2">
           <button
             onClick={() => {
@@ -64,13 +72,6 @@ export function BuildingDetailsPanel({
           </button>
         </div>
       </div>
-      {isExpanded && (
-        <ListedBuildingInfo
-          imageUrl={selectedFeature.image_url ?? null}
-          listedBuildingNumber={selectedFeature.list_entry}
-          aiSummary={selectedFeature.ai_summaries[0].ai_summary ?? ""}
-        />
-      )}
     </div>
   );
 }
