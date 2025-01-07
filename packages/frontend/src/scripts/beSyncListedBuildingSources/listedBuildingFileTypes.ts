@@ -7,7 +7,6 @@ export const ListedBuildingSchema = z
     id: z.string(),
     title: z.string(),
     list_entry: z.string(),
-    blabla: z.string(),
     image_url: z.string().nullable(),
     ai_summaries: z.array(
       z.object({

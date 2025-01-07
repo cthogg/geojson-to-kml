@@ -73,6 +73,7 @@ export const TableWrapper = ({
   const query = useQuery({
     queryKey: ["getListedBuildingMinimal"],
     queryFn: getListedBuildingsMinimal,
+    throwOnError: true,
   });
 
   const listedBuildings = query.data ?? [];
