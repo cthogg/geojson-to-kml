@@ -68,6 +68,7 @@ export function BuildingDetailsPanel({
         <ListedBuildingInfo
           imageUrl={selectedFeature.image_url ?? null}
           listedBuildingNumber={selectedFeature.list_entry}
+          aiSummary={selectedFeature.ai_summaries[0].ai_summary ?? ""}
         />
       )}
     </div>

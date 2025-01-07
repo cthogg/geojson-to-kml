@@ -7,7 +7,6 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { BuildingDetailsPanel } from "./BuildingDetailsPanel";
-import { getAiSummaries } from "./scripts/beSyncListedBuildingSources/getAiSummaries";
 import { getListedBuildingsMinimal } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
 import { ListedBuildingMinimal } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
 import { TableWrapper } from "./Table";
@@ -34,11 +33,6 @@ export function Map() {
   const query = useQuery({
     queryKey: ["getListedBuildingsMinimal"],
     queryFn: getListedBuildingsMinimal,
-  });
-
-  const promptDataQuery = useQuery({
-    queryKey: ["getAiSummaries"],
-    queryFn: getAiSummaries,
   });
 
   const allMarkers = query.data ?? [];
@@ -102,7 +96,7 @@ export function Map() {
     ) : null;
   }
 
-  if (query.isLoading || promptDataQuery.isLoading) {
+  if (query.isLoading) {
     return (
       <div className="h-[100dvh] w-[100dvw] flex flex-col relative">
         <div className="flex justify-center items-center h-full">

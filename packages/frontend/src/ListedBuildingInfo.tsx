@@ -1,6 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
-import { getAiSummaries } from "./scripts/beSyncListedBuildingSources/getAiSummaries";
-
 /**
  * Compresses Wikimedia image URLs to a smaller size (320px width)
  * Returns original URL if not a Wikimedia image
@@ -36,28 +33,14 @@ function compressImageUrl(imageUrl: string): string {
 interface ListedBuildingInfoProps {
   imageUrl: string | null;
   listedBuildingNumber: string;
+  aiSummary: string;
 }
 
 export const ListedBuildingInfo = ({
   imageUrl,
   listedBuildingNumber,
+  aiSummary,
 }: ListedBuildingInfoProps) => {
-  const promptDataQuery = useQuery({
-    queryKey: ["getAiSummaries"],
-    queryFn: getAiSummaries,
-  });
-
-  const promptData = promptDataQuery.data ?? [];
-
-  function getAiSummary(listedBuildingNumber: string): string | undefined {
-    const prompt = promptData.find(
-      (prompt) => prompt.list_entry === listedBuildingNumber
-    );
-    return prompt?.ai_summary ?? undefined;
-  }
-
-  const aiSummary = getAiSummary(listedBuildingNumber);
-
   return (
     <>
       {/* Main Content - add padding-top to account for fixed header */}
