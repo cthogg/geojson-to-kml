@@ -30,7 +30,7 @@ export function BuildingDetailsPanel({
           </button>
         </div>
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
         <div className="flex gap-4">
           {selectedFeature.image_url && (
             <div className="w-1/3">
@@ -42,7 +42,7 @@ export function BuildingDetailsPanel({
             </div>
           )}
           <div className="flex-1">
-            <p className="text-sm text-gray-700">
+            <p className="text-sm text-gray-700 max-h-[20vh] overflow-y-auto pr-2">
               {selectedFeature.ai_summaries[0].ai_summary}
             </p>
           </div>
