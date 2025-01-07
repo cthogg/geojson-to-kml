@@ -1,4 +1,6 @@
 import * as changeCase from "change-case";
+import { useState } from "react";
+import { createPortal } from "react-dom";
 import { ListedBuilding } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
 
 interface BuildingDetailsPanelProps {
@@ -14,6 +16,8 @@ export function BuildingDetailsPanel({
   setSelectedFeature,
   setIsSpeaking,
 }: BuildingDetailsPanelProps) {
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+
   return (
     <div className="relative z-10 p-4 backdrop-blur-sm">
       <div className="flex justify-between items-start text-black">
@@ -37,7 +41,8 @@ export function BuildingDetailsPanel({
               <img
                 src={selectedFeature.image_url}
                 alt={selectedFeature.title}
-                className="max-h-48 max-w-full h-auto object-contain rounded"
+                className="max-h-48 max-w-full h-auto object-contain rounded cursor-pointer hover:opacity-90 transition-opacity"
+                onClick={() => setIsImageModalOpen(true)}
               />
             </div>
           )}
@@ -69,6 +74,25 @@ export function BuildingDetailsPanel({
           </button>
         </div>
       </div>
+
+      {/* Image Modal */}
+      {isImageModalOpen &&
+        selectedFeature.image_url &&
+        createPortal(
+          <div
+            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[9999]"
+            onClick={() => setIsImageModalOpen(false)}
+          >
+            <div className="max-w-[90vw] max-h-[90vh]">
+              <img
+                src={selectedFeature.image_url}
+                alt={selectedFeature.title}
+                className="max-w-full max-h-[90vh] object-contain"
+              />
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
