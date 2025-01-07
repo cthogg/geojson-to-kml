@@ -1,6 +1,6 @@
 import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import { ListedBuilding } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
+import { ListedBuildingMinimal } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
 
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -8,17 +8,17 @@ import {
   ModuleRegistry,
   TextFilterModule,
 } from "ag-grid-community";
-import { getListedBuildingFileBE } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
+import { getListedBuildingsMinimal } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
 
 ModuleRegistry.registerModules([ClientSideRowModelModule, TextFilterModule]);
 
 interface TableProps {
-  data: ListedBuilding[];
-  onRowClick: (feature: ListedBuilding) => void;
+  data: ListedBuildingMinimal[];
+  onRowClick: (feature: ListedBuildingMinimal) => void;
 }
 
 export const Table = ({ data, onRowClick }: TableProps) => {
-  const columnDefs: ColDef<ListedBuilding>[] = [
+  const columnDefs: ColDef<ListedBuildingMinimal>[] = [
     {
       field: "title",
       headerName: "Title",
@@ -37,10 +37,7 @@ export const Table = ({ data, onRowClick }: TableProps) => {
           />
         ) : null,
     },
-    { field: "type", headerName: "Type" },
-    { field: "grade", headerName: "Grade" },
     { field: "list_entry", headerName: "List Entry", filter: true },
-    { field: "wikidata_entry", headerName: "Wikidata Entry" },
     {
       field: "latitude",
       headerName: "Latitude",
@@ -49,11 +46,6 @@ export const Table = ({ data, onRowClick }: TableProps) => {
       field: "longitude",
       headerName: "Longitude",
     },
-    {
-      field: "historical_england_text",
-      headerName: "Historical England Text",
-    },
-    { field: "wikipedia_text", headerName: "Wikipedia Text" },
   ];
 
   return (
@@ -65,7 +57,7 @@ export const Table = ({ data, onRowClick }: TableProps) => {
         paginationPageSize={20}
         rowHeight={170}
         onRowClicked={(event) => {
-          const row = event.data as ListedBuilding;
+          const row = event.data as ListedBuildingMinimal;
           onRowClick(row);
         }}
       />
@@ -76,11 +68,11 @@ export const Table = ({ data, onRowClick }: TableProps) => {
 export const TableWrapper = ({
   onRowClick,
 }: {
-  onRowClick: (feature: ListedBuilding) => void;
+  onRowClick: (feature: ListedBuildingMinimal) => void;
 }) => {
   const query = useQuery({
-    queryKey: ["getListedBuildingFileBE"],
-    queryFn: getListedBuildingFileBE,
+    queryKey: ["getListedBuildingMinimal"],
+    queryFn: getListedBuildingsMinimal,
   });
 
   const listedBuildings = query.data ?? [];

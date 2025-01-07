@@ -21,6 +21,14 @@ export const ListedBuildingMinimalSchema = ListedBuildingSchema.pick({
   longitude: true,
   id: true,
   title: true,
+  image_url: true,
+  list_entry: true,
+}).extend({
+  ai_summaries: z.array(
+    z.object({
+      ai_summary: z.string(),
+    })
+  ),
 });
 
 export type ListedBuildingMinimal = z.infer<typeof ListedBuildingMinimalSchema>;

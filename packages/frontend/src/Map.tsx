@@ -9,10 +9,7 @@ import MarkerClusterGroup from "react-leaflet-markercluster";
 import { BuildingDetailsPanel } from "./BuildingDetailsPanel";
 import { getAiSummaries } from "./scripts/beSyncListedBuildingSources/getAiSummaries";
 import { getListedBuildingsMinimal } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
-import {
-  ListedBuilding,
-  ListedBuildingMinimal,
-} from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
+import { ListedBuildingMinimal } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
 import { TableWrapper } from "./Table";
 
 export function Map() {
@@ -79,7 +76,7 @@ export function Map() {
     null
   );
 
-  const handleTableRowClick = (feature: ListedBuilding) => {
+  const handleTableRowClick = (feature: ListedBuildingMinimal) => {
     setSelectedFeature(feature);
     centerMapOnFeature(feature.latitude, feature.longitude);
     setIsTableModalOpen(false); // Optionally close the modal after selection

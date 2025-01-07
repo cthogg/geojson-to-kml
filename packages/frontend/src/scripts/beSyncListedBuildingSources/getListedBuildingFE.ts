@@ -8,7 +8,7 @@ import { SUPABASE_API_KEY, SUPABASE_URL } from "./supabaseApiKey";
 
 const fetchListedBuildings = async () => {
   const response = await fetch(
-    `${SUPABASE_URL}/places?select=id,title,latitude,longitude,type,grade,list_entry,wikidata_entry,image_url`,
+    `${SUPABASE_URL}/places?select=id,title,latitude,longitude,type,grade,list_entry,wikidata_entry,image_url,ai_summaries(id,summary,created_at)`,
     {
       headers: {
         apikey: SUPABASE_API_KEY,
@@ -29,7 +29,7 @@ export const getListedBuildingFileBE = async (): Promise<ListedBuilding[]> => {
 
 const fetchListedBuildingsMinimal = async () => {
   const response = await fetch(
-    `${SUPABASE_URL}/places?select=id,title,latitude,longitude`,
+    `${SUPABASE_URL}/places?select=id,title,latitude,longitude,image_url,list_entry,ai_summaries(ai_summary)`,
     {
       headers: {
         apikey: SUPABASE_API_KEY,

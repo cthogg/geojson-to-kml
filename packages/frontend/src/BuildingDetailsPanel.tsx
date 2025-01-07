@@ -1,13 +1,6 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
 import * as changeCase from "change-case";
 import { ListedBuildingInfo } from "./ListedBuildingInfo";
-import { getSingleAiSummary } from "./scripts/beSyncListedBuildingSources/getAiSummaries";
-import { getSingleListedBuilding } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
-import { PromptInfo } from "./scripts/beSyncListedBuildingSources/listedBuildingAiInformation";
-import {
-  ListedBuilding,
-  ListedBuildingMinimal,
-} from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
+import { ListedBuildingMinimal } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
 
 interface BuildingDetailsPanelProps {
   selectedFeature: ListedBuildingMinimal;
@@ -26,22 +19,11 @@ export function BuildingDetailsPanel({
   setIsExpanded,
   setIsSpeaking,
 }: BuildingDetailsPanelProps) {
-  const query = useSuspenseQuery({
-    queryKey: ["getSingleListedBuilding", selectedFeature.id],
-    queryFn: () => getSingleListedBuilding(selectedFeature.id),
-  });
-  const selectedFeature2: ListedBuilding = query.data[0];
-  const queryA = useSuspenseQuery({
-    queryKey: ["getSingleAiSummary", selectedFeature2.list_entry],
-    queryFn: () => getSingleAiSummary(selectedFeature2.list_entry),
-  });
-
-  const promptData: PromptInfo = queryA.data[0];
   return (
     <div className="relative z-10 p-4 backdrop-blur-sm">
       <div className="flex justify-between items-start text-black">
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-          {changeCase.capitalCase(selectedFeature2.title)}
+          {changeCase.capitalCase(selectedFeature.title)}
         </h2>
 
         <div className="flex items-center gap-2">
@@ -68,7 +50,8 @@ export function BuildingDetailsPanel({
                 setIsSpeaking(false);
               } else {
                 const speech = new SpeechSynthesisUtterance(
-                  promptData.ai_summary ?? "No audio summary"
+                  selectedFeature.ai_summaries[0].ai_summary ??
+                    "No audio summary"
                 );
                 speech.onend = () => setIsSpeaking(false);
                 window.speechSynthesis.speak(speech);
@@ -77,14 +60,14 @@ export function BuildingDetailsPanel({
             }}
             className="flex-1 py-2 px-4 bg-gray-200 hover:bg-white rounded text-gray-700"
           >
-            {isSpeaking ? "Stop" : "Play Text-to-Speech Message"}
+            {isSpeaking ? "Stop" : "Play Audio"}
           </button>
         </div>
       </div>
       {isExpanded && (
         <ListedBuildingInfo
-          imageUrl={selectedFeature2.image_url ?? null}
-          listedBuildingNumber={selectedFeature2.list_entry}
+          imageUrl={selectedFeature.image_url ?? null}
+          listedBuildingNumber={selectedFeature.list_entry}
         />
       )}
     </div>
