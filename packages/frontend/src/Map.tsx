@@ -197,7 +197,10 @@ export function Map() {
                 ✕
               </button>
             </div>
-            <TableWrapper onRowClick={handleTableRowClick} />
+            <TableWrapper
+              onRowClick={handleTableRowClick}
+              listedBuildings={allMarkers}
+            />
           </div>
         </div>
       )}

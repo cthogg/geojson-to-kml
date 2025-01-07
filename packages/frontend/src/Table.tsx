@@ -2,13 +2,11 @@ import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { ListedBuilding } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
 
-import { useQuery } from "@tanstack/react-query";
 import {
   ClientSideRowModelModule,
   ModuleRegistry,
   TextFilterModule,
 } from "ag-grid-community";
-import { getListedBuildingsMinimal } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
 
 ModuleRegistry.registerModules([ClientSideRowModelModule, TextFilterModule]);
 
@@ -67,15 +65,10 @@ export const Table = ({ data, onRowClick }: TableProps) => {
 
 export const TableWrapper = ({
   onRowClick,
+  listedBuildings,
 }: {
   onRowClick: (feature: ListedBuilding) => void;
+  listedBuildings: ListedBuilding[];
 }) => {
-  const query = useQuery({
-    queryKey: ["getListedBuildingMinimal"],
-    queryFn: getListedBuildingsMinimal,
-    throwOnError: true,
-  });
-
-  const listedBuildings = query.data ?? [];
   return <Table data={listedBuildings} onRowClick={onRowClick} />;
 };
