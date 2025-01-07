@@ -31,8 +31,9 @@ export function Map() {
   }, []);
 
   const query = useQuery({
-    queryKey: ["getListedBuildingsMinimal"],
+    queryKey: ["getListedBuildingsMinimal2"],
     queryFn: getListedBuildingsMinimal,
+    throwOnError: true,
   });
 
   const allMarkers = query.data ?? [];
