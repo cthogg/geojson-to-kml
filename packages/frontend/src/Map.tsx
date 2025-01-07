@@ -64,7 +64,6 @@ export function Map() {
     map?.setView([latitude - 0.00045, longitude], 18);
   };
 
-  const [isExpanded, setIsExpanded] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isTableModalOpen, setIsTableModalOpen] = useState(false);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(
@@ -168,9 +167,7 @@ export function Map() {
       {selectedFeature && (
         <div
           style={{ zIndex: 1000 }}
-          className={`absolute bg-gray-100 bottom-0 left-0 right-0 overflow-y-auto rounded-t-lg shadow-lg transition-all duration-300 ${
-            isExpanded ? "h-[80vh]" : "h-400"
-          }`}
+          className={`absolute bg-gray-100 bottom-0 left-0 right-0 overflow-y-auto rounded-t-lg shadow-lg transition-all duration-300 h-[80vh]`}
         >
           <React.Suspense
             fallback={
@@ -179,10 +176,8 @@ export function Map() {
           >
             <BuildingDetailsPanel
               selectedFeature={selectedFeature}
-              isExpanded={isExpanded}
               isSpeaking={isSpeaking}
               setSelectedFeature={setSelectedFeature}
-              setIsExpanded={setIsExpanded}
               setIsSpeaking={setIsSpeaking}
             />
           </React.Suspense>

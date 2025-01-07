@@ -3,16 +3,13 @@ import { ListedBuilding } from "./scripts/beSyncListedBuildingSources/listedBuil
 
 interface BuildingDetailsPanelProps {
   selectedFeature: ListedBuilding;
-  isExpanded: boolean;
   isSpeaking: boolean;
   setSelectedFeature: (feature: ListedBuilding | null) => void;
-  setIsExpanded: (expanded: boolean) => void;
   setIsSpeaking: (speaking: boolean) => void;
 }
 
 export function BuildingDetailsPanel({
   selectedFeature,
-  isExpanded,
   isSpeaking,
   setSelectedFeature,
   setIsSpeaking,
