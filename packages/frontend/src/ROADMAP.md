@@ -8,3 +8,39 @@
 8. In the AI summary, link to not the list entry but the placeId.
 9. Make an easier way to get al of the points of interest in a particular location. Using the bounding boxes.
 10. Remove wikiepdia and historical england text and the expand/collapse. Instead find a way to show the image as a thumbnail and on click show just the full image.
+
+This works:
+
+````
+SELECT DISTINCT ?distance ?place ?placeLabel ?location ?typeLabel WHERE {
+   SERVICE wikibase:around {
+     ?place wdt:P625 ?location .
+     bd:serviceParam wikibase:center "Point(-0.12,51.52)"^^geo:wktLiteral .
+     bd:serviceParam wikibase:radius "1" .  # 1km radius
+     bd:serviceParam wikibase:distance ?distance .
+   } .
+
+   # Optional: Get the type/instance of the place
+   OPTIONAL { ?place wdt:P31 ?type . }
+
+   SERVICE wikibase:label {
+     bd:serviceParam wikibase:language "en" .
+   }
+}
+ORDER BY ?distance
+LIMIT 10
+
+```
+```
+SELECT ?place ?placeLabel ?location
+WHERE {
+  SERVICE wikibase:around {
+    ?place wdt:P625 ?location.
+    bd:serviceParam wikibase:center "Point(-0.126351 51.520462)"^^geo:wktLiteral.
+    bd:serviceParam wikibase:radius "0.1". # Radius in kilometers (500m)
+  }
+  FILTER EXISTS { ?article schema:about ?place; schema:isPartOf <https://en.wikipedia.org/>. }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+}
+```
+````
