@@ -36,11 +36,36 @@ SELECT ?place ?placeLabel ?location
 WHERE {
   SERVICE wikibase:around {
     ?place wdt:P625 ?location.
-    bd:serviceParam wikibase:center "Point(-0.126351 51.520462)"^^geo:wktLiteral.
+    bd:serviceParam wikibase:center "Point(-0.128916 51.525081)"^^geo:wktLiteral.
     bd:serviceParam wikibase:radius "0.1". # Radius in kilometers (500m)
   }
   FILTER EXISTS { ?article schema:about ?place; schema:isPartOf <https://en.wikipedia.org/>. }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
 }
 ```
+
 ````
+
+SELECT ?place ?placeLabel ?location
+
+WHERE {
+
+SERVICE wikibase:box {
+
+    ?place wdt:P625 ?location.
+
+    bd:serviceParam wikibase:cornerWest "Point(-0.126351 51.520462)"^^geo:wktLiteral.
+
+    bd:serviceParam wikibase:cornerEast "Point(-0.125835 51.522905)"^^geo:wktLiteral.
+
+}
+
+FILTER EXISTS { ?article schema:about ?place; schema:isPartOf <https://en.wikipedia.org/>. }
+
+SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+
+}
+
+```
+
+```
