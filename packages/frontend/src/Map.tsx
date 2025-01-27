@@ -90,6 +90,8 @@ export function Map() {
   const [userLocation, setUserLocation] = useState<[number, number] | null>(
     null
   );
+  const [showListedBuildings, setShowListedBuildings] = useState(true);
+  const [showWikipedia, setShowWikipedia] = useState(true);
 
   const handleTableRowClick = (feature: ListedBuilding) => {
     setSelectedFeature(feature);
@@ -152,6 +154,24 @@ export function Map() {
             <span className="text-gray-700 font-medium">📍 My Location</span>
           </button>
           <button
+            onClick={() => setShowListedBuildings(!showListedBuildings)}
+            className={`flex-shrink-0 ${
+              showListedBuildings ? "bg-blue-100" : "bg-white"
+            } text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap`}
+          >
+            <span className="text-gray-700 font-medium">
+              🏛️ Listed Buildings
+            </span>
+          </button>
+          <button
+            onClick={() => setShowWikipedia(!showWikipedia)}
+            className={`flex-shrink-0 ${
+              showWikipedia ? "bg-blue-100" : "bg-white"
+            } text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap`}
+          >
+            <span className="text-gray-700 font-medium">📚 Wikipedia</span>
+          </button>
+          <button
             onClick={() => {
               setIsTableModalOpen(true);
             }}
@@ -175,41 +195,45 @@ export function Map() {
         />
         <LocationMarker />
         <MapCenterHandler />
-        <MarkerClusterGroup>
-          {markersd.map((feature, index) => {
-            const isSelected =
-              selectedFeature?.latitude === feature.latitude &&
-              selectedFeature?.longitude === feature.longitude;
+        {showListedBuildings && (
+          <MarkerClusterGroup>
+            {markersd.map((feature, index) => {
+              const isSelected =
+                selectedFeature?.latitude === feature.latitude &&
+                selectedFeature?.longitude === feature.longitude;
 
-            return (
+              return (
+                <Marker
+                  key={`marker-${feature.id || index}`}
+                  position={[feature.latitude, feature.longitude]}
+                  icon={isSelected ? selectedIcon : unselectedIcon}
+                  eventHandlers={{
+                    click: () => {
+                      setSelectedFeature(feature);
+                      centerMapOnFeature(feature.latitude, feature.longitude);
+                    },
+                  }}
+                />
+              );
+            })}
+          </MarkerClusterGroup>
+        )}
+        {showWikipedia && (
+          <MarkerClusterGroup>
+            {wikiMarkers.map((article, index) => (
               <Marker
-                key={`marker-${feature.id || index}`}
-                position={[feature.latitude, feature.longitude]}
-                icon={isSelected ? selectedIcon : unselectedIcon}
+                key={`wiki-${article.id || index}`}
+                position={[article.latitude, article.longitude]}
+                icon={wikipediaIcon}
                 eventHandlers={{
                   click: () => {
-                    setSelectedFeature(feature);
-                    centerMapOnFeature(feature.latitude, feature.longitude);
+                    window.open(article.wikipedia_article_url, "_blank");
                   },
                 }}
               />
-            );
-          })}
-        </MarkerClusterGroup>
-        <MarkerClusterGroup>
-          {wikiMarkers.map((article, index) => (
-            <Marker
-              key={`wiki-${article.id || index}`}
-              position={[article.latitude, article.longitude]}
-              icon={wikipediaIcon}
-              eventHandlers={{
-                click: () => {
-                  window.open(article.wikipedia_article_url, "_blank");
-                },
-              }}
-            />
-          ))}
-        </MarkerClusterGroup>
+            ))}
+          </MarkerClusterGroup>
+        )}
       </MapContainer>
       {selectedFeature && (
         <div
