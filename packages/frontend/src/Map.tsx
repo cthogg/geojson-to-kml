@@ -8,12 +8,16 @@ import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { BuildingDetailsPanel } from "./BuildingDetailsPanel";
 import { getListedBuildingsMinimal } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
+import { getNearbyWikipediaArticles } from "./scripts/beSyncListedBuildingSources/getLocalWiki";
 import { ListedBuilding } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
 import { TableWrapper } from "./Table";
 
 export function Map() {
   // Add map ref to control map programmatically
   const [map, setMap] = useState<L.Map | null>(null);
+  const [mapCenter, setMapCenter] = useState<[number, number]>([
+    51.522333, -0.132239,
+  ]);
 
   // Modify selected feature state to include coordinates
   const [selectedFeature, setSelectedFeature] = useState<ListedBuilding | null>(
@@ -36,7 +40,15 @@ export function Map() {
     throwOnError: true,
   });
 
+  const wikiQuery = useQuery({
+    queryKey: ["getWikiArticles", mapCenter],
+    queryFn: () => getNearbyWikipediaArticles(mapCenter[0], mapCenter[1], 0.5),
+    enabled: !!mapCenter,
+  });
+
   const allMarkers = query.data ?? [];
+  const wikiMarkers = wikiQuery.data ?? [];
+  console.log("wikiMarkers", wikiMarkers);
 
   // Modify the markers filter to use selectedRoute
   const markersd = allMarkers;
@@ -96,6 +108,17 @@ export function Map() {
     ) : null;
   }
 
+  // Add map center update handler
+  function MapCenterHandler() {
+    useMapEvents({
+      moveend: (e) => {
+        const center = e.target.getCenter();
+        setMapCenter([center.lat, center.lng]);
+      },
+    });
+    return null;
+  }
+
   if (query.isLoading) {
     return (
       <div className="h-[100dvh] w-[100dvw] flex flex-col relative">
@@ -142,6 +165,7 @@ export function Map() {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         <LocationMarker />
+        <MapCenterHandler />
         <MarkerClusterGroup>
           {markersd.map((feature, index) => {
             const isSelected =
@@ -162,6 +186,25 @@ export function Map() {
               />
             );
           })}
+        </MarkerClusterGroup>
+        <MarkerClusterGroup>
+          {wikiMarkers.map((article, index) => (
+            <Marker
+              key={`wiki-${article.id || index}`}
+              position={[article.latitude, article.longitude]}
+              icon={L.divIcon({
+                className: "wiki-marker",
+                html: "📚",
+                iconSize: [100, 100],
+                iconAnchor: [50, 50],
+              })}
+              eventHandlers={{
+                click: () => {
+                  window.open(article.wikipedia_article_url, "_blank");
+                },
+              }}
+            />
+          ))}
         </MarkerClusterGroup>
       </MapContainer>
       {selectedFeature && (
