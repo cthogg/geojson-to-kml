@@ -6,11 +6,16 @@ import "leaflet/dist/leaflet.css";
 import React, { useEffect, useState } from "react";
 import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
+import { z } from "zod";
 import { BuildingDetailsPanel } from "./BuildingDetailsPanel";
 import { getListedBuildingsMinimal } from "./scripts/beSyncListedBuildingSources/getListedBuildingFE";
 import { getNearbyWikipediaArticles } from "./scripts/beSyncListedBuildingSources/getLocalWiki";
 import { ListedBuilding } from "./scripts/beSyncListedBuildingSources/listedBuildingFileTypes";
+import { WikipediaArticleSchema } from "./scripts/beSyncListedBuildingSources/WikipediaArticlesTypes";
 import { TableWrapper } from "./Table";
+import { WikipediaPanel } from "./WikipediaPanel";
+
+type WikipediaArticle = z.infer<typeof WikipediaArticleSchema>;
 
 export function Map() {
   // Add map ref to control map programmatically
@@ -23,6 +28,8 @@ export function Map() {
   const [selectedFeature, setSelectedFeature] = useState<ListedBuilding | null>(
     null
   );
+  const [selectedWikiArticle, setSelectedWikiArticle] =
+    useState<WikipediaArticle | null>(null);
   // Set up default icon for Leaflet
   useEffect(() => {
     const DefaultIcon = L.icon({
@@ -227,7 +234,9 @@ export function Map() {
                 icon={wikipediaIcon}
                 eventHandlers={{
                   click: () => {
-                    window.open(article.wikipedia_article_url, "_blank");
+                    setSelectedWikiArticle(article);
+                    setSelectedFeature(null);
+                    centerMapOnFeature(article.latitude, article.longitude);
                   },
                 }}
               />
@@ -252,6 +261,17 @@ export function Map() {
               setIsSpeaking={setIsSpeaking}
             />
           </React.Suspense>
+        </div>
+      )}
+      {selectedWikiArticle && (
+        <div
+          style={{ zIndex: 1000 }}
+          className={`absolute bg-gray-100 bottom-0 left-0 right-0 overflow-y-auto rounded-t-lg shadow-lg transition-all duration-300`}
+        >
+          <WikipediaPanel
+            selectedArticle={selectedWikiArticle}
+            setSelectedArticle={setSelectedWikiArticle}
+          />
         </div>
       )}
 

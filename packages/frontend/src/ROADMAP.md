@@ -9,7 +9,7 @@
 9. Make an easier way to get al of the points of interest in a particular location. Using the bounding boxes.
 10. Remove wikiepdia and historical england text and the expand/collapse. Instead find a way to show the image as a thumbnail and on click show just the full image.
 11. Get the wikidata articles as own marker cluster.
-12. Show up just the names for now and the article url.
+12. Show up just the names for now and the article url.y
 
 This works:
 
