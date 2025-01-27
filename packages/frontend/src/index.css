@@ -10,6 +10,10 @@
   filter: hue-rotate(0deg) brightness(1);
 }
 
+.wikipedia-marker {
+  filter: hue-rotate(85deg) saturate(1.5);
+}
+
 .user-location-marker {
   background: transparent;
 }

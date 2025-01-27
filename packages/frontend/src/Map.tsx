@@ -71,6 +71,15 @@ export function Map() {
     className: "unselected-marker", // We'll use this to style the icon yellow
   });
 
+  // Add custom wikipedia icon
+  const wikipediaIcon = L.icon({
+    iconUrl: icon,
+    shadowUrl: iconShadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    className: "wikipedia-marker", // We'll use this to style the icon green
+  });
+
   // Add new helper function
   const centerMapOnFeature = (latitude: number, longitude: number) => {
     map?.setView([latitude - 0.00045, longitude], 18);
@@ -192,12 +201,7 @@ export function Map() {
             <Marker
               key={`wiki-${article.id || index}`}
               position={[article.latitude, article.longitude]}
-              icon={L.divIcon({
-                className: "wiki-marker",
-                html: "📚",
-                iconSize: [100, 100],
-                iconAnchor: [50, 50],
-              })}
+              icon={wikipediaIcon}
               eventHandlers={{
                 click: () => {
                   window.open(article.wikipedia_article_url, "_blank");
