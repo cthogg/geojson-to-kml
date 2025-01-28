@@ -57,6 +57,7 @@ export function Map() {
     queryKey: ["getWikiArticles", mapCenter],
     queryFn: () => getNearbyWikipediaArticles(mapCenter[0], mapCenter[1], 0.5),
     enabled: !!mapCenter,
+    throwOnError: true,
   });
 
   const allMarkers = query.data ?? [];
@@ -192,6 +193,11 @@ export function Map() {
           >
             <span className="text-gray-700 font-medium">Table 🧮</span>
           </button>
+          {wikiQuery.isLoading && (
+            <div className="flex-shrink-0 bg-white rounded-lg shadow-lg px-4 py-2 flex items-center">
+              <div className="animate-spin h-5 w-5 border-2 border-blue-500 border-t-transparent rounded-full"></div>
+            </div>
+          )}
         </div>
       </div>
 
