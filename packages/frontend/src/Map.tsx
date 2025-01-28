@@ -60,9 +60,18 @@ export function Map() {
     throwOnError: true,
   });
 
+  const [cachedWikiMarkers, setCachedWikiMarkers] = useState<
+    WikipediaArticle[]
+  >([]);
+
+  useEffect(() => {
+    if (wikiQuery.data) {
+      setCachedWikiMarkers(wikiQuery.data);
+    }
+  }, [wikiQuery.data]);
+
   const allMarkers = query.data ?? [];
-  const wikiMarkers = wikiQuery.data ?? [];
-  console.log("wikiMarkers", wikiMarkers);
+  const wikiMarkers = wikiQuery.data ?? cachedWikiMarkers;
 
   // Modify the markers filter to use selectedRoute
   const markersd = allMarkers;
