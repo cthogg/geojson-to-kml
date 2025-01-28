@@ -1,0 +1,7 @@
+{
+  "deno.enable": false,
+  "deno.enablePaths": ["packages/hono/supabase/functions"],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.tsserver.maxTsServerMemory": 8192
+}
