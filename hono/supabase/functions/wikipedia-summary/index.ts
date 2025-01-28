@@ -34,6 +34,12 @@ const WikiSummarySchema = z.object({
   extract: z.string(),
   extract_html: z.string(),
   description: z.string().optional(),
+  coordinates: z
+    .object({
+      latitude: z.number(),
+      longitude: z.number(),
+    })
+    .optional(),
 });
 
 type WikiSummary = z.infer<typeof WikiSummarySchema>;
