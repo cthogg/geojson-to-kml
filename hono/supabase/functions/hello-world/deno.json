@@ -1,3 +1,9 @@
 {
-  "imports": {}
+  "imports": {
+    "@hono/hono": "jsr:@hono/hono@latest"
+  },
+  "compilerOptions": {
+    "types": ["deno"],
+    "lib": ["deno.window"]
+  }
 }
