@@ -13,6 +13,7 @@ export const createCompletion = async ({
     dangerouslyAllowBrowser: true,
     apiKey: openAiKey,
   });
+  console.log("openai", openai);
   const completion = await openai.chat.completions.create({
     model: "gpt-4o",
     messages: [

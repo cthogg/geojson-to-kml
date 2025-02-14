@@ -1,7 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { z } from "zod";
-import { getWikipediaInformationFromUrl } from "./scripts/utils/getWikipediaInformation";
+import {
+  getWikipediaFullArticle,
+  getWikipediaInformationFromUrl,
+} from "./scripts/utils/getWikipediaInformation";
+import { createCompletion } from "./scripts/utils/openAi";
 import { WikipediaArticleSchema } from "./scripts/utils/WikipediaArticlesTypes";
 
 type WikipediaArticle = z.infer<typeof WikipediaArticleSchema>;
@@ -23,17 +27,26 @@ export function WikipediaPanel({
   const { data: wikiInfo, isLoading } = useQuery({
     queryKey: ["wikipediaInfo", selectedArticle.wikipedia_article_url],
     queryFn: () =>
-      getWikipediaInformationFromUrl(
-        selectedArticle.wikipedia_article_url,
-        openAiKey
-      ),
+      getWikipediaInformationFromUrl(selectedArticle.wikipedia_article_url),
     enabled: !!selectedArticle.wikipedia_article_url,
   });
 
-  console.log("wikiInfo", wikiInfo);
-
   const playAudioMutation = useMutation({
     mutationFn: async () => {
+      const title = selectedArticle.wikipedia_article_url.split("/wiki/").pop();
+
+      const fullArticle = await getWikipediaFullArticle(
+        //FIXME: do not do this.
+        decodeURIComponent(title!)
+      );
+      console.log("fullArticle", fullArticle);
+      const openAiText = await createCompletion({
+        fullArticle,
+        openAiKey,
+      });
+      const content = openAiText.choices[0].message.content;
+      console.log("content", content);
+
       if (audioRef.current && isPlaying) {
         audioRef.current.play();
         return;
@@ -48,7 +61,7 @@ export function WikipediaPanel({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          Text: wikiInfo?.openAiText ?? "",
+          Text: content ?? "",
           VoiceId: "Dan",
           Bitrate: "192k",
           Speed: "0.01",
