@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useRef, useState } from "react";
 import { z } from "zod";
 import { getWikipediaInformationFromUrl } from "./scripts/beSyncListedBuildingSources/getWikipediaInformation";
 import { WikipediaArticleSchema } from "./scripts/beSyncListedBuildingSources/WikipediaArticlesTypes";
@@ -14,6 +15,9 @@ export function WikipediaPanel({
   selectedArticle,
   setSelectedArticle,
 }: WikipediaPanelProps) {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
   const { data: wikiInfo, isLoading } = useQuery({
     queryKey: ["wikipediaInfo", selectedArticle.wikipedia_article_url],
     queryFn: () =>
@@ -25,6 +29,11 @@ export function WikipediaPanel({
 
   const playAudioMutation = useMutation({
     mutationFn: async () => {
+      if (audioRef.current && isPlaying) {
+        audioRef.current.play();
+        return;
+      }
+
       const response = await fetch("https://api.v7.unrealspeech.com/stream", {
         method: "POST",
         headers: {
@@ -49,9 +58,32 @@ export function WikipediaPanel({
       const audioBlob = await response.blob();
       const audioUrl = URL.createObjectURL(audioBlob);
       const audio = new Audio(audioUrl);
+      audioRef.current = audio;
+
+      audio.addEventListener("ended", () => {
+        setIsPlaying(false);
+      });
+
       await audio.play();
+      setIsPlaying(true);
     },
   });
+
+  const handlePlayPause = () => {
+    if (!audioRef.current) {
+      playAudioMutation.mutate();
+      return;
+    }
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -95,12 +127,14 @@ export function WikipediaPanel({
                   {wikiInfo.extract}
                 </p>
                 <button
-                  onClick={() => playAudioMutation.mutate()}
+                  onClick={handlePlayPause}
                   disabled={playAudioMutation.isPending}
                   className="flex-shrink-0 p-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white disabled:bg-blue-300"
                 >
                   {playAudioMutation.isPending ? (
                     <span className="animate-spin">⟳</span>
+                  ) : isPlaying ? (
+                    "⏸"
                   ) : (
                     "▶"
                   )}
