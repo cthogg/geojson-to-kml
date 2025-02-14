@@ -1,17 +1,18 @@
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  organization: "org-NnvD2zTUZJPKSal9Y5kSw3z0",
-  project: "proj_a7KpL1G0NqZPrAg1JjRK3xP0",
-  dangerouslyAllowBrowser: true,
-  apiKey: process.env.OPEN_AI_API_KEY,
-});
-
 export const createCompletion = async ({
   fullArticle,
+  openAiKey,
 }: {
   fullArticle: string;
+  openAiKey: string;
 }) => {
+  const openai = new OpenAI({
+    organization: "org-NnvD2zTUZJPKSal9Y5kSw3z0",
+    project: "proj_a7KpL1G0NqZPrAg1JjRK3xP0",
+    dangerouslyAllowBrowser: true,
+    apiKey: openAiKey,
+  });
   const completion = await openai.chat.completions.create({
     model: "gpt-4o",
     messages: [

@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { useAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 import L from "leaflet";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
@@ -17,6 +19,7 @@ import { getNearbyWikipediaArticles } from "./scripts/utils/getLocalWiki";
 import { WikipediaArticleSchema } from "./scripts/utils/WikipediaArticlesTypes";
 import { WikipediaPanel } from "./WikipediaPanel";
 
+const openAiKeyAtom = atomWithStorage("openai-api-key", "");
 type WikipediaArticle = z.infer<typeof WikipediaArticleSchema>;
 
 export function Map() {
@@ -24,6 +27,9 @@ export function Map() {
   const [mapCenter, setMapCenter] = useState<[number, number]>([
     51.522333, -0.132239,
   ]);
+  const [openAiKey, setOpenAiKey] = useAtom(openAiKeyAtom);
+  const [showApiKeyPrompt, setShowApiKeyPrompt] = useState(false);
+  const [tempApiKey, setTempApiKey] = useState("");
 
   const [selectedWikiArticle, setSelectedWikiArticle] =
     useState<WikipediaArticle | null>(null);
@@ -115,6 +121,24 @@ export function Map() {
             <span className="text-gray-700 font-medium">📍 My Location</span>
           </button>
 
+          <button
+            onClick={() => setShowApiKeyPrompt(true)}
+            className="flex-shrink-0 bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap"
+          >
+            <span className="text-gray-700 font-medium">🔑 Create API Key</span>
+          </button>
+
+          {openAiKey && (
+            <button
+              onClick={() => setOpenAiKey("")}
+              className="flex-shrink-0 bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap"
+            >
+              <span className="text-gray-700 font-medium">
+                🗑️ Remove API Key
+              </span>
+            </button>
+          )}
+
           {wikiQuery.isLoading && (
             <div className="flex-shrink-0 bg-white rounded-lg shadow-lg px-4 py-2 flex items-center">
               <div className="animate-spin h-5 w-5 border-2 border-blue-500 border-t-transparent rounded-full"></div>
@@ -122,6 +146,42 @@ export function Map() {
           )}
         </div>
       </div>
+
+      {showApiKeyPrompt && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[2000]">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+            <h2 className="text-xl font-semibold mb-4">Enter OpenAI API Key</h2>
+            <input
+              type="password"
+              value={tempApiKey}
+              onChange={(e) => setTempApiKey(e.target.value)}
+              placeholder="sk-..."
+              className="w-full p-2 border border-gray-300 rounded mb-4"
+            />
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => {
+                  setShowApiKeyPrompt(false);
+                  setTempApiKey("");
+                }}
+                className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setOpenAiKey(tempApiKey);
+                  setShowApiKeyPrompt(false);
+                  setTempApiKey("");
+                }}
+                className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 rounded"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <MapContainer
         className="h-[100dvh] w-[100dvw]"
@@ -166,6 +226,7 @@ export function Map() {
           <WikipediaPanel
             selectedArticle={selectedWikiArticle}
             setSelectedArticle={setSelectedWikiArticle}
+            openAiKey={openAiKey}
           />
         </div>
       )}

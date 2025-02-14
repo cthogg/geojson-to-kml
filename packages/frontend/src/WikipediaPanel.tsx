@@ -9,11 +9,13 @@ type WikipediaArticle = z.infer<typeof WikipediaArticleSchema>;
 interface WikipediaPanelProps {
   selectedArticle: WikipediaArticle;
   setSelectedArticle: (article: WikipediaArticle | null) => void;
+  openAiKey: string;
 }
 
 export function WikipediaPanel({
   selectedArticle,
   setSelectedArticle,
+  openAiKey,
 }: WikipediaPanelProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -21,7 +23,10 @@ export function WikipediaPanel({
   const { data: wikiInfo, isLoading } = useQuery({
     queryKey: ["wikipediaInfo", selectedArticle.wikipedia_article_url],
     queryFn: () =>
-      getWikipediaInformationFromUrl(selectedArticle.wikipedia_article_url),
+      getWikipediaInformationFromUrl(
+        selectedArticle.wikipedia_article_url,
+        openAiKey
+      ),
     enabled: !!selectedArticle.wikipedia_article_url,
   });
 

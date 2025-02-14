@@ -99,7 +99,8 @@ export async function getWikipediaSummary(title: string): Promise<WikiSummary> {
 }
 
 export async function getWikipediaInformationFromUrl(
-  wikipediaUrl: string
+  wikipediaUrl: string,
+  openAiKey: string
 ): Promise<{ summary: WikiSummary; openAiText: string | undefined }> {
   // Extract the title from the Wikipedia URL
   const title = wikipediaUrl.split("/wiki/").pop();
@@ -108,7 +109,10 @@ export async function getWikipediaInformationFromUrl(
   }
   const summary = await getWikipediaSummary(decodeURIComponent(title));
   const fullArticle = await getWikipediaFullArticle(decodeURIComponent(title));
-  const openAiText = await createCompletion({ fullArticle });
+  const openAiText = await createCompletion({
+    fullArticle,
+    openAiKey: openAiKey,
+  });
   const content = openAiText.choices[0].message.content;
 
   return { summary, openAiText: content ?? undefined };
