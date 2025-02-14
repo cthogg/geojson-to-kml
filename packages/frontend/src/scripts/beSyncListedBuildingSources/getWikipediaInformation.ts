@@ -35,20 +35,20 @@ const WikiSummarySchema = z.object({
   description: z.string().optional(),
   coordinates: z
     .object({
-      latitude: z.number(),
-      longitude: z.number(),
+      lat: z.number(),
+      lon: z.number(),
     })
     .optional(),
 });
 
 type WikiSummary = z.infer<typeof WikiSummarySchema>;
 
-const SUPABASE_FUNCTION_URL =
-  "http://127.0.0.1:54321/functions/v1/wikipedia-summary";
+const WIKIPEDIA_API_BASE_URL =
+  "https://en.wikipedia.org/api/rest_v1/page/summary";
 
 export async function getWikipediaSummary(title: string): Promise<WikiSummary> {
   const response = await fetch(
-    `${SUPABASE_FUNCTION_URL}/${encodeURIComponent(title)}`
+    `${WIKIPEDIA_API_BASE_URL}/${encodeURIComponent(title)}`
   );
 
   if (!response.ok) {
@@ -56,7 +56,14 @@ export async function getWikipediaSummary(title: string): Promise<WikiSummary> {
   }
 
   const data = await response.json();
-  return WikiSummarySchema.parse(data);
+  console.log("data", data);
+  const result = WikiSummarySchema.safeParse(data);
+  if (!result.success) {
+    throw new Error(
+      `Wikipedia API response validation failed: ${result.error.message}`
+    );
+  }
+  return result.data;
 }
 
 export async function getWikipediaInformationFromUrl(
@@ -67,6 +74,8 @@ export async function getWikipediaInformationFromUrl(
   if (!title) {
     throw new Error("Invalid Wikipedia URL");
   }
+  const summary = await getWikipediaSummary(decodeURIComponent(title));
+  console.log("summary", summary);
 
-  return getWikipediaSummary(decodeURIComponent(title));
+  return summary;
 }

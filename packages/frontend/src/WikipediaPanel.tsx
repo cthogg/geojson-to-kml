@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { getWikipediaInformationFromUrl } from "./scripts/beSyncListedBuildingSources/getWikipediaInformation";
 import { WikipediaArticleSchema } from "./scripts/beSyncListedBuildingSources/WikipediaArticlesTypes";
@@ -21,6 +21,40 @@ export function WikipediaPanel({
     enabled: !!selectedArticle.wikipedia_article_url,
   });
 
+  console.log("wikiInfo", wikiInfo);
+
+  const playAudioMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch("https://api.v7.unrealspeech.com/stream", {
+        method: "POST",
+        headers: {
+          Authorization:
+            "Bearer NwDR1Ax5PC3vajVePGPcyvWcS1t56ZIRqzANGQQaQdk6zU1EPXKaAt",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          Text: wikiInfo?.extract ?? "",
+          VoiceId: "Dan",
+          Bitrate: "192k",
+          Speed: "0.01",
+          Pitch: "0.92",
+          Codec: "libmp3lame",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch audio");
+      }
+
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+      await audio.play();
+    },
+  });
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="relative z-10 p-4 backdrop-blur-sm">
       <div className="flex justify-between items-start text-black">
@@ -56,7 +90,22 @@ export function WikipediaPanel({
               <p className="text-gray-700">{wikiInfo.description}</p>
             )}
             {wikiInfo?.extract && (
-              <p className="text-gray-700 text-sm">{wikiInfo.extract}</p>
+              <div className="flex items-start gap-2">
+                <p className="text-gray-700 text-sm flex-grow">
+                  {wikiInfo.extract}
+                </p>
+                <button
+                  onClick={() => playAudioMutation.mutate()}
+                  disabled={playAudioMutation.isPending}
+                  className="flex-shrink-0 p-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white disabled:bg-blue-300"
+                >
+                  {playAudioMutation.isPending ? (
+                    <span className="animate-spin">⟳</span>
+                  ) : (
+                    "▶"
+                  )}
+                </button>
+              </div>
             )}
             <div className="flex-1">
               <a
