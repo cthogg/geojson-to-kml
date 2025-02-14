@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { createCompletion } from "./openAi";
 
 // Schema for Wikipedia API response based on the Edge Function schema
 const WikiSummarySchema = z.object({
@@ -109,6 +110,8 @@ export async function getWikipediaInformationFromUrl(
   }
   const summary = await getWikipediaSummary(decodeURIComponent(title));
   const fullArticle = await getWikipediaFullArticle(decodeURIComponent(title));
+  const openAiText = await createCompletion({ fullArticle });
+  console.log("openAiText", openAiText.choices[0].message.content);
   console.log("fullArticle", fullArticle);
   console.log("summary", summary);
 
