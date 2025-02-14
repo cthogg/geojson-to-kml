@@ -68,8 +68,6 @@ const WikiFullArticleResponseSchema = z.object({
   }),
 });
 
-type WikiFullArticle = z.infer<typeof WikiFullArticleResponseSchema>;
-
 const WIKIPEDIA_API_BASE_URL =
   "https://en.wikipedia.org/api/rest_v1/page/summary";
 const WIKIPEDIA_FULL_API_URL = "https://en.wikipedia.org/w/api.php";
