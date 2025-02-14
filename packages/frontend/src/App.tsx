@@ -4,7 +4,6 @@ import {
   QueryErrorResetBoundary,
 } from "@tanstack/react-query";
 import { ErrorBoundary } from "react-error-boundary";
-import "./App.css";
 import { Map } from "./Map";
 const queryClient = new QueryClient();
 

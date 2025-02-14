@@ -73,7 +73,6 @@ export function Map() {
   const [userLocation, setUserLocation] = useState<[number, number] | null>(
     null
   );
-  const [showWikipedia, setShowWikipedia] = useState(true);
 
   function LocationMarker() {
     useMapEvents({
@@ -115,14 +114,6 @@ export function Map() {
           >
             <span className="text-gray-700 font-medium">📍 My Location</span>
           </button>
-          <button
-            onClick={() => setShowWikipedia(!showWikipedia)}
-            className={`flex-shrink-0 ${
-              showWikipedia ? "bg-blue-100" : "bg-white"
-            } text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap`}
-          >
-            <span className="text-gray-700 font-medium">📚 Wikipedia</span>
-          </button>
 
           {wikiQuery.isLoading && (
             <div className="flex-shrink-0 bg-white rounded-lg shadow-lg px-4 py-2 flex items-center">
@@ -146,27 +137,25 @@ export function Map() {
         <LocationMarker />
         <MapCenterHandler />
 
-        {showWikipedia && (
-          <MarkerClusterGroup>
-            {wikiMarkers.map((article, index) => (
-              <Marker
-                key={`wiki-${article.id || index}`}
-                position={[article.latitude, article.longitude]}
-                icon={wikipediaIcon}
-                eventHandlers={{
-                  click: () => {
-                    setSelectedWikiArticle(article);
-                    centerMapOnFeature(article.latitude, article.longitude);
-                  },
-                }}
-              >
-                <Tooltip direction="top" offset={[0, -20]} permanent>
-                  {article.name}
-                </Tooltip>
-              </Marker>
-            ))}
-          </MarkerClusterGroup>
-        )}
+        <MarkerClusterGroup>
+          {wikiMarkers.map((article, index) => (
+            <Marker
+              key={`wiki-${article.id || index}`}
+              position={[article.latitude, article.longitude]}
+              icon={wikipediaIcon}
+              eventHandlers={{
+                click: () => {
+                  setSelectedWikiArticle(article);
+                  centerMapOnFeature(article.latitude, article.longitude);
+                },
+              }}
+            >
+              <Tooltip direction="top" offset={[0, -20]} permanent>
+                {article.name}
+              </Tooltip>
+            </Marker>
+          ))}
+        </MarkerClusterGroup>
       </MapContainer>
 
       {selectedWikiArticle && (
