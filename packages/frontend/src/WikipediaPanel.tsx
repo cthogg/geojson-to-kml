@@ -38,6 +38,7 @@ export function WikipediaPanel({
         method: "POST",
         headers: {
           Authorization:
+            //FIXME: move to a .env variable
             "Bearer NwDR1Ax5PC3vajVePGPcyvWcS1t56ZIRqzANGQQaQdk6zU1EPXKaAt",
           "Content-Type": "application/json",
         },
