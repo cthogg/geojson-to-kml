@@ -36,7 +36,7 @@ export function WikipediaPanel({
       const title = selectedArticle.wikipedia_article_url.split("/wiki/").pop();
 
       const fullArticle = await getWikipediaFullArticle(
-        //FIXME: do not do this.
+        //FIXME: do not use !.
         decodeURIComponent(title!)
       );
       console.log("fullArticle", fullArticle);
