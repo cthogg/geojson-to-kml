@@ -8,4 +8,7 @@ export default defineConfig({
     host: true, // Listen on all addresses
     port: 5173,
   },
+  define: {
+    "process.env": process.env,
+  },
 });

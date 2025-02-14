@@ -4,7 +4,7 @@ const openai = new OpenAI({
   organization: "org-NnvD2zTUZJPKSal9Y5kSw3z0",
   project: "proj_a7KpL1G0NqZPrAg1JjRK3xP0",
   dangerouslyAllowBrowser: true,
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPEN_AI_API_KEY,
 });
 
 export const createCompletion = async ({

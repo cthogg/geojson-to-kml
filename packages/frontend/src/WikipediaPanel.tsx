@@ -42,7 +42,7 @@ export function WikipediaPanel({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          Text: wikiInfo?.extract ?? "",
+          Text: wikiInfo?.openAiText ?? "",
           VoiceId: "Dan",
           Bitrate: "192k",
           Speed: "0.01",
@@ -108,23 +108,23 @@ export function WikipediaPanel({
           <div className="animate-pulse">Loading...</div>
         ) : (
           <>
-            {wikiInfo?.thumbnail && (
+            {wikiInfo?.summary.thumbnail && (
               <div className="flex justify-center">
                 <img
-                  src={wikiInfo.thumbnail.source}
+                  src={wikiInfo.summary.thumbnail.source}
                   alt={selectedArticle.name}
                   className="max-w-full h-auto rounded-lg shadow-lg"
                   style={{ maxHeight: "300px" }}
                 />
               </div>
             )}
-            {wikiInfo?.description && (
-              <p className="text-gray-700">{wikiInfo.description}</p>
+            {wikiInfo?.summary.description && (
+              <p className="text-gray-700">{wikiInfo.summary.description}</p>
             )}
-            {wikiInfo?.extract && (
+            {wikiInfo?.summary.extract && (
               <div className="flex items-start gap-2">
                 <p className="text-gray-700 text-sm flex-grow">
-                  {wikiInfo.extract}
+                  {wikiInfo.summary.extract}
                 </p>
                 <button
                   onClick={handlePlayPause}
