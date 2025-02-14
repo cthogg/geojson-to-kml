@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { z } from "zod";
-import { getWikipediaInformationFromUrl } from "./scripts/beSyncListedBuildingSources/getWikipediaInformation";
-import { WikipediaArticleSchema } from "./scripts/beSyncListedBuildingSources/WikipediaArticlesTypes";
+import { getWikipediaInformationFromUrl } from "./scripts/utils/getWikipediaInformation";
+import { WikipediaArticleSchema } from "./scripts/utils/WikipediaArticlesTypes";
 
 type WikipediaArticle = z.infer<typeof WikipediaArticleSchema>;
 

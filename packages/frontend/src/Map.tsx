@@ -13,8 +13,8 @@ import {
 } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { z } from "zod";
-import { getNearbyWikipediaArticles } from "./scripts/beSyncListedBuildingSources/getLocalWiki";
-import { WikipediaArticleSchema } from "./scripts/beSyncListedBuildingSources/WikipediaArticlesTypes";
+import { getNearbyWikipediaArticles } from "./scripts/utils/getLocalWiki";
+import { WikipediaArticleSchema } from "./scripts/utils/WikipediaArticlesTypes";
 import { WikipediaPanel } from "./WikipediaPanel";
 
 type WikipediaArticle = z.infer<typeof WikipediaArticleSchema>;
