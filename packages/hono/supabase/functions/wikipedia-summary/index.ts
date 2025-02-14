@@ -1,5 +1,6 @@
-import { Hono } from "jsr:@hono/hono";
-import { z } from "npm:zod";
+import { cors } from "npm:@hono/cors@1.0.0";
+import { Hono } from "npm:hono@4.6.19";
+import { z } from "zod";
 
 // Schema for Wikipedia API response
 const WikiSummarySchema = z.object({
@@ -48,9 +49,19 @@ type WikiSummary = z.infer<typeof WikiSummarySchema>;
 const functionName = "wikipedia-summary";
 const app = new Hono().basePath(`/${functionName}`);
 
+// Add CORS middleware
+app.use(
+  "/*",
+  cors({
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    allowMethods: ["GET", "OPTIONS"],
+    maxAge: 86400,
+  })
+);
+
 app.get("/test", (c) => c.text("Wikipedia Summary!Yo"));
 
-app.get("/:title", async (c) => {
+app.get("/:title", cors(), async (c) => {
   try {
     const title = c.req.param("title");
 
