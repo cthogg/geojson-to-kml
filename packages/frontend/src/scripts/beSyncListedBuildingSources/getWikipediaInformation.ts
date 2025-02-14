@@ -43,12 +43,45 @@ const WikiSummarySchema = z.object({
 
 type WikiSummary = z.infer<typeof WikiSummarySchema>;
 
+// Schema for full Wikipedia article response
+const WikiFullArticleResponseSchema = z.object({
+  batchcomplete: z.string(),
+  query: z.object({
+    normalized: z
+      .array(
+        z.object({
+          from: z.string(),
+          to: z.string(),
+        })
+      )
+      .optional(),
+    pages: z.record(
+      z.string(),
+      z.object({
+        pageid: z.number(),
+        ns: z.number(),
+        title: z.string(),
+        extract: z.string(),
+      })
+    ),
+  }),
+});
+
+type WikiFullArticle = z.infer<typeof WikiFullArticleResponseSchema>;
+
 const WIKIPEDIA_API_BASE_URL =
   "https://en.wikipedia.org/api/rest_v1/page/summary";
+const WIKIPEDIA_FULL_API_URL = "https://en.wikipedia.org/w/api.php";
 
 export async function getWikipediaSummary(title: string): Promise<WikiSummary> {
   const response = await fetch(
-    `${WIKIPEDIA_API_BASE_URL}/${encodeURIComponent(title)}`
+    `${WIKIPEDIA_API_BASE_URL}/${encodeURIComponent(title)}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+    }
   );
 
   if (!response.ok) {
@@ -75,7 +108,55 @@ export async function getWikipediaInformationFromUrl(
     throw new Error("Invalid Wikipedia URL");
   }
   const summary = await getWikipediaSummary(decodeURIComponent(title));
+  const fullArticle = await getWikipediaFullArticle(decodeURIComponent(title));
+  console.log("fullArticle", fullArticle);
   console.log("summary", summary);
 
   return summary;
+}
+
+export async function getWikipediaFullArticle(title: string): Promise<string> {
+  const params = new URLSearchParams({
+    action: "query",
+    format: "json",
+    prop: "extracts",
+    titles: title,
+    explaintext: "1",
+    origin: "*",
+  });
+
+  const response = await fetch(`${WIKIPEDIA_FULL_API_URL}?${params}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch full Wikipedia article for ${title}`);
+  }
+
+  const data = await response.json();
+  const result = WikiFullArticleResponseSchema.safeParse(data);
+
+  if (!result.success) {
+    throw new Error(
+      `Wikipedia API response validation failed: ${result.error.message}`
+    );
+  }
+
+  // Get the first (and only) page from the pages object
+  const page = Object.values(result.data.query.pages)[0];
+  return page.extract;
+}
+
+export async function getWikipediaFullArticleFromUrl(
+  wikipediaUrl: string
+): Promise<string> {
+  // Extract the title from the Wikipedia URL
+  const title = wikipediaUrl.split("/wiki/").pop();
+  if (!title) {
+    throw new Error("Invalid Wikipedia URL");
+  }
+  return await getWikipediaFullArticle(decodeURIComponent(title));
 }
