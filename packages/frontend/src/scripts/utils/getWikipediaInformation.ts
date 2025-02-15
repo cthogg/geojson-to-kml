@@ -46,7 +46,6 @@ type WikiSummary = z.infer<typeof WikiSummarySchema>;
 // Schema for full Wikipedia article response
 const WikiFullArticleResponseSchema = z.object({
   batchcomplete: z.string(),
-  EER: z.string(),
   query: z.object({
     normalized: z
       .array(

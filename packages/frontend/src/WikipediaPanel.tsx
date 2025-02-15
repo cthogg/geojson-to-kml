@@ -71,7 +71,7 @@ export function WikipediaPanel({
       });
 
       if (!response.ok) {
-        throw new Error("Failed to fetch audio");
+        throw new Error(`${response.status} ${response.statusText}`);
       }
 
       const audioBlob = await response.blob();
@@ -112,6 +112,19 @@ export function WikipediaPanel({
       <div className="flex justify-between items-start text-black">
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
           {selectedArticle.name}
+          <button
+            onClick={handlePlayPause}
+            disabled={playAudioMutation.isPending}
+            className="flex-shrink-0 p-1 rounded-full bg-blue-500 hover:bg-blue-600 text-white disabled:bg-blue-300 text-sm"
+          >
+            {playAudioMutation.isPending ? (
+              <span className="animate-spin">⟳</span>
+            ) : isPlaying ? (
+              "⏸"
+            ) : (
+              "▶"
+            )}
+          </button>
         </h2>
 
         <div className="flex items-center gap-2">
@@ -141,20 +154,6 @@ export function WikipediaPanel({
                 />
               </div>
             )}
-
-            <button
-              onClick={handlePlayPause}
-              disabled={playAudioMutation.isPending}
-              className="flex-shrink-0 p-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white disabled:bg-blue-300"
-            >
-              {playAudioMutation.isPending ? (
-                <span className="animate-spin">⟳</span>
-              ) : isPlaying ? (
-                "⏸"
-              ) : (
-                "▶"
-              )}
-            </button>
           </>
         )}
       </div>
