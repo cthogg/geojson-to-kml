@@ -14,13 +14,23 @@ export const createCompletion = async ({
     apiKey: openAiKey,
   });
 
+  const styles = [
+    "comedian",
+    "tour guide",
+    "history buff",
+    "local expert",
+    "foodie",
+    "rap artist",
+    "a person who speaks one setence english one sentence german",
+    "a person who only speaks in words that start with the letter 'S'",
+  ];
+
   const completion = await openai.chat.completions.create({
-    model: "gpt-4",
+    model: "gpt-4o-mini",
     messages: [
       {
         role: "system",
-        content:
-          "You are a London tour guide. You are given a location. Write a 100 word summary of the location. The summary should be in the style of a tour guide.",
+        content: ` You are a London tour guide. You are given a location. Write a 100 word summary of the location. The summary should be in the style of a ${styles[7]}.`,
       },
       {
         role: "user",
