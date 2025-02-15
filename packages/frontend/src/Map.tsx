@@ -18,11 +18,7 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { getNearbyWikipediaArticles } from "./scripts/utils/getLocalWiki";
 import { WikipediaArticleSchema } from "./scripts/utils/WikipediaArticlesTypes";
 import { ApiSettings } from "./settings/ApiSettings";
-import {
-  openAiKeyAtom,
-  tourGuideStyleAtom,
-  unrealSpeechTokenAtom,
-} from "./settings/atoms";
+import { openAiKeyAtom, unrealSpeechTokenAtom } from "./settings/atoms";
 import { WikipediaPanel } from "./WikipediaPanel";
 
 type WikipediaArticle = z.infer<typeof WikipediaArticleSchema>;
@@ -35,7 +31,6 @@ export function Map() {
   const [openAiKey] = useAtom(openAiKeyAtom);
   const [unrealSpeechToken] = useAtom(unrealSpeechTokenAtom);
   const [showApiKeyPrompt, setShowApiKeyPrompt] = useState(false);
-  const [tourGuideStyle] = useAtom(tourGuideStyleAtom);
   const [selectedWikiArticle, setSelectedWikiArticle] =
     useState<WikipediaArticle | null>(null);
 
@@ -205,7 +200,6 @@ export function Map() {
               setSelectedArticle={setSelectedWikiArticle}
               openAiKey={openAiKey}
               unrealSpeechToken={unrealSpeechToken}
-              tourGuideStyle={tourGuideStyle}
             />
           </ErrorBoundary>
         </div>

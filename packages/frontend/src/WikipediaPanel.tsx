@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useAtom } from "jotai";
 import { useRef, useState } from "react";
 import { z } from "zod";
 import {
@@ -7,7 +8,7 @@ import {
 } from "./scripts/utils/getWikipediaInformation";
 import { createCompletion } from "./scripts/utils/openAi";
 import { WikipediaArticleSchema } from "./scripts/utils/WikipediaArticlesTypes";
-import { TourGuideStyle } from "./settings/atoms";
+import { TourGuideStyle, tourGuideStyleAtom } from "./settings/atoms";
 
 type WikipediaArticle = z.infer<typeof WikipediaArticleSchema>;
 
@@ -16,7 +17,6 @@ interface WikipediaPanelProps {
   setSelectedArticle: (article: WikipediaArticle | null) => void;
   openAiKey: string;
   unrealSpeechToken: string;
-  tourGuideStyle: TourGuideStyle;
 }
 
 export function WikipediaPanel({
@@ -24,10 +24,10 @@ export function WikipediaPanel({
   setSelectedArticle,
   openAiKey,
   unrealSpeechToken,
-  tourGuideStyle,
 }: WikipediaPanelProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [tourGuideStyle, setTourGuideStyle] = useAtom(tourGuideStyleAtom);
 
   const { data: wikiInfo, isLoading } = useQuery({
     queryKey: ["wikipediaInfo", selectedArticle.wikipedia_article_url],
@@ -130,7 +130,34 @@ export function WikipediaPanel({
             )}
           </button>
         </h2>
-        <p className="text-sm text-gray-500">{tourGuideStyle}</p>
+        <p className="text-sm text-gray-500">
+          <select
+            value={tourGuideStyle}
+            onChange={(e) =>
+              setTourGuideStyle(e.target.value as TourGuideStyle)
+            }
+            className="p-1 border border-gray-300 rounded bg-white"
+          >
+            <option value="tour guide">Tour Guide</option>
+            <option value="comedian">Comedian</option>
+            <option value="history buff">History Buff</option>
+            <option value="architect">Architect</option>
+            <option value="local expert">Local Expert</option>
+            <option value="foodie">Foodie</option>
+            <option value="rap artist">Rap Artist</option>
+            <option value="person who speaks one setence english one sentence german">
+              English/German Speaker
+            </option>
+            <option value="person who only speaks in words that start with the letter 'S'">
+              S-Words Only
+            </option>
+            <option value="arrogant know-it-all">Arrogant Know-it-all</option>
+            <option value="motivational speaker">Motivational Speaker</option>
+            <option value="philosopher">Philosopher</option>
+            <option value="poet">Poet</option>
+            <option value="historian">Historian</option>
+          </select>
+        </p>
 
         <div className="flex items-center gap-2">
           <button
