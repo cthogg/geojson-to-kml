@@ -29,8 +29,6 @@ export const createCompletion = async ({
     "philosopher",
     "poet",
     "historian",
-    "scientist",
-    "mathematician",
   ];
 
   const completion = await openai.chat.completions.create({
@@ -38,7 +36,7 @@ export const createCompletion = async ({
     messages: [
       {
         role: "system",
-        content: ` You are a London tour guide. You are given a location. Write a 100 word summary of the location. The summary should be in the style of a ${styles[7]}.`,
+        content: ` You are a London tour guide. You are given a location. Write a 100 word summary of the location. The summary should be in the style of a ${styles[9]}.`,
       },
       {
         role: "user",
