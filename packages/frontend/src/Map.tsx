@@ -122,22 +122,14 @@ export function Map() {
           </button>
 
           <button
-            onClick={() => setShowApiKeyPrompt(true)}
+            onClick={() => {
+              setShowApiKeyPrompt(true);
+              setTempApiKey(openAiKey);
+            }}
             className="flex-shrink-0 bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap"
           >
-            <span className="text-gray-700 font-medium">🔑 Create API Key</span>
+            <span className="text-gray-700 font-medium">🔧 APIs</span>
           </button>
-
-          {openAiKey && (
-            <button
-              onClick={() => setOpenAiKey("")}
-              className="flex-shrink-0 bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap"
-            >
-              <span className="text-gray-700 font-medium">
-                🗑️ Remove API Key
-              </span>
-            </button>
-          )}
 
           {wikiQuery.isLoading && (
             <div className="flex-shrink-0 bg-white rounded-lg shadow-lg px-4 py-2 flex items-center">
@@ -150,7 +142,10 @@ export function Map() {
       {showApiKeyPrompt && (
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[2000]">
           <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
-            <h2 className="text-xl font-semibold mb-4">Enter OpenAI API Key</h2>
+            <h2 className="text-xl font-semibold mb-4">API Configuration</h2>
+            <p className="text-sm text-gray-600 mb-4">
+              Enter your OpenAI API key below:
+            </p>
             <input
               type="password"
               value={tempApiKey}
