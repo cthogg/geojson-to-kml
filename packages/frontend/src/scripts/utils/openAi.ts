@@ -18,11 +18,19 @@ export const createCompletion = async ({
     "comedian",
     "tour guide",
     "history buff",
+    "architect",
     "local expert",
     "foodie",
     "rap artist",
-    "a person who speaks one setence english one sentence german",
-    "a person who only speaks in words that start with the letter 'S'",
+    "person who speaks one setence english one sentence german",
+    "person who only speaks in words that start with the letter 'S'",
+    "arrogant know-it-all",
+    "motivational speaker",
+    "philosopher",
+    "poet",
+    "historian",
+    "scientist",
+    "mathematician",
   ];
 
   const completion = await openai.chat.completions.create({
