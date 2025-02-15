@@ -39,13 +39,11 @@ export function WikipediaPanel({
         //FIXME: do not use !.
         decodeURIComponent(title!)
       );
-      console.log("fullArticle", fullArticle);
       const openAiText = await createCompletion({
         fullArticle,
         openAiKey,
       });
       const content = openAiText.choices[0].message.content;
-      console.log("content", content);
 
       if (audioRef.current && isPlaying) {
         audioRef.current.play();
@@ -127,6 +125,9 @@ export function WikipediaPanel({
           <div className="animate-pulse">Loading...</div>
         ) : (
           <>
+            {wikiInfo?.summary.description && (
+              <p className="text-gray-700">{wikiInfo.summary.description}</p>
+            )}
             {wikiInfo?.summary.thumbnail && (
               <div className="flex justify-center">
                 <img
@@ -137,39 +138,20 @@ export function WikipediaPanel({
                 />
               </div>
             )}
-            {wikiInfo?.summary.description && (
-              <p className="text-gray-700">{wikiInfo.summary.description}</p>
-            )}
-            {wikiInfo?.summary.extract && (
-              <div className="flex items-start gap-2">
-                <p className="text-gray-700 text-sm flex-grow">
-                  {wikiInfo.summary.extract}
-                </p>
-                <button
-                  onClick={handlePlayPause}
-                  disabled={playAudioMutation.isPending}
-                  className="flex-shrink-0 p-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white disabled:bg-blue-300"
-                >
-                  {playAudioMutation.isPending ? (
-                    <span className="animate-spin">⟳</span>
-                  ) : isPlaying ? (
-                    "⏸"
-                  ) : (
-                    "▶"
-                  )}
-                </button>
-              </div>
-            )}
-            <div className="flex-1">
-              <a
-                href={selectedArticle.wikipedia_article_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 underline"
-              >
-                Read more on Wikipedia
-              </a>
-            </div>
+
+            <button
+              onClick={handlePlayPause}
+              disabled={playAudioMutation.isPending}
+              className="flex-shrink-0 p-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white disabled:bg-blue-300"
+            >
+              {playAudioMutation.isPending ? (
+                <span className="animate-spin">⟳</span>
+              ) : isPlaying ? (
+                "⏸"
+              ) : (
+                "▶"
+              )}
+            </button>
           </>
         )}
       </div>

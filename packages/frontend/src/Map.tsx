@@ -197,7 +197,20 @@ export function Map() {
         <LocationMarker />
         <MapCenterHandler />
 
-        <MarkerClusterGroup>
+        <MarkerClusterGroup
+          spiderfyOnMaxZoom={true}
+          spiderLegPolylineOptions={{
+            weight: 1.5,
+            color: "#222",
+            opacity: 0.5,
+          }}
+          spiderfyDistanceMultiplier={5}
+          circleFootSeparation={80}
+          spiralFootSeparation={100}
+          spiralLengthStart={20}
+          spiralLengthFactor={10}
+          zoomToBoundsOnClick={false}
+        >
           {wikiMarkers.map((article, index) => (
             <Marker
               key={`wiki-${article.id || index}`}
