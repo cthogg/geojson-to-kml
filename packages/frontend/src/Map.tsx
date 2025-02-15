@@ -30,6 +30,7 @@ export function Map() {
   const [openAiKey, setOpenAiKey] = useAtom(openAiKeyAtom);
   const [showApiKeyPrompt, setShowApiKeyPrompt] = useState(false);
   const [tempApiKey, setTempApiKey] = useState("");
+  const [showApiKey, setShowApiKey] = useState(false);
 
   const [selectedWikiArticle, setSelectedWikiArticle] =
     useState<WikipediaArticle | null>(null);
@@ -146,13 +147,30 @@ export function Map() {
             <p className="text-sm text-gray-600 mb-4">
               Enter your OpenAI API key below:
             </p>
-            <input
-              type="password"
-              value={tempApiKey}
-              onChange={(e) => setTempApiKey(e.target.value)}
-              placeholder="sk-..."
-              className="w-full p-2 border border-gray-300 rounded mb-4"
-            />
+            <div className="relative">
+              <input
+                type={showApiKey ? "text" : "password"}
+                value={tempApiKey}
+                onChange={(e) => setTempApiKey(e.target.value)}
+                placeholder="sk-..."
+                className="w-full p-2 border border-gray-300 rounded mb-4 pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowApiKey(!showApiKey)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none mb-4"
+              >
+                {showApiKey ? (
+                  <span role="img" aria-label="hide key">
+                    👁️
+                  </span>
+                ) : (
+                  <span role="img" aria-label="show key">
+                    👁️‍🗨️
+                  </span>
+                )}
+              </button>
+            </div>
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => {
