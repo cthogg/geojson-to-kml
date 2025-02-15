@@ -30,7 +30,9 @@ export function WikipediaPanel({
     queryKey: ["wikipediaInfo", selectedArticle.wikipedia_article_url],
     queryFn: () =>
       getWikipediaInformationFromUrl(selectedArticle.wikipedia_article_url),
+    //FIXME: do not use !.
     enabled: !!selectedArticle.wikipedia_article_url,
+    throwOnError: true,
   });
 
   const playAudioMutation = useMutation({
@@ -45,12 +47,7 @@ export function WikipediaPanel({
         fullArticle,
         openAiKey,
       });
-      console.log("openAiText", openAiText);
-      if (!openAiText.success) {
-        alert("not success");
-        throw new Error(openAiText.error?.message);
-      }
-      const content = openAiText.data?.choices[0].message.content;
+      const content = openAiText?.choices[0].message.content;
 
       if (audioRef.current && isPlaying) {
         audioRef.current.play();
@@ -74,7 +71,6 @@ export function WikipediaPanel({
       });
 
       if (!response.ok) {
-        alert("Failed to fetch audio");
         throw new Error("Failed to fetch audio");
       }
 
@@ -90,6 +86,7 @@ export function WikipediaPanel({
       await audio.play();
       setIsPlaying(true);
     },
+    throwOnError: true,
   });
 
   const handlePlayPause = () => {

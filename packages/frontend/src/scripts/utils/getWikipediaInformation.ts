@@ -46,6 +46,7 @@ type WikiSummary = z.infer<typeof WikiSummarySchema>;
 // Schema for full Wikipedia article response
 const WikiFullArticleResponseSchema = z.object({
   batchcomplete: z.string(),
+  EER: z.string(),
   query: z.object({
     normalized: z
       .array(
@@ -83,14 +84,11 @@ export async function getWikipediaSummary(title: string): Promise<WikiSummary> {
   );
 
   if (!response.ok) {
-    alert(`Failed to fetch Wikipedia summary for ${title}`);
     throw new Error(`Failed to fetch Wikipedia summary for ${title}`);
   }
 
   const data = await response.json();
-  console.log("data", data);
   const result = WikiSummarySchema.safeParse(data);
-  console.log("result", result);
   if (!result.success) {
     throw new Error(
       `Wikipedia API response validation failed: ${result.error.message}`
@@ -113,7 +111,6 @@ export async function getWikipediaInformationFromUrl(
 }
 
 export async function getWikipediaFullArticle(title: string): Promise<string> {
-  console.log("getWikipediaFullArticle", title);
   const params = new URLSearchParams({
     action: "query",
     format: "json",
@@ -131,7 +128,6 @@ export async function getWikipediaFullArticle(title: string): Promise<string> {
   });
 
   if (!response.ok) {
-    alert(`Failed to fetch full Wikipedia article for ${title}`);
     throw new Error(`Failed to fetch full Wikipedia article for ${title}`);
   }
 
@@ -139,7 +135,6 @@ export async function getWikipediaFullArticle(title: string): Promise<string> {
   const result = WikiFullArticleResponseSchema.safeParse(data);
 
   if (!result.success) {
-    alert(`Wikipedia API response validation failed: ${result.error.message}`);
     throw new Error(
       `Wikipedia API response validation failed: ${result.error.message}`
     );
