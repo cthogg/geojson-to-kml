@@ -186,7 +186,7 @@ export function Map() {
       <MapContainer
         className="h-[100dvh] w-[100dvw]"
         center={[51.522333, -0.132239]}
-        zoom={12}
+        zoom={17}
         maxZoom={18}
         ref={setMap}
       >
