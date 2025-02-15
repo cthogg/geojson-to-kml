@@ -1,6 +1,11 @@
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { openAiKeyAtom, unrealSpeechTokenAtom } from "./atoms";
+import {
+  openAiKeyAtom,
+  TourGuideStyle,
+  tourGuideStyleAtom,
+  unrealSpeechTokenAtom,
+} from "./atoms";
 
 interface ApiSettingsProps {
   showApiKeyPrompt: boolean;
@@ -15,8 +20,11 @@ export function ApiSettings({
   const [unrealSpeechToken, setUnrealSpeechToken] = useAtom(
     unrealSpeechTokenAtom
   );
+  const [tourGuideStyle, setTourGuideStyle] = useAtom(tourGuideStyleAtom);
   const [tempApiKey, setTempApiKey] = useState("");
   const [tempUnrealSpeechToken, setTempUnrealSpeechToken] = useState("");
+  const [tempTourGuideStyle, setTempTourGuideStyle] =
+    useState<TourGuideStyle>(tourGuideStyle);
   const [showApiKey, setShowApiKey] = useState(false);
   const [showUnrealSpeechToken, setShowUnrealSpeechToken] = useState(false);
 
@@ -25,8 +33,9 @@ export function ApiSettings({
     if (showApiKeyPrompt) {
       setTempApiKey(openAiKey);
       setTempUnrealSpeechToken(unrealSpeechToken);
+      setTempTourGuideStyle(tourGuideStyle);
     }
-  }, [showApiKeyPrompt, openAiKey, unrealSpeechToken]);
+  }, [showApiKeyPrompt, openAiKey, unrealSpeechToken, tourGuideStyle]);
 
   if (!showApiKeyPrompt) return null;
 
@@ -86,6 +95,35 @@ export function ApiSettings({
           </button>
         </div>
 
+        <p className="text-sm text-gray-600 mb-4">Tour Guide Style</p>
+        <select
+          value={tempTourGuideStyle}
+          onChange={(e) =>
+            setTempTourGuideStyle(e.target.value as TourGuideStyle)
+          }
+          className="w-full p-2 border border-gray-300 rounded mb-4"
+        >
+          {/* FIXME: automatically generate options from the styles array */}
+          <option value="tour guide">Tour Guide</option>
+          <option value="comedian">Comedian</option>
+          <option value="history buff">History Buff</option>
+          <option value="architect">Architect</option>
+          <option value="local expert">Local Expert</option>
+          <option value="foodie">Foodie</option>
+          <option value="rap artist">Rap Artist</option>
+          <option value="person who speaks one setence english one sentence german">
+            English/German Speaker
+          </option>
+          <option value="person who only speaks in words that start with the letter 'S'">
+            S-Words Only
+          </option>
+          <option value="arrogant know-it-all">Arrogant Know-it-all</option>
+          <option value="motivational speaker">Motivational Speaker</option>
+          <option value="philosopher">Philosopher</option>
+          <option value="poet">Poet</option>
+          <option value="historian">Historian</option>
+        </select>
+
         <div className="flex justify-end gap-2">
           <button
             onClick={() => {
@@ -101,6 +139,7 @@ export function ApiSettings({
             onClick={() => {
               setOpenAiKey(tempApiKey);
               setUnrealSpeechToken(tempUnrealSpeechToken);
+              setTourGuideStyle(tempTourGuideStyle);
               setShowApiKeyPrompt(false);
               setTempApiKey("");
               setTempUnrealSpeechToken("");
