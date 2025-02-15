@@ -7,6 +7,7 @@ import {
 } from "./scripts/utils/getWikipediaInformation";
 import { createCompletion } from "./scripts/utils/openAi";
 import { WikipediaArticleSchema } from "./scripts/utils/WikipediaArticlesTypes";
+import { TourGuideStyle } from "./settings/atoms";
 
 type WikipediaArticle = z.infer<typeof WikipediaArticleSchema>;
 
@@ -15,6 +16,7 @@ interface WikipediaPanelProps {
   setSelectedArticle: (article: WikipediaArticle | null) => void;
   openAiKey: string;
   unrealSpeechToken: string;
+  tourGuideStyle: TourGuideStyle;
 }
 
 export function WikipediaPanel({
@@ -22,6 +24,7 @@ export function WikipediaPanel({
   setSelectedArticle,
   openAiKey,
   unrealSpeechToken,
+  tourGuideStyle,
 }: WikipediaPanelProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -46,6 +49,7 @@ export function WikipediaPanel({
       const openAiText = await createCompletion({
         fullArticle,
         openAiKey,
+        style: tourGuideStyle,
       });
       const content = openAiText?.choices[0].message.content;
 
@@ -126,6 +130,7 @@ export function WikipediaPanel({
             )}
           </button>
         </h2>
+        <p className="text-sm text-gray-500">{tourGuideStyle}</p>
 
         <div className="flex items-center gap-2">
           <button

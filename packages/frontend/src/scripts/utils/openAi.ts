@@ -1,11 +1,14 @@
 import OpenAI from "openai";
+import { TourGuideStyle } from "../../settings/atoms";
 
 export const createCompletion = async ({
   fullArticle,
   openAiKey,
+  style,
 }: {
   fullArticle: string;
   openAiKey: string;
+  style: TourGuideStyle;
 }) => {
   const openai = new OpenAI({
     organization: "org-NnvD2zTUZJPKSal9Y5kSw3z0",
@@ -14,29 +17,12 @@ export const createCompletion = async ({
     apiKey: openAiKey,
   });
 
-  const styles = [
-    "comedian",
-    "tour guide",
-    "history buff",
-    "architect",
-    "local expert",
-    "foodie",
-    "rap artist",
-    "person who speaks one setence english one sentence german",
-    "person who only speaks in words that start with the letter 'S'",
-    "arrogant know-it-all",
-    "motivational speaker",
-    "philosopher",
-    "poet",
-    "historian",
-  ];
-
   const completion = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
       {
         role: "system",
-        content: ` You are a London tour guide. You are given a location. Write a 100 word summary of the location. The summary should be in the style of a ${styles[9]}.`,
+        content: ` You are a London tour guide. You are given a location. Write a 100 word summary of the location. The summary should be in the style of a ${style}.`,
       },
       {
         role: "user",
