@@ -20,6 +20,7 @@ import { WikipediaArticleSchema } from "./scripts/utils/WikipediaArticlesTypes";
 import { WikipediaPanel } from "./WikipediaPanel";
 
 const openAiKeyAtom = atomWithStorage("openai-api-key", "");
+const unrealSpeechTokenAtom = atomWithStorage("unreal-speech-token", "");
 type WikipediaArticle = z.infer<typeof WikipediaArticleSchema>;
 
 export function Map() {
@@ -28,9 +29,14 @@ export function Map() {
     51.522333, -0.132239,
   ]);
   const [openAiKey, setOpenAiKey] = useAtom(openAiKeyAtom);
+  const [unrealSpeechToken, setUnrealSpeechToken] = useAtom(
+    unrealSpeechTokenAtom
+  );
   const [showApiKeyPrompt, setShowApiKeyPrompt] = useState(false);
   const [tempApiKey, setTempApiKey] = useState("");
+  const [tempUnrealSpeechToken, setTempUnrealSpeechToken] = useState("");
   const [showApiKey, setShowApiKey] = useState(false);
+  const [showUnrealSpeechToken, setShowUnrealSpeechToken] = useState(false);
 
   const [selectedWikiArticle, setSelectedWikiArticle] =
     useState<WikipediaArticle | null>(null);
@@ -126,6 +132,7 @@ export function Map() {
             onClick={() => {
               setShowApiKeyPrompt(true);
               setTempApiKey(openAiKey);
+              setTempUnrealSpeechToken(unrealSpeechToken);
             }}
             className="flex-shrink-0 bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap"
           >
@@ -169,11 +176,41 @@ export function Map() {
                 )}
               </button>
             </div>
+
+            <p className="text-sm text-gray-600 mb-4">
+              Unreal Speech Auth Token
+            </p>
+            <div className="relative">
+              <input
+                type={showUnrealSpeechToken ? "text" : "password"}
+                value={tempUnrealSpeechToken}
+                onChange={(e) => setTempUnrealSpeechToken(e.target.value)}
+                placeholder="Enter token..."
+                className="w-full p-2 border border-gray-300 rounded mb-4 pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowUnrealSpeechToken(!showUnrealSpeechToken)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none mb-4"
+              >
+                {showUnrealSpeechToken ? (
+                  <span role="img" aria-label="hide token">
+                    👁️
+                  </span>
+                ) : (
+                  <span role="img" aria-label="show token">
+                    👁️‍🗨️
+                  </span>
+                )}
+              </button>
+            </div>
+
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => {
                   setShowApiKeyPrompt(false);
                   setTempApiKey("");
+                  setTempUnrealSpeechToken("");
                 }}
                 className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
               >
@@ -182,8 +219,10 @@ export function Map() {
               <button
                 onClick={() => {
                   setOpenAiKey(tempApiKey);
+                  setUnrealSpeechToken(tempUnrealSpeechToken);
                   setShowApiKeyPrompt(false);
                   setTempApiKey("");
+                  setTempUnrealSpeechToken("");
                 }}
                 className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 rounded"
               >
@@ -251,6 +290,7 @@ export function Map() {
             selectedArticle={selectedWikiArticle}
             setSelectedArticle={setSelectedWikiArticle}
             openAiKey={openAiKey}
+            unrealSpeechToken={unrealSpeechToken}
           />
         </div>
       )}

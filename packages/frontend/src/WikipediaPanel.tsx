@@ -14,12 +14,14 @@ interface WikipediaPanelProps {
   selectedArticle: WikipediaArticle;
   setSelectedArticle: (article: WikipediaArticle | null) => void;
   openAiKey: string;
+  unrealSpeechToken: string;
 }
 
 export function WikipediaPanel({
   selectedArticle,
   setSelectedArticle,
   openAiKey,
+  unrealSpeechToken,
 }: WikipediaPanelProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -53,9 +55,7 @@ export function WikipediaPanel({
       const response = await fetch("https://api.v7.unrealspeech.com/stream", {
         method: "POST",
         headers: {
-          Authorization:
-            //FIXME: move to a .env variable
-            "Bearer NwDR1Ax5PC3vajVePGPcyvWcS1t56ZIRqzANGQQaQdk6zU1EPXKaAt",
+          Authorization: `Bearer ${unrealSpeechToken}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
