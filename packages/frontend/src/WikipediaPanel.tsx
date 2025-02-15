@@ -8,7 +8,11 @@ import {
 } from "./scripts/utils/getWikipediaInformation";
 import { createCompletion } from "./scripts/utils/openAi";
 import { WikipediaArticleSchema } from "./scripts/utils/WikipediaArticlesTypes";
-import { TourGuideStyle, tourGuideStyleAtom } from "./settings/atoms";
+import {
+  customTourGuideStyleAtom,
+  TourGuideStyle,
+  tourGuideStyleAtom,
+} from "./settings/atoms";
 
 type WikipediaArticle = z.infer<typeof WikipediaArticleSchema>;
 
@@ -28,6 +32,9 @@ export function WikipediaPanel({
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [tourGuideStyle, setTourGuideStyle] = useAtom(tourGuideStyleAtom);
+  const [customTourGuideStyle] = useAtom(customTourGuideStyleAtom);
+
+  console.log("tourGuideStyle", tourGuideStyle);
 
   const { data: wikiInfo, isLoading } = useQuery({
     queryKey: ["wikipediaInfo", selectedArticle.wikipedia_article_url],
@@ -50,6 +57,7 @@ export function WikipediaPanel({
         fullArticle,
         openAiKey,
         style: tourGuideStyle,
+        customTourGuideStyle,
       });
       const content = openAiText?.choices[0].message.content;
 
@@ -136,8 +144,10 @@ export function WikipediaPanel({
             onChange={(e) =>
               setTourGuideStyle(e.target.value as TourGuideStyle)
             }
-            className="p-1 border border-gray-300 rounded bg-white"
+            className="p-1 border border-gray-300 rounded bg-white max-w-[200px]"
           >
+            {/* FIXME: automatically generate options from the styles array */}
+
             <option value="tour guide">Tour Guide</option>
             <option value="comedian">Comedian</option>
             <option value="history buff">History Buff</option>
@@ -156,6 +166,7 @@ export function WikipediaPanel({
             <option value="philosopher">Philosopher</option>
             <option value="poet">Poet</option>
             <option value="historian">Historian</option>
+            <option value="custom">(custom) {customTourGuideStyle}</option>
           </select>
         </p>
 

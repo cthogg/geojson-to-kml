@@ -14,11 +14,16 @@ export type TourGuideStyle =
   | "motivational speaker"
   | "philosopher"
   | "poet"
-  | "historian";
+  | "historian"
+  | "custom";
 
 export const openAiKeyAtom = atomWithStorage("openai-api-key", "");
 export const unrealSpeechTokenAtom = atomWithStorage("unreal-speech-token", "");
 export const tourGuideStyleAtom = atomWithStorage<TourGuideStyle>(
   "tour-guide-style",
   "tour guide"
+);
+export const customTourGuideStyleAtom = atomWithStorage(
+  "custom-tour-guide-style",
+  ""
 );

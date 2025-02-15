@@ -5,10 +5,12 @@ export const createCompletion = async ({
   fullArticle,
   openAiKey,
   style,
+  customTourGuideStyle,
 }: {
   fullArticle: string;
   openAiKey: string;
   style: TourGuideStyle;
+  customTourGuideStyle: string;
 }) => {
   const openai = new OpenAI({
     organization: "org-NnvD2zTUZJPKSal9Y5kSw3z0",
@@ -17,12 +19,14 @@ export const createCompletion = async ({
     apiKey: openAiKey,
   });
 
+  const styleToUse = style === "custom" ? customTourGuideStyle : style;
+
   const completion = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
       {
         role: "system",
-        content: ` You are a London tour guide. You are given a location. Write a 100 word summary of the location. The summary should be in the style of a ${style}.`,
+        content: ` You are a London tour guide. You are given a location. Write a 100 word summary of the location. The summary should be in the style of a ${styleToUse}.`,
       },
       {
         role: "user",

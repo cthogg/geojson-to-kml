@@ -1,6 +1,7 @@
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import {
+  customTourGuideStyleAtom,
   openAiKeyAtom,
   TourGuideStyle,
   tourGuideStyleAtom,
@@ -21,10 +22,15 @@ export function ApiSettings({
     unrealSpeechTokenAtom
   );
   const [tourGuideStyle, setTourGuideStyle] = useAtom(tourGuideStyleAtom);
+  const [customTourGuideStyle, setCustomTourGuideStyle] = useAtom(
+    customTourGuideStyleAtom
+  );
   const [tempApiKey, setTempApiKey] = useState("");
   const [tempUnrealSpeechToken, setTempUnrealSpeechToken] = useState("");
   const [tempTourGuideStyle, setTempTourGuideStyle] =
     useState<TourGuideStyle>(tourGuideStyle);
+  const [tempCustomTourGuideStyle, setTempCustomTourGuideStyle] =
+    useState(customTourGuideStyle);
   const [showApiKey, setShowApiKey] = useState(false);
   const [showUnrealSpeechToken, setShowUnrealSpeechToken] = useState(false);
 
@@ -34,8 +40,15 @@ export function ApiSettings({
       setTempApiKey(openAiKey);
       setTempUnrealSpeechToken(unrealSpeechToken);
       setTempTourGuideStyle(tourGuideStyle);
+      setTempCustomTourGuideStyle(customTourGuideStyle);
     }
-  }, [showApiKeyPrompt, openAiKey, unrealSpeechToken, tourGuideStyle]);
+  }, [
+    showApiKeyPrompt,
+    openAiKey,
+    unrealSpeechToken,
+    tourGuideStyle,
+    customTourGuideStyle,
+  ]);
 
   if (!showApiKeyPrompt) return null;
 
@@ -103,7 +116,6 @@ export function ApiSettings({
           }
           className="w-full p-2 border border-gray-300 rounded mb-4"
         >
-          {/* FIXME: automatically generate options from the styles array */}
           <option value="tour guide">Tour Guide</option>
           <option value="comedian">Comedian</option>
           <option value="history buff">History Buff</option>
@@ -122,7 +134,22 @@ export function ApiSettings({
           <option value="philosopher">Philosopher</option>
           <option value="poet">Poet</option>
           <option value="historian">Historian</option>
+          <option value="custom">Custom Style</option>
         </select>
+
+        {tempTourGuideStyle === "custom" && (
+          <div className="mb-4">
+            <p className="text-sm text-gray-600 mb-2">
+              Custom Style Description
+            </p>
+            <textarea
+              value={tempCustomTourGuideStyle}
+              onChange={(e) => setTempCustomTourGuideStyle(e.target.value)}
+              placeholder="Describe your custom tour guide style..."
+              className="w-full p-2 border border-gray-300 rounded h-24 resize-none"
+            />
+          </div>
+        )}
 
         <div className="flex justify-end gap-2">
           <button
@@ -130,6 +157,7 @@ export function ApiSettings({
               setShowApiKeyPrompt(false);
               setTempApiKey("");
               setTempUnrealSpeechToken("");
+              setTempCustomTourGuideStyle("");
             }}
             className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
           >
@@ -140,9 +168,11 @@ export function ApiSettings({
               setOpenAiKey(tempApiKey);
               setUnrealSpeechToken(tempUnrealSpeechToken);
               setTourGuideStyle(tempTourGuideStyle);
+              setCustomTourGuideStyle(tempCustomTourGuideStyle);
               setShowApiKeyPrompt(false);
               setTempApiKey("");
               setTempUnrealSpeechToken("");
+              setTempCustomTourGuideStyle("");
             }}
             className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 rounded"
           >
