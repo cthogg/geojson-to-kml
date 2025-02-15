@@ -45,7 +45,12 @@ export function WikipediaPanel({
         fullArticle,
         openAiKey,
       });
-      const content = openAiText.choices[0].message.content;
+      console.log("openAiText", openAiText);
+      if (!openAiText.success) {
+        alert("not success");
+        throw new Error(openAiText.error?.message);
+      }
+      const content = openAiText.data?.choices[0].message.content;
 
       if (audioRef.current && isPlaying) {
         audioRef.current.play();
@@ -69,6 +74,7 @@ export function WikipediaPanel({
       });
 
       if (!response.ok) {
+        alert("Failed to fetch audio");
         throw new Error("Failed to fetch audio");
       }
 
