@@ -12,6 +12,7 @@ import {
   customTourGuideStyleAtom,
   TourGuideStyle,
   tourGuideStyleAtom,
+  wikipediaLanguageAtom,
 } from "./settings/atoms";
 
 type WikipediaArticle = z.infer<typeof WikipediaArticleSchema>;
@@ -33,13 +34,15 @@ export function WikipediaPanel({
   const [isPlaying, setIsPlaying] = useState(false);
   const [tourGuideStyle, setTourGuideStyle] = useAtom(tourGuideStyleAtom);
   const [customTourGuideStyle] = useAtom(customTourGuideStyleAtom);
-
-  console.log("tourGuideStyle", tourGuideStyle);
+  const [language] = useAtom(wikipediaLanguageAtom);
 
   const { data: wikiInfo, isLoading } = useQuery({
     queryKey: ["wikipediaInfo", selectedArticle.wikipedia_article_url],
     queryFn: () =>
-      getWikipediaInformationFromUrl(selectedArticle.wikipedia_article_url),
+      getWikipediaInformationFromUrl(
+        selectedArticle.wikipedia_article_url,
+        language
+      ),
     //FIXME: do not use !.
     enabled: !!selectedArticle.wikipedia_article_url,
     throwOnError: true,
@@ -51,7 +54,8 @@ export function WikipediaPanel({
 
       const fullArticle = await getWikipediaFullArticle(
         //FIXME: do not use !.
-        decodeURIComponent(title!)
+        decodeURIComponent(title!),
+        language
       );
       const openAiText = await createCompletion({
         fullArticle,

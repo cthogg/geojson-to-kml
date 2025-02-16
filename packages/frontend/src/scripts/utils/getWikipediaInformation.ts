@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { WikipediaLanguage } from "../../settings/atoms";
 
 // Schema for Wikipedia API response based on the Edge Function schema
 const WikiSummarySchema = z.object({
@@ -67,11 +68,19 @@ const WikiFullArticleResponseSchema = z.object({
   }),
 });
 
-const WIKIPEDIA_API_BASE_URL =
-  "https://en.wikipedia.org/api/rest_v1/page/summary";
-const WIKIPEDIA_FULL_API_URL = "https://en.wikipedia.org/w/api.php";
+function getWikipediaApiUrls(language: WikipediaLanguage) {
+  return {
+    WIKIPEDIA_API_BASE_URL: `https://${language}.wikipedia.org/api/rest_v1/page/summary`,
+    WIKIPEDIA_FULL_API_URL: `https://${language}.wikipedia.org/w/api.php`,
+  };
+}
 
-export async function getWikipediaSummary(title: string): Promise<WikiSummary> {
+export async function getWikipediaSummary(
+  title: string,
+  language: WikipediaLanguage
+): Promise<WikiSummary> {
+  const { WIKIPEDIA_API_BASE_URL } = getWikipediaApiUrls(language);
+
   const response = await fetch(
     `${WIKIPEDIA_API_BASE_URL}/${encodeURIComponent(title)}`,
     {
@@ -97,19 +106,28 @@ export async function getWikipediaSummary(title: string): Promise<WikiSummary> {
 }
 
 export async function getWikipediaInformationFromUrl(
-  wikipediaUrl: string
+  wikipediaUrl: string,
+  language: WikipediaLanguage
 ): Promise<{ summary: WikiSummary }> {
   // Extract the title from the Wikipedia URL
   const title = wikipediaUrl.split("/wiki/").pop();
   if (!title) {
     throw new Error("Invalid Wikipedia URL");
   }
-  const summary = await getWikipediaSummary(decodeURIComponent(title));
+  const summary = await getWikipediaSummary(
+    decodeURIComponent(title),
+    language
+  );
 
   return { summary };
 }
 
-export async function getWikipediaFullArticle(title: string): Promise<string> {
+export async function getWikipediaFullArticle(
+  title: string,
+  language: WikipediaLanguage
+): Promise<string> {
+  const { WIKIPEDIA_FULL_API_URL } = getWikipediaApiUrls(language);
+
   const params = new URLSearchParams({
     action: "query",
     format: "json",
@@ -145,12 +163,13 @@ export async function getWikipediaFullArticle(title: string): Promise<string> {
 }
 
 export async function getWikipediaFullArticleFromUrl(
-  wikipediaUrl: string
+  wikipediaUrl: string,
+  language: WikipediaLanguage
 ): Promise<string> {
   // Extract the title from the Wikipedia URL
   const title = wikipediaUrl.split("/wiki/").pop();
   if (!title) {
     throw new Error("Invalid Wikipedia URL");
   }
-  return await getWikipediaFullArticle(decodeURIComponent(title));
+  return await getWikipediaFullArticle(decodeURIComponent(title), language);
 }

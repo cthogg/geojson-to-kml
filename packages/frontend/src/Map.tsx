@@ -18,7 +18,11 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { getNearbyWikipediaArticles } from "./scripts/utils/getLocalWiki";
 import { WikipediaArticleSchema } from "./scripts/utils/WikipediaArticlesTypes";
 import { ApiSettings } from "./settings/ApiSettings";
-import { openAiKeyAtom, unrealSpeechTokenAtom } from "./settings/atoms";
+import {
+  openAiKeyAtom,
+  unrealSpeechTokenAtom,
+  wikipediaLanguageAtom,
+} from "./settings/atoms";
 import { WikipediaPanel } from "./WikipediaPanel";
 
 type WikipediaArticle = z.infer<typeof WikipediaArticleSchema>;
@@ -30,6 +34,7 @@ export function Map() {
   ]);
   const [openAiKey] = useAtom(openAiKeyAtom);
   const [unrealSpeechToken] = useAtom(unrealSpeechTokenAtom);
+  const [language] = useAtom(wikipediaLanguageAtom);
   const [showApiKeyPrompt, setShowApiKeyPrompt] = useState(false);
   const [selectedWikiArticle, setSelectedWikiArticle] =
     useState<WikipediaArticle | null>(null);
@@ -46,7 +51,8 @@ export function Map() {
 
   const wikiQuery = useQuery({
     queryKey: ["getWikiArticles", mapCenter],
-    queryFn: () => getNearbyWikipediaArticles(mapCenter[0], mapCenter[1], 0.5),
+    queryFn: () =>
+      getNearbyWikipediaArticles(mapCenter[0], mapCenter[1], 0.5, language),
     enabled: !!mapCenter,
     throwOnError: true,
   });

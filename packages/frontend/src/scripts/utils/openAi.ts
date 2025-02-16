@@ -26,7 +26,7 @@ export const createCompletion = async ({
     messages: [
       {
         role: "system",
-        content: ` You are a London tour guide. You are given a location. Write a 100 word summary of the location. The summary should be in the style of a ${styleToUse}.`,
+        content: `You are a local tour guide. You are given a location. Write a 100 word summary of the location. The summary should be in the style of a ${styleToUse}. Answer in the English language.`,
       },
       {
         role: "user",

@@ -27,3 +27,10 @@ export const customTourGuideStyleAtom = atomWithStorage(
   "custom-tour-guide-style",
   ""
 );
+
+export type WikipediaLanguage = "en" | "fr" | "cs" | "es" | "de";
+
+export const wikipediaLanguageAtom = atomWithStorage<WikipediaLanguage>(
+  "wikipedia-language",
+  "en"
+);

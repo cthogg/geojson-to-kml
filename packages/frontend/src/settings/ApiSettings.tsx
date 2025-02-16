@@ -6,6 +6,8 @@ import {
   TourGuideStyle,
   tourGuideStyleAtom,
   unrealSpeechTokenAtom,
+  WikipediaLanguage,
+  wikipediaLanguageAtom,
 } from "./atoms";
 
 interface ApiSettingsProps {
@@ -25,12 +27,17 @@ export function ApiSettings({
   const [customTourGuideStyle, setCustomTourGuideStyle] = useAtom(
     customTourGuideStyleAtom
   );
+  const [wikipediaLanguage, setWikipediaLanguage] = useAtom(
+    wikipediaLanguageAtom
+  );
   const [tempApiKey, setTempApiKey] = useState("");
   const [tempUnrealSpeechToken, setTempUnrealSpeechToken] = useState("");
   const [tempTourGuideStyle, setTempTourGuideStyle] =
     useState<TourGuideStyle>(tourGuideStyle);
   const [tempCustomTourGuideStyle, setTempCustomTourGuideStyle] =
     useState(customTourGuideStyle);
+  const [tempWikipediaLanguage, setTempWikipediaLanguage] =
+    useState<WikipediaLanguage>(wikipediaLanguage);
   const [showApiKey, setShowApiKey] = useState(false);
   const [showUnrealSpeechToken, setShowUnrealSpeechToken] = useState(false);
 
@@ -41,6 +48,7 @@ export function ApiSettings({
       setTempUnrealSpeechToken(unrealSpeechToken);
       setTempTourGuideStyle(tourGuideStyle);
       setTempCustomTourGuideStyle(customTourGuideStyle);
+      setTempWikipediaLanguage(wikipediaLanguage);
     }
   }, [
     showApiKeyPrompt,
@@ -48,6 +56,7 @@ export function ApiSettings({
     unrealSpeechToken,
     tourGuideStyle,
     customTourGuideStyle,
+    wikipediaLanguage,
   ]);
 
   if (!showApiKeyPrompt) return null;
@@ -151,6 +160,21 @@ export function ApiSettings({
           </div>
         )}
 
+        <p className="text-sm text-gray-600 mb-4">Wikipedia Language</p>
+        <select
+          value={tempWikipediaLanguage}
+          onChange={(e) =>
+            setTempWikipediaLanguage(e.target.value as WikipediaLanguage)
+          }
+          className="w-full p-2 border border-gray-300 rounded mb-4"
+        >
+          <option value="en">English</option>
+          <option value="fr">French</option>
+          <option value="cs">Czech</option>
+          <option value="es">Spanish</option>
+          <option value="de">German</option>
+        </select>
+
         <div className="flex justify-end gap-2">
           <button
             onClick={() => {
@@ -169,6 +193,7 @@ export function ApiSettings({
               setUnrealSpeechToken(tempUnrealSpeechToken);
               setTourGuideStyle(tempTourGuideStyle);
               setCustomTourGuideStyle(tempCustomTourGuideStyle);
+              setWikipediaLanguage(tempWikipediaLanguage);
               setShowApiKeyPrompt(false);
               setTempApiKey("");
               setTempUnrealSpeechToken("");
