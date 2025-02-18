@@ -86,28 +86,57 @@ export function WikipediaPanel({
         return;
       }
 
-      const response = await fetch("https://api.v7.unrealspeech.com/stream", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${unrealSpeechToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          Text: content ?? "",
-          VoiceId: "Dan",
-          Bitrate: "192k",
-          Speed: "0.01",
-          Pitch: "0.92",
-          Codec: "libmp3lame",
-        }),
-      });
+      let audioUrl: string;
 
-      if (!response.ok) {
-        throw new Error(`${response.status} ${response.statusText}`);
+      if (elevenlabsApiKey) {
+        // Use Elevenlabs if API key is available
+        const response = await fetch(
+          "https://api.elevenlabs.io/v1/text-to-speech/JBFqnCBsd6RMkjVDRZzb?output_format=mp3_44100_128",
+          {
+            method: "POST",
+            headers: {
+              "xi-api-key": elevenlabsApiKey,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              text: content ?? "",
+              model_id: "eleven_multilingual_v2",
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`${response.status} ${response.statusText}`);
+        }
+
+        const audioBlob = await response.blob();
+        audioUrl = URL.createObjectURL(audioBlob);
+      } else {
+        // Fallback to Unreal Speech if no Elevenlabs API key
+        const response = await fetch("https://api.v7.unrealspeech.com/stream", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${unrealSpeechToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            Text: content ?? "",
+            VoiceId: "Dan",
+            Bitrate: "192k",
+            Speed: "0.01",
+            Pitch: "0.92",
+            Codec: "libmp3lame",
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`${response.status} ${response.statusText}`);
+        }
+
+        const audioBlob = await response.blob();
+        audioUrl = URL.createObjectURL(audioBlob);
       }
 
-      const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
       const audio = new Audio(audioUrl);
       audioRef.current = audio;
 
