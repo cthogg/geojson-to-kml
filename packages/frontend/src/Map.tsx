@@ -101,7 +101,7 @@ export function Map() {
       markerInfoQueries.data?.[article.wikipedia_article_url]?.summary.thumbnail
         ?.source;
     return L.icon({
-      iconUrl: thumbnailUrl || defaultWikipediaIcon.options.iconUrl,
+      iconUrl: thumbnailUrl ?? defaultWikipediaIcon.options.iconUrl,
       shadowUrl: iconShadow,
       iconSize: [48, 48],
       iconAnchor: [24, 48],
@@ -207,9 +207,9 @@ export function Map() {
           spiralLengthFactor={10}
           zoomToBoundsOnClick={false}
         >
-          {wikiMarkers.map((article, index) => (
+          {wikiMarkers.map((article) => (
             <Marker
-              key={`wiki-${article.id || index}`}
+              key={`wiki-${article.id}`}
               position={[article.latitude, article.longitude]}
               icon={createWikipediaIcon(article)}
               eventHandlers={{
