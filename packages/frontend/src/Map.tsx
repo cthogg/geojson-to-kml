@@ -1,4 +1,4 @@
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import L from "leaflet";
 import icon from "leaflet/dist/images/marker-icon.png";
@@ -50,6 +50,7 @@ export function Map() {
       getNearbyWikipediaArticles(mapCenter[0], mapCenter[1], 0.5, language),
     enabled: !!mapCenter,
     throwOnError: true,
+    staleTime: 1000 * 60 * 5,
   });
 
   const [cachedWikiMarkers, setCachedWikiMarkers] = useState<
@@ -76,22 +77,30 @@ export function Map() {
   });
 
   // Query to get Wikipedia article information including thumbnails for all markers
-  const markerInfoQueries = useQueries({
-    queries: wikiMarkers.map((marker) => ({
-      queryKey: ["getWikiInfo", marker.wikipedia_article_url, language],
-      queryFn: () =>
-        getWikipediaInformationFromUrl(marker.wikipedia_article_url, language),
-      enabled: wikiMarkers.length > 0,
-    })),
+  const markerInfoQueries = useQuery({
+    queryKey: [
+      "getWikiInfoBatch",
+      wikiMarkers.map((m) => m.wikipedia_article_url),
+    ],
+    queryFn: async () => {
+      const results = await Promise.all(
+        wikiMarkers.map((marker) =>
+          getWikipediaInformationFromUrl(marker.wikipedia_article_url, language)
+        )
+      );
+      return results.reduce((acc, info, index) => {
+        acc[wikiMarkers[index].wikipedia_article_url] = info;
+        return acc;
+      }, {} as Record<string, { summary: { thumbnail?: { source: string } } }>);
+    },
+    enabled: wikiMarkers.length > 0,
   });
 
   // Function to create icon with article thumbnail
   const createWikipediaIcon = (article: WikipediaArticle) => {
-    const markerIndex = wikiMarkers.findIndex(
-      (m) => m.wikipedia_article_url === article.wikipedia_article_url
-    );
     const thumbnailUrl =
-      markerInfoQueries[markerIndex]?.data?.summary.thumbnail?.source;
+      markerInfoQueries.data?.[article.wikipedia_article_url]?.summary.thumbnail
+        ?.source;
     return L.icon({
       iconUrl: thumbnailUrl ?? defaultWikipediaIcon.options.iconUrl,
       shadowUrl: iconShadow,
