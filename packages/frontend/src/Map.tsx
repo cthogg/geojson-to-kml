@@ -218,11 +218,7 @@ export function Map() {
                   centerMapOnFeature(article.latitude, article.longitude);
                 },
               }}
-            >
-              {/* <Tooltip direction="top" offset={[0, -20]} permanent>
-                {article.name}
-              </Tooltip> */}
-            </Marker>
+            ></Marker>
           ))}
         </MarkerClusterGroup>
       </MapContainer>
