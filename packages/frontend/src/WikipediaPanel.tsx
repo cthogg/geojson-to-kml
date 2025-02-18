@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import { LoadingSpinner, PauseIcon, PlayIcon } from "./assets/icons";
 import {
@@ -36,6 +36,15 @@ export function WikipediaPanel({
   const [tourGuideStyle, setTourGuideStyle] = useAtom(tourGuideStyleAtom);
   const [customTourGuideStyle] = useAtom(customTourGuideStyleAtom);
   const [language] = useAtom(wikipediaLanguageAtom);
+
+  useEffect(() => {
+    // Cleanup audio when selectedArticle changes
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+      setIsPlaying(false);
+    }
+  }, [selectedArticle]);
 
   const { data: wikiInfo, isLoading } = useQuery({
     queryKey: ["wikipediaInfo", selectedArticle.wikipedia_article_url],
