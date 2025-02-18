@@ -34,3 +34,5 @@ export const wikipediaLanguageAtom = atomWithStorage<WikipediaLanguage>(
   "wikipedia-language",
   "en"
 );
+
+export const wordLimitAtom = atomWithStorage<number>("word-limit", 50);

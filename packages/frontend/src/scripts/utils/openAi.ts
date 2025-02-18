@@ -6,11 +6,13 @@ export const createCompletion = async ({
   openAiKey,
   style,
   customTourGuideStyle,
+  wordLimit,
 }: {
   fullArticle: string;
   openAiKey: string;
   style: TourGuideStyle;
   customTourGuideStyle: string;
+  wordLimit: number;
 }) => {
   const openai = new OpenAI({
     organization: "org-NnvD2zTUZJPKSal9Y5kSw3z0",
@@ -26,7 +28,7 @@ export const createCompletion = async ({
     messages: [
       {
         role: "system",
-        content: `You are a local tour guide. You are given a location. Write a 100 word summary of the location. The summary should be in the style of a ${styleToUse}. Answer in the English language.`,
+        content: `You are a local tour guide. You are given a location. Write a ${wordLimit} word summary of the location. The summary should be in the style of a ${styleToUse}. Answer in the English language.`,
       },
       {
         role: "user",

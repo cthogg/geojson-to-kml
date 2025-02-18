@@ -8,6 +8,7 @@ import {
   unrealSpeechTokenAtom,
   WikipediaLanguage,
   wikipediaLanguageAtom,
+  wordLimitAtom,
 } from "./atoms";
 
 interface ApiSettingsProps {
@@ -30,8 +31,10 @@ export function ApiSettings({
   const [wikipediaLanguage, setWikipediaLanguage] = useAtom(
     wikipediaLanguageAtom
   );
+  const [wordLimit, setWordLimit] = useAtom(wordLimitAtom);
   const [tempApiKey, setTempApiKey] = useState("");
   const [tempUnrealSpeechToken, setTempUnrealSpeechToken] = useState("");
+  const [tempWordLimit, setTempWordLimit] = useState(wordLimit);
   const [tempTourGuideStyle, setTempTourGuideStyle] =
     useState<TourGuideStyle>(tourGuideStyle);
   const [tempCustomTourGuideStyle, setTempCustomTourGuideStyle] =
@@ -49,6 +52,7 @@ export function ApiSettings({
       setTempTourGuideStyle(tourGuideStyle);
       setTempCustomTourGuideStyle(customTourGuideStyle);
       setTempWikipediaLanguage(wikipediaLanguage);
+      setTempWordLimit(wordLimit);
     }
   }, [
     showApiKeyPrompt,
@@ -57,6 +61,7 @@ export function ApiSettings({
     tourGuideStyle,
     customTourGuideStyle,
     wikipediaLanguage,
+    wordLimit,
   ]);
 
   if (!showApiKeyPrompt) return null;
@@ -175,6 +180,19 @@ export function ApiSettings({
           <option value="de">German</option>
         </select>
 
+        <p className="text-sm text-gray-600 mb-4">
+          Word Limit (50 words ≈ 15 seconds)
+        </p>
+        <input
+          type="number"
+          min="1"
+          value={tempWordLimit}
+          onChange={(e) =>
+            setTempWordLimit(Math.max(1, parseInt(e.target.value) || 1))
+          }
+          className="w-full p-2 border border-gray-300 rounded mb-4"
+        />
+
         <div className="flex justify-end gap-2">
           <button
             onClick={() => {
@@ -194,6 +212,7 @@ export function ApiSettings({
               setTourGuideStyle(tempTourGuideStyle);
               setCustomTourGuideStyle(tempCustomTourGuideStyle);
               setWikipediaLanguage(tempWikipediaLanguage);
+              setWordLimit(tempWordLimit);
               setShowApiKeyPrompt(false);
               setTempApiKey("");
               setTempUnrealSpeechToken("");

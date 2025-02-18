@@ -14,6 +14,7 @@ import {
   TourGuideStyle,
   tourGuideStyleAtom,
   wikipediaLanguageAtom,
+  wordLimitAtom,
 } from "./settings/atoms";
 
 type WikipediaArticle = z.infer<typeof WikipediaArticleSchema>;
@@ -36,6 +37,7 @@ export function WikipediaPanel({
   const [tourGuideStyle, setTourGuideStyle] = useAtom(tourGuideStyleAtom);
   const [customTourGuideStyle] = useAtom(customTourGuideStyleAtom);
   const [language] = useAtom(wikipediaLanguageAtom);
+  const [wordLimit] = useAtom(wordLimitAtom);
 
   useEffect(() => {
     // Cleanup audio when selectedArticle changes
@@ -72,6 +74,7 @@ export function WikipediaPanel({
         openAiKey,
         style: tourGuideStyle,
         customTourGuideStyle,
+        wordLimit,
       });
       const content = openAiText?.choices[0].message.content;
 
