@@ -11,6 +11,7 @@ import { createCompletion } from "./scripts/utils/openAi";
 import { WikipediaArticleSchema } from "./scripts/utils/WikipediaArticlesTypes";
 import {
   customTourGuideStyleAtom,
+  elevenlabsApiKeyAtom,
   TourGuideStyle,
   tourGuideStyleAtom,
   wikipediaLanguageAtom,
@@ -24,6 +25,7 @@ interface WikipediaPanelProps {
   setSelectedArticle: (article: WikipediaArticle | null) => void;
   openAiKey: string;
   unrealSpeechToken: string;
+  elevenlabsApiKey: string;
 }
 
 export function WikipediaPanel({
@@ -38,6 +40,7 @@ export function WikipediaPanel({
   const [customTourGuideStyle] = useAtom(customTourGuideStyleAtom);
   const [language] = useAtom(wikipediaLanguageAtom);
   const [wordLimit] = useAtom(wordLimitAtom);
+  const [elevenlabsApiKey] = useAtom(elevenlabsApiKeyAtom);
 
   useEffect(() => {
     // Cleanup audio when selectedArticle changes

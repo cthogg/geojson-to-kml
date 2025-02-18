@@ -2,6 +2,7 @@ import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import {
   customTourGuideStyleAtom,
+  elevenlabsApiKeyAtom,
   openAiKeyAtom,
   TourGuideStyle,
   tourGuideStyleAtom,
@@ -24,6 +25,7 @@ export function ApiSettings({
   const [unrealSpeechToken, setUnrealSpeechToken] = useAtom(
     unrealSpeechTokenAtom
   );
+  const [elevenlabsApiKey, setElevenlabsApiKey] = useAtom(elevenlabsApiKeyAtom);
   const [tourGuideStyle, setTourGuideStyle] = useAtom(tourGuideStyleAtom);
   const [customTourGuideStyle, setCustomTourGuideStyle] = useAtom(
     customTourGuideStyleAtom
@@ -34,6 +36,7 @@ export function ApiSettings({
   const [wordLimit, setWordLimit] = useAtom(wordLimitAtom);
   const [tempApiKey, setTempApiKey] = useState("");
   const [tempUnrealSpeechToken, setTempUnrealSpeechToken] = useState("");
+  const [tempElevenlabsApiKey, setTempElevenlabsApiKey] = useState("");
   const [tempWordLimit, setTempWordLimit] = useState(wordLimit);
   const [tempTourGuideStyle, setTempTourGuideStyle] =
     useState<TourGuideStyle>(tourGuideStyle);
@@ -43,12 +46,14 @@ export function ApiSettings({
     useState<WikipediaLanguage>(wikipediaLanguage);
   const [showApiKey, setShowApiKey] = useState(false);
   const [showUnrealSpeechToken, setShowUnrealSpeechToken] = useState(false);
+  const [showElevenlabsApiKey, setShowElevenlabsApiKey] = useState(false);
 
   // Initialize temporary values when modal opens
   useEffect(() => {
     if (showApiKeyPrompt) {
       setTempApiKey(openAiKey);
       setTempUnrealSpeechToken(unrealSpeechToken);
+      setTempElevenlabsApiKey(elevenlabsApiKey);
       setTempTourGuideStyle(tourGuideStyle);
       setTempCustomTourGuideStyle(customTourGuideStyle);
       setTempWikipediaLanguage(wikipediaLanguage);
@@ -58,6 +63,7 @@ export function ApiSettings({
     showApiKeyPrompt,
     openAiKey,
     unrealSpeechToken,
+    elevenlabsApiKey,
     tourGuideStyle,
     customTourGuideStyle,
     wikipediaLanguage,
@@ -116,6 +122,32 @@ export function ApiSettings({
               </span>
             ) : (
               <span role="img" aria-label="show token">
+                👁️‍🗨️
+              </span>
+            )}
+          </button>
+        </div>
+
+        <p className="text-sm text-gray-600 mb-4">Elevenlabs API Key</p>
+        <div className="relative">
+          <input
+            type={showElevenlabsApiKey ? "text" : "password"}
+            value={tempElevenlabsApiKey}
+            onChange={(e) => setTempElevenlabsApiKey(e.target.value)}
+            placeholder="Enter Elevenlabs API key..."
+            className="w-full p-2 border border-gray-300 rounded mb-4 pr-10"
+          />
+          <button
+            type="button"
+            onClick={() => setShowElevenlabsApiKey(!showElevenlabsApiKey)}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none mb-4"
+          >
+            {showElevenlabsApiKey ? (
+              <span role="img" aria-label="hide key">
+                👁️
+              </span>
+            ) : (
+              <span role="img" aria-label="show key">
                 👁️‍🗨️
               </span>
             )}
@@ -199,6 +231,7 @@ export function ApiSettings({
               setShowApiKeyPrompt(false);
               setTempApiKey("");
               setTempUnrealSpeechToken("");
+              setTempElevenlabsApiKey("");
               setTempCustomTourGuideStyle("");
             }}
             className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
@@ -209,6 +242,7 @@ export function ApiSettings({
             onClick={() => {
               setOpenAiKey(tempApiKey);
               setUnrealSpeechToken(tempUnrealSpeechToken);
+              setElevenlabsApiKey(tempElevenlabsApiKey);
               setTourGuideStyle(tempTourGuideStyle);
               setCustomTourGuideStyle(tempCustomTourGuideStyle);
               setWikipediaLanguage(tempWikipediaLanguage);
@@ -216,6 +250,7 @@ export function ApiSettings({
               setShowApiKeyPrompt(false);
               setTempApiKey("");
               setTempUnrealSpeechToken("");
+              setTempElevenlabsApiKey("");
               setTempCustomTourGuideStyle("");
             }}
             className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 rounded"
