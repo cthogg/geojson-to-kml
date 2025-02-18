@@ -25,7 +25,6 @@ interface WikipediaPanelProps {
   setSelectedArticle: (article: WikipediaArticle | null) => void;
   openAiKey: string;
   unrealSpeechToken: string;
-  elevenlabsApiKey: string;
 }
 
 export function WikipediaPanel({
