@@ -112,7 +112,7 @@ export function Map() {
       iconSize: [48, 48],
       iconAnchor: [24, 48],
       popupAnchor: [0, -48],
-      className: "wikipedia-marker rounded-full",
+      className: "rounded-full",
     });
   };
 
