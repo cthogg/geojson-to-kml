@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { useRef, useState } from "react";
 import { z } from "zod";
+import { LoadingSpinner, PauseIcon, PlayIcon } from "./assets/icons";
 import {
   getWikipediaFullArticle,
   getWikipediaInformationFromUrl,
@@ -134,168 +135,11 @@ export function WikipediaPanel({
             className="flex-shrink-0 p-1 rounded-full bg-blue-500 hover:bg-blue-600 text-white disabled:bg-blue-300 text-sm"
           >
             {playAudioMutation.isPending ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <rect
-                  width="10"
-                  height="10"
-                  x="1"
-                  y="1"
-                  fill="currentColor"
-                  rx="1"
-                >
-                  <animate
-                    id="svgSpinnersBlocksShuffle30"
-                    fill="freeze"
-                    attributeName="x"
-                    begin="0;svgSpinnersBlocksShuffle3b.end"
-                    dur="0.2s"
-                    values="1;13"
-                  />
-                  <animate
-                    id="svgSpinnersBlocksShuffle31"
-                    fill="freeze"
-                    attributeName="y"
-                    begin="svgSpinnersBlocksShuffle38.end"
-                    dur="0.2s"
-                    values="1;13"
-                  />
-                  <animate
-                    id="svgSpinnersBlocksShuffle32"
-                    fill="freeze"
-                    attributeName="x"
-                    begin="svgSpinnersBlocksShuffle39.end"
-                    dur="0.2s"
-                    values="13;1"
-                  />
-                  <animate
-                    id="svgSpinnersBlocksShuffle33"
-                    fill="freeze"
-                    attributeName="y"
-                    begin="svgSpinnersBlocksShuffle3a.end"
-                    dur="0.2s"
-                    values="13;1"
-                  />
-                </rect>
-                <rect
-                  width="10"
-                  height="10"
-                  x="1"
-                  y="13"
-                  fill="currentColor"
-                  rx="1"
-                >
-                  <animate
-                    id="svgSpinnersBlocksShuffle34"
-                    fill="freeze"
-                    attributeName="y"
-                    begin="svgSpinnersBlocksShuffle30.end"
-                    dur="0.2s"
-                    values="13;1"
-                  />
-                  <animate
-                    id="svgSpinnersBlocksShuffle35"
-                    fill="freeze"
-                    attributeName="x"
-                    begin="svgSpinnersBlocksShuffle31.end"
-                    dur="0.2s"
-                    values="1;13"
-                  />
-                  <animate
-                    id="svgSpinnersBlocksShuffle36"
-                    fill="freeze"
-                    attributeName="y"
-                    begin="svgSpinnersBlocksShuffle32.end"
-                    dur="0.2s"
-                    values="1;13"
-                  />
-                  <animate
-                    id="svgSpinnersBlocksShuffle37"
-                    fill="freeze"
-                    attributeName="x"
-                    begin="svgSpinnersBlocksShuffle33.end"
-                    dur="0.2s"
-                    values="13;1"
-                  />
-                </rect>
-                <rect
-                  width="10"
-                  height="10"
-                  x="13"
-                  y="13"
-                  fill="currentColor"
-                  rx="1"
-                >
-                  <animate
-                    id="svgSpinnersBlocksShuffle38"
-                    fill="freeze"
-                    attributeName="x"
-                    begin="svgSpinnersBlocksShuffle34.end"
-                    dur="0.2s"
-                    values="13;1"
-                  />
-                  <animate
-                    id="svgSpinnersBlocksShuffle39"
-                    fill="freeze"
-                    attributeName="y"
-                    begin="svgSpinnersBlocksShuffle35.end"
-                    dur="0.2s"
-                    values="13;1"
-                  />
-                  <animate
-                    id="svgSpinnersBlocksShuffle3a"
-                    fill="freeze"
-                    attributeName="x"
-                    begin="svgSpinnersBlocksShuffle36.end"
-                    dur="0.2s"
-                    values="1;13"
-                  />
-                  <animate
-                    id="svgSpinnersBlocksShuffle3b"
-                    fill="freeze"
-                    attributeName="y"
-                    begin="svgSpinnersBlocksShuffle37.end"
-                    dur="0.2s"
-                    values="1;13"
-                  />
-                </rect>
-              </svg>
+              <LoadingSpinner />
             ) : isPlaying ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <g fill="currentColor">
-                  <path
-                    fill-rule="evenodd"
-                    d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2M5 1a4 4 0 0 0-4 4v14a4 4 0 0 0 4 4h14a4 4 0 0 0 4-4V5a4 4 0 0 0-4-4z"
-                    clip-rule="evenodd"
-                  />
-                  <path d="M8 7h2v10H8zm6 0h2v10h-2z" />
-                </g>
-              </svg>
+              <PauseIcon />
             ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <g fill="currentColor">
-                  <path
-                    fill-rule="evenodd"
-                    d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2M5 1a4 4 0 0 0-4 4v14a4 4 0 0 0 4 4h14a4 4 0 0 0 4-4V5a4 4 0 0 0-4-4z"
-                    clip-rule="evenodd"
-                  />
-                  <path d="m16 12l-6 4.33V7.67z" />
-                </g>
-              </svg>
+              <PlayIcon />
             )}
           </button>
         </h2>
