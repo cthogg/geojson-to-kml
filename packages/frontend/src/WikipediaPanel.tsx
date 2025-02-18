@@ -156,7 +156,7 @@ export function WikipediaPanel({
           <button
             onClick={handlePlayPause}
             disabled={playAudioMutation.isPending}
-            className="flex-shrink-0 p-1 rounded-full bg-blue-500 hover:bg-blue-600 text-white disabled:bg-blue-300 text-sm"
+            className="flex-shrink-0 p-1 rounded-full text-black disabled:text-gray-600 text-sm"
           >
             {playAudioMutation.isPending ? (
               <LoadingSpinner />
