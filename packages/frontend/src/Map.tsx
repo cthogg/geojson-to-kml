@@ -71,11 +71,13 @@ export function Map() {
 
   // Add custom wikipedia icon
   const wikipediaIcon = L.icon({
-    iconUrl: icon,
+    iconUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Interior_View_of_the_Scala_Theatre%2C_London_-_1917_(5327707820).jpg/320px-Interior_View_of_the_Scala_Theatre%2C_London_-_1917_(5327707820).png",
     shadowUrl: iconShadow,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    className: "wikipedia-marker", // We'll use this to style the icon green
+    iconSize: [48, 48], // Made square and smaller for better visibility
+    iconAnchor: [16, 32], // Center bottom point
+    popupAnchor: [0, -32], // Center top
+    className: "wikipedia-marker",
   });
 
   const centerMapOnFeature = (latitude: number, longitude: number) => {
