@@ -16,6 +16,7 @@ import MarkerClusterGroup from "react-leaflet-markercluster";
 import { z } from "zod";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { getNearbyWikipediaArticles } from "./scripts/utils/getLocalWiki";
+import { getWikipediaInformationFromUrl } from "./scripts/utils/getWikipediaInformation";
 import { WikipediaArticleSchema } from "./scripts/utils/WikipediaArticlesTypes";
 import { ApiSettings } from "./settings/ApiSettings";
 import {
@@ -69,16 +70,51 @@ export function Map() {
 
   const wikiMarkers = wikiQuery.data ?? cachedWikiMarkers;
 
-  // Add custom wikipedia icon
-  const wikipediaIcon = L.icon({
+  // Default wikipedia icon for articles without thumbnails
+  const defaultWikipediaIcon = L.icon({
     iconUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Interior_View_of_the_Scala_Theatre%2C_London_-_1917_(5327707820).jpg/320px-Interior_View_of_the_Scala_Theatre%2C_London_-_1917_(5327707820).png",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/200px-Wikipedia-logo-v2.svg.png",
     shadowUrl: iconShadow,
-    iconSize: [48, 48], // Made square and smaller for better visibility
-    iconAnchor: [16, 32], // Center bottom point
-    popupAnchor: [0, -32], // Center top
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32],
     className: "wikipedia-marker",
   });
+
+  // Query to get Wikipedia article information including thumbnails for all markers
+  const markerInfoQueries = useQuery({
+    queryKey: [
+      "getWikiInfoBatch",
+      wikiMarkers.map((m) => m.wikipedia_article_url),
+    ],
+    queryFn: async () => {
+      const results = await Promise.all(
+        wikiMarkers.map((marker) =>
+          getWikipediaInformationFromUrl(marker.wikipedia_article_url, language)
+        )
+      );
+      return results.reduce((acc, info, index) => {
+        acc[wikiMarkers[index].wikipedia_article_url] = info;
+        return acc;
+      }, {} as Record<string, { summary: { thumbnail?: { source: string } } }>);
+    },
+    enabled: wikiMarkers.length > 0,
+  });
+
+  // Function to create icon with article thumbnail
+  const createWikipediaIcon = (article: WikipediaArticle) => {
+    const thumbnailUrl =
+      markerInfoQueries.data?.[article.wikipedia_article_url]?.summary.thumbnail
+        ?.source;
+    return L.icon({
+      iconUrl: thumbnailUrl || defaultWikipediaIcon.options.iconUrl,
+      shadowUrl: iconShadow,
+      iconSize: [48, 48],
+      iconAnchor: [24, 48],
+      popupAnchor: [0, -48],
+      className: "wikipedia-marker rounded-full",
+    });
+  };
 
   const centerMapOnFeature = (latitude: number, longitude: number) => {
     map?.setView([latitude - 0.00045, longitude], 18);
@@ -181,7 +217,7 @@ export function Map() {
             <Marker
               key={`wiki-${article.id || index}`}
               position={[article.latitude, article.longitude]}
-              icon={wikipediaIcon}
+              icon={createWikipediaIcon(article)}
               eventHandlers={{
                 click: () => {
                   setSelectedWikiArticle(article);
