@@ -135,9 +135,17 @@ export function WikipediaPanel({
   }
   return (
     <div className="relative z-10 p-4 backdrop-blur-sm">
-      <div className="flex justify-between items-start text-black">
-        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-          {selectedArticle.name}
+      <div className="flex flex-col text-black">
+        <div className="w-full flex justify-between items-center">
+          <h2 className="text-xl font-semibold">{selectedArticle.name}</h2>
+          <button
+            onClick={() => setSelectedArticle(null)}
+            className="text-black"
+          >
+            ✕
+          </button>
+        </div>
+        <div className="flex items-center gap-4 mt-4">
           <button
             onClick={handlePlayPause}
             disabled={playAudioMutation.isPending}
@@ -151,8 +159,6 @@ export function WikipediaPanel({
               <PlayIcon />
             )}
           </button>
-        </h2>
-        <p className="text-sm text-gray-500">
           <select
             value={tourGuideStyle}
             onChange={(e) =>
@@ -182,15 +188,6 @@ export function WikipediaPanel({
             <option value="historian">Historian</option>
             <option value="custom">(custom) {customTourGuideStyle}</option>
           </select>
-        </p>
-
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setSelectedArticle(null)}
-            className="text-black ml-2"
-          >
-            ✕
-          </button>
         </div>
       </div>
       <div className="flex flex-col gap-4">
