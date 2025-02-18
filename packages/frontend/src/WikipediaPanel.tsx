@@ -89,9 +89,11 @@ export function WikipediaPanel({
       let audioUrl: string;
 
       if (elevenlabsApiKey) {
+        //Get from https://api.elevenlabs.io/v1/voices
+        const brianVoiceId = "dRe8aG2olO7L6WwHb5en";
         // Use Elevenlabs if API key is available
         const response = await fetch(
-          "https://api.elevenlabs.io/v1/text-to-speech/JBFqnCBsd6RMkjVDRZzb?output_format=mp3_44100_128",
+          `https://api.elevenlabs.io/v1/text-to-speech/${brianVoiceId}?output_format=mp3_44100_128`,
           {
             method: "POST",
             headers: {
@@ -100,7 +102,7 @@ export function WikipediaPanel({
             },
             body: JSON.stringify({
               text: content ?? "",
-              model_id: "eleven_multilingual_v2",
+              model_id: "eleven_flash_v2_5",
             }),
           }
         );
