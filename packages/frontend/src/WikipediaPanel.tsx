@@ -139,7 +139,14 @@ export function WikipediaPanel({
         <div className="w-full flex justify-between items-center">
           <h2 className="text-xl font-semibold">{selectedArticle.name}</h2>
           <button
-            onClick={() => setSelectedArticle(null)}
+            onClick={() => {
+              if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current = null;
+                setIsPlaying(false);
+              }
+              setSelectedArticle(null);
+            }}
             className="text-black"
           >
             ✕
