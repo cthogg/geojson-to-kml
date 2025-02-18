@@ -5,13 +5,7 @@ import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
-import {
-  MapContainer,
-  Marker,
-  TileLayer,
-  Tooltip,
-  useMapEvents,
-} from "react-leaflet";
+import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { z } from "zod";
 import { ErrorBoundary } from "./components/ErrorBoundary";
@@ -225,9 +219,9 @@ export function Map() {
                 },
               }}
             >
-              <Tooltip direction="top" offset={[0, -20]} permanent>
+              {/* <Tooltip direction="top" offset={[0, -20]} permanent>
                 {article.name}
-              </Tooltip>
+              </Tooltip> */}
             </Marker>
           ))}
         </MarkerClusterGroup>
