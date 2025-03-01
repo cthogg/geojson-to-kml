@@ -219,7 +219,7 @@ export function WikipediaPanel({
             className="p-1 border border-gray-300 rounded bg-white max-w-[200px]"
           >
             {/* FIXME: automatically generate options from the styles array */}
-            <option value="tour guide">Tour Guide</option>
+            <option value="local history expert">Local history expert</option>
             <option value="comedian">Comedian</option>
             <option value="philosopher">Philosopher</option>
             <option value="poet">Poet</option>

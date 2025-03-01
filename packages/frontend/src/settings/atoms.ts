@@ -2,7 +2,7 @@ import { atomWithStorage } from "jotai/utils";
 
 export type TourGuideStyle =
   | "comedian"
-  | "tour guide"
+  | "local history expert"
   | "philosopher"
   | "poet"
   | "custom";
@@ -18,7 +18,7 @@ export const speakerLanguageAtom = atomWithStorage<SpeakerLanguage>(
 
 export const tourGuideStyleAtom = atomWithStorage<TourGuideStyle>(
   "tour-guide-style",
-  "tour guide"
+  "local history expert"
 );
 export const customTourGuideStyleAtom = atomWithStorage(
   "custom-tour-guide-style",
