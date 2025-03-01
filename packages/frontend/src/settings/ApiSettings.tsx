@@ -224,10 +224,10 @@ export function ApiSettings({
         </p>
         <input
           type="number"
-          min="1"
+          min="0"
           value={tempWordLimit}
           onChange={(e) =>
-            setTempWordLimit(Math.max(1, parseInt(e.target.value) || 1))
+            setTempWordLimit(Math.max(0, parseInt(e.target.value) || 0))
           }
           className="w-full p-2 border border-gray-300 rounded mb-4"
         />
