@@ -48,6 +48,8 @@ export function ApiSettings({
     useState<SpeakerLanguage>(speakerLanguage);
   const [showApiKey, setShowApiKey] = useState(false);
   const [showUnrealSpeechToken, setShowUnrealSpeechToken] = useState(false);
+  const [apiKeyError, setApiKeyError] = useState(false);
+  const [unrealSpeechTokenError, setUnrealSpeechTokenError] = useState(false);
 
   // Initialize temporary values when modal opens
   useEffect(() => {
@@ -59,6 +61,10 @@ export function ApiSettings({
       setTempWikipediaLanguage(wikipediaLanguage);
       setTempSpeakerLanguage(speakerLanguage);
       setTempWordLimit(wordLimit);
+
+      // Initialize validation states
+      validateApiKey(openAiKey);
+      validateUnrealSpeechToken(unrealSpeechToken);
     }
   }, [
     showApiKeyPrompt,
@@ -71,6 +77,15 @@ export function ApiSettings({
     wordLimit,
   ]);
 
+  // Validation functions
+  const validateApiKey = (key: string) => {
+    setApiKeyError(!key || key.length <= 1);
+  };
+
+  const validateUnrealSpeechToken = (token: string) => {
+    setUnrealSpeechTokenError(!token || token.length <= 1);
+  };
+
   if (!showApiKeyPrompt) return null;
 
   return (
@@ -82,14 +97,19 @@ export function ApiSettings({
           <input
             type={showApiKey ? "text" : "password"}
             value={tempApiKey}
-            onChange={(e) => setTempApiKey(e.target.value)}
+            onChange={(e) => {
+              setTempApiKey(e.target.value);
+              validateApiKey(e.target.value);
+            }}
             placeholder="sk-..."
-            className="w-full p-2 border border-gray-300 rounded mb-4 pr-10"
+            className={`w-full p-2 border rounded pr-10 ${
+              apiKeyError ? "border-red-500 mb-1" : "border-gray-300 mb-4"
+            }`}
           />
           <button
             type="button"
             onClick={() => setShowApiKey(!showApiKey)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none mb-4"
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
           >
             {showApiKey ? (
               <span role="img" aria-label="hide key">
@@ -101,6 +121,11 @@ export function ApiSettings({
               </span>
             )}
           </button>
+          {apiKeyError && (
+            <p className="text-red-500 text-xs mb-4">
+              Please enter a valid OpenAI API key
+            </p>
+          )}
         </div>
 
         <p className="text-sm text-gray-600 mb-4">Unreal Speech Auth Token</p>
@@ -108,14 +133,21 @@ export function ApiSettings({
           <input
             type={showUnrealSpeechToken ? "text" : "password"}
             value={tempUnrealSpeechToken}
-            onChange={(e) => setTempUnrealSpeechToken(e.target.value)}
+            onChange={(e) => {
+              setTempUnrealSpeechToken(e.target.value);
+              validateUnrealSpeechToken(e.target.value);
+            }}
             placeholder="Enter token..."
-            className="w-full p-2 border border-gray-300 rounded mb-4 pr-10"
+            className={`w-full p-2 border rounded pr-10 ${
+              unrealSpeechTokenError
+                ? "border-red-500 mb-1"
+                : "border-gray-300 mb-4"
+            }`}
           />
           <button
             type="button"
             onClick={() => setShowUnrealSpeechToken(!showUnrealSpeechToken)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none mb-4"
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
           >
             {showUnrealSpeechToken ? (
               <span role="img" aria-label="hide token">
@@ -127,6 +159,11 @@ export function ApiSettings({
               </span>
             )}
           </button>
+          {unrealSpeechTokenError && (
+            <p className="text-red-500 text-xs mb-4">
+              Please enter a valid Unreal Speech Auth Token
+            </p>
+          )}
         </div>
 
         <p className="text-sm text-gray-600 mb-4">Tour Guide Style</p>
@@ -213,6 +250,10 @@ export function ApiSettings({
           </button>
           <button
             onClick={() => {
+              // Validate before saving
+              validateApiKey(tempApiKey);
+              validateUnrealSpeechToken(tempUnrealSpeechToken);
+
               setOpenAiKey(tempApiKey);
               setUnrealSpeechToken(tempUnrealSpeechToken);
               setTourGuideStyle(tempTourGuideStyle);
