@@ -145,7 +145,6 @@ export function WikipediaPanel({
 
       audio.addEventListener("ended", () => {
         setIsPlaying(false);
-        setShowAudioTranscript(false);
       });
 
       await audio.play();
