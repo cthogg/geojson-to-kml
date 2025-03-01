@@ -39,6 +39,7 @@ export function WikipediaPanel({
   const [audioTranscriptText, setAudioTranscriptText] = useState<string | null>(
     null
   );
+  const [audioHasEnded, setAudioHasEnded] = useState(false);
   const [tourGuideStyle, setTourGuideStyle] = useAtom(tourGuideStyleAtom);
   const [customTourGuideStyle] = useAtom(customTourGuideStyleAtom);
   const [language] = useAtom(wikipediaLanguageAtom);
@@ -53,6 +54,7 @@ export function WikipediaPanel({
       setIsPlaying(false);
       setShowAudioTranscript(false);
       setAudioTranscriptText(null);
+      setAudioHasEnded(false);
     }
   }, [selectedArticle]);
 
@@ -64,6 +66,7 @@ export function WikipediaPanel({
       setIsPlaying(false);
       setShowAudioTranscript(false);
       setAudioTranscriptText(null);
+      setAudioHasEnded(false);
     }
   }, [tourGuideStyle, customTourGuideStyle]);
 
@@ -145,6 +148,7 @@ export function WikipediaPanel({
 
       audio.addEventListener("ended", () => {
         setIsPlaying(false);
+        setAudioHasEnded(true);
       });
 
       await audio.play();
@@ -170,6 +174,10 @@ export function WikipediaPanel({
       setIsPlaying(true);
       setShowAudioTranscript(true);
     }
+  };
+
+  const handleLearnMore = () => {
+    alert("FIXME: feature not yet implemented");
   };
 
   if (isLoading) {
@@ -242,6 +250,16 @@ export function WikipediaPanel({
                 <p className="text-gray-700 whitespace-pre-line">
                   {audioTranscriptText}
                 </p>
+                {audioHasEnded && (
+                  <div className="mt-4 flex justify-center">
+                    <button
+                      onClick={handleLearnMore}
+                      className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                    >
+                      Learn More
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               wikiInfo?.summary.thumbnail &&
