@@ -128,7 +128,14 @@ export function WikipediaPanel({
         audioUrl = URL.createObjectURL(audioBlob);
       } else {
         // Fallback to Unreal Speech if no Elevenlabs API key
-        const voiceId = speakerLanguage === "french" ? "Élodie" : "Charlotte";
+        let voiceId;
+        if (speakerLanguage === "french") {
+          voiceId = "Élodie";
+        } else if (speakerLanguage === "mandarin") {
+          voiceId = "Mei";
+        } else {
+          voiceId = "Charlotte";
+        }
 
         const response = await fetch("https://api.v8.unrealspeech.com/stream", {
           method: "POST",

@@ -229,6 +229,7 @@ export function ApiSettings({
         >
           <option value="english">English</option>
           <option value="french">French</option>
+          <option value="mandarin">Mandarin Chinese</option>
         </select>
 
         <p className="text-sm text-gray-600 mb-4">
