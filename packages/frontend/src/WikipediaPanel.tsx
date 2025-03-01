@@ -36,6 +36,10 @@ export function WikipediaPanel({
 }: WikipediaPanelProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [showAudioTranscript, setShowAudioTranscript] = useState(false);
+  const [audioTranscriptText, setAudioTranscriptText] = useState<string | null>(
+    null
+  );
   const [tourGuideStyle, setTourGuideStyle] = useAtom(tourGuideStyleAtom);
   const [customTourGuideStyle] = useAtom(customTourGuideStyleAtom);
   const [language] = useAtom(wikipediaLanguageAtom);
@@ -49,6 +53,8 @@ export function WikipediaPanel({
       audioRef.current.pause();
       audioRef.current = null;
       setIsPlaying(false);
+      setShowAudioTranscript(false);
+      setAudioTranscriptText(null);
     }
   }, [selectedArticle]);
 
@@ -81,7 +87,11 @@ export function WikipediaPanel({
         wordLimit,
         speakerLanguage,
       });
+
       const content = openAiText?.choices[0].message.content;
+
+      // Store the transcript text
+      setAudioTranscriptText(content || "");
 
       if (audioRef.current && isPlaying) {
         audioRef.current.play();
@@ -149,10 +159,12 @@ export function WikipediaPanel({
 
       audio.addEventListener("ended", () => {
         setIsPlaying(false);
+        setShowAudioTranscript(false);
       });
 
       await audio.play();
       setIsPlaying(true);
+      setShowAudioTranscript(true);
     },
     throwOnError: true,
   });
@@ -166,9 +178,11 @@ export function WikipediaPanel({
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
+      setShowAudioTranscript(false);
     } else {
       audioRef.current.play();
       setIsPlaying(true);
+      setShowAudioTranscript(true);
     }
   };
 
@@ -186,6 +200,8 @@ export function WikipediaPanel({
                 audioRef.current.pause();
                 audioRef.current = null;
                 setIsPlaying(false);
+                setShowAudioTranscript(false);
+                setAudioTranscriptText(null);
               }
               setSelectedArticle(null);
             }}
@@ -244,18 +260,28 @@ export function WikipediaPanel({
           <div className="animate-pulse">Loading...</div>
         ) : (
           <>
-            {wikiInfo?.summary.description && (
+            {wikiInfo?.summary.description && !showAudioTranscript && (
               <p className="text-gray-700">{wikiInfo.summary.description}</p>
             )}
-            {wikiInfo?.summary.thumbnail && (
-              <div className="flex justify-center">
-                <img
-                  src={wikiInfo.summary.thumbnail.source}
-                  alt={selectedArticle.name}
-                  className="max-w-full h-auto rounded-lg shadow-lg"
-                  style={{ maxHeight: "300px" }}
-                />
+            {showAudioTranscript && audioTranscriptText ? (
+              <div className="mt-4 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3 className="text-lg font-medium mb-2">Audio Transcript</h3>
+                <p className="text-gray-700 whitespace-pre-line">
+                  {audioTranscriptText}
+                </p>
               </div>
+            ) : (
+              wikiInfo?.summary.thumbnail &&
+              !showAudioTranscript && (
+                <div className="flex justify-center">
+                  <img
+                    src={wikiInfo.summary.thumbnail.source}
+                    alt={selectedArticle.name}
+                    className="max-w-full h-auto rounded-lg shadow-lg"
+                    style={{ maxHeight: "300px" }}
+                  />
+                </div>
+              )
             )}
           </>
         )}
