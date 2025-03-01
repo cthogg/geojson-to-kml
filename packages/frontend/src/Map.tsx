@@ -18,6 +18,7 @@ import {
   unrealSpeechTokenAtom,
   wikipediaLanguageAtom,
 } from "./settings/atoms";
+import { WelcomePanel } from "./WelcomePanel";
 import { WikipediaPanel } from "./WikipediaPanel";
 
 type WikipediaArticle = z.infer<typeof WikipediaArticleSchema>;
@@ -33,6 +34,7 @@ export function Map() {
   const [showApiKeyPrompt, setShowApiKeyPrompt] = useState(false);
   const [selectedWikiArticle, setSelectedWikiArticle] =
     useState<WikipediaArticle | null>(null);
+  const [showWelcomePanel, setShowWelcomePanel] = useState(true);
 
   useEffect(() => {
     const DefaultIcon = L.icon({
@@ -43,6 +45,13 @@ export function Map() {
     });
     L.Marker.prototype.options.icon = DefaultIcon;
   }, []);
+
+  // Hide welcome panel when an article is selected
+  useEffect(() => {
+    if (selectedWikiArticle) {
+      setShowWelcomePanel(false);
+    }
+  }, [selectedWikiArticle]);
 
   const wikiQuery = useQuery({
     queryKey: ["getWikiArticles", mapCenter],
@@ -227,7 +236,7 @@ export function Map() {
       {selectedWikiArticle && (
         <div
           style={{ zIndex: 1000 }}
-          className={`absolute bg-gray-100 bottom-0 left-0 right-0 overflow-y-auto rounded-t-lg shadow-lg transition-all duration-300`}
+          className={`absolute bg-gray-100 bottom-0 left-0 right-0 overflow-y-auto rounded-t-lg shadow-lg transition-all duration-300 max-h-[80vh]`}
         >
           <ErrorBoundary>
             <WikipediaPanel
@@ -236,6 +245,17 @@ export function Map() {
               openAiKey={openAiKey}
               unrealSpeechToken={unrealSpeechToken}
             />
+          </ErrorBoundary>
+        </div>
+      )}
+
+      {showWelcomePanel && !selectedWikiArticle && (
+        <div
+          style={{ zIndex: 1000 }}
+          className={`absolute bg-gray-100 bottom-0 left-0 right-0 overflow-y-auto rounded-t-lg shadow-lg transition-all duration-300 max-h-[80vh]`}
+        >
+          <ErrorBoundary>
+            <WelcomePanel onClose={() => setShowWelcomePanel(false)} />
           </ErrorBoundary>
         </div>
       )}

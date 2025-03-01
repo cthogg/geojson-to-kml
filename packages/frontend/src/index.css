@@ -35,3 +35,35 @@
     box-shadow: 0 0 0 0 rgba(74, 144, 226, 0);
   }
 }
+
+/* Welcome Panel Styles */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.welcome-panel-enter {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.welcome-panel-enter-active {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 300ms, opacity 300ms;
+}
+
+.welcome-panel-exit {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.welcome-panel-exit-active {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 300ms, opacity 300ms;
+}
