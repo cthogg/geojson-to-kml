@@ -115,7 +115,7 @@ export function WikipediaPanel({
         audioUrl = URL.createObjectURL(audioBlob);
       } else {
         // Fallback to Unreal Speech if no Elevenlabs API key
-        const response = await fetch("https://api.v7.unrealspeech.com/stream", {
+        const response = await fetch("https://api.v8.unrealspeech.com/stream", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${unrealSpeechToken}`,
@@ -123,7 +123,7 @@ export function WikipediaPanel({
           },
           body: JSON.stringify({
             Text: content ?? "",
-            VoiceId: "Dan",
+            VoiceId: "Charlotte",
             Bitrate: "192k",
             Speed: "0.01",
             Pitch: "0.92",
