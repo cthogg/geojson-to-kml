@@ -36,6 +36,12 @@ export function Map() {
     useState<WikipediaArticle | null>(null);
   const [showWelcomePanel, setShowWelcomePanel] = useState(true);
 
+  // Check if API keys are valid
+  const isOpenAiKeyMissing = !openAiKey || openAiKey.length <= 1;
+  const isUnrealSpeechTokenMissing =
+    !unrealSpeechToken || unrealSpeechToken.length <= 1;
+  const isMissingApiKeys = isOpenAiKeyMissing || isUnrealSpeechTokenMissing;
+
   useEffect(() => {
     const DefaultIcon = L.icon({
       iconUrl: icon,
@@ -160,6 +166,28 @@ export function Map() {
 
   return (
     <div className="h-[100dvh] w-[100dvw] flex flex-col relative">
+      {/* API Key Missing Banner */}
+      {isMissingApiKeys && (
+        <div className="absolute top-0 left-0 right-0 bg-amber-100 border-b border-amber-300 p-3 z-[1001] flex justify-between items-center">
+          <div className="flex items-center">
+            <span className="text-amber-700 mr-2">⚠️</span>
+            <span className="text-amber-800 font-medium">
+              {isOpenAiKeyMissing && isUnrealSpeechTokenMissing
+                ? "OpenAI API key and Unreal Speech token are missing"
+                : isOpenAiKeyMissing
+                ? "OpenAI API key is missing"
+                : "Unreal Speech token is missing"}
+            </span>
+          </div>
+          <button
+            onClick={() => setShowApiKeyPrompt(true)}
+            className="bg-amber-200 hover:bg-amber-300 text-amber-800 px-3 py-1 rounded-md text-sm font-medium transition-colors duration-200"
+          >
+            Open Settings
+          </button>
+        </div>
+      )}
+
       <div className="absolute top-4 right-4 z-[1000] flex overflow-x-auto max-w-[calc(100%-2rem)] hide-scrollbar">
         <div className="flex gap-2 px-1">
           <button
