@@ -4,6 +4,8 @@ import {
   customTourGuideStyleAtom,
   elevenlabsApiKeyAtom,
   openAiKeyAtom,
+  SpeakerLanguage,
+  speakerLanguageAtom,
   TourGuideStyle,
   tourGuideStyleAtom,
   unrealSpeechTokenAtom,
@@ -33,6 +35,7 @@ export function ApiSettings({
   const [wikipediaLanguage, setWikipediaLanguage] = useAtom(
     wikipediaLanguageAtom
   );
+  const [speakerLanguage, setSpeakerLanguage] = useAtom(speakerLanguageAtom);
   const [wordLimit, setWordLimit] = useAtom(wordLimitAtom);
   const [tempApiKey, setTempApiKey] = useState("");
   const [tempUnrealSpeechToken, setTempUnrealSpeechToken] = useState("");
@@ -44,6 +47,8 @@ export function ApiSettings({
     useState(customTourGuideStyle);
   const [tempWikipediaLanguage, setTempWikipediaLanguage] =
     useState<WikipediaLanguage>(wikipediaLanguage);
+  const [tempSpeakerLanguage, setTempSpeakerLanguage] =
+    useState<SpeakerLanguage>(speakerLanguage);
   const [showApiKey, setShowApiKey] = useState(false);
   const [showUnrealSpeechToken, setShowUnrealSpeechToken] = useState(false);
   const [showElevenlabsApiKey, setShowElevenlabsApiKey] = useState(false);
@@ -57,6 +62,7 @@ export function ApiSettings({
       setTempTourGuideStyle(tourGuideStyle);
       setTempCustomTourGuideStyle(customTourGuideStyle);
       setTempWikipediaLanguage(wikipediaLanguage);
+      setTempSpeakerLanguage(speakerLanguage);
       setTempWordLimit(wordLimit);
     }
   }, [
@@ -67,6 +73,7 @@ export function ApiSettings({
     tourGuideStyle,
     customTourGuideStyle,
     wikipediaLanguage,
+    speakerLanguage,
     wordLimit,
   ]);
 
@@ -212,6 +219,18 @@ export function ApiSettings({
           <option value="de">German</option>
         </select>
 
+        <p className="text-sm text-gray-600 mb-4">Speaker Language</p>
+        <select
+          value={tempSpeakerLanguage}
+          onChange={(e) =>
+            setTempSpeakerLanguage(e.target.value as SpeakerLanguage)
+          }
+          className="w-full p-2 border border-gray-300 rounded mb-4"
+        >
+          <option value="english">English</option>
+          <option value="french">French</option>
+        </select>
+
         <p className="text-sm text-gray-600 mb-4">
           Word Limit (50 words ≈ 15 seconds)
         </p>
@@ -246,6 +265,7 @@ export function ApiSettings({
               setTourGuideStyle(tempTourGuideStyle);
               setCustomTourGuideStyle(tempCustomTourGuideStyle);
               setWikipediaLanguage(tempWikipediaLanguage);
+              setSpeakerLanguage(tempSpeakerLanguage);
               setWordLimit(tempWordLimit);
               setShowApiKeyPrompt(false);
               setTempApiKey("");

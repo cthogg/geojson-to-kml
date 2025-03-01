@@ -12,6 +12,7 @@ import { WikipediaArticleSchema } from "./scripts/utils/WikipediaArticlesTypes";
 import {
   customTourGuideStyleAtom,
   elevenlabsApiKeyAtom,
+  speakerLanguageAtom,
   TourGuideStyle,
   tourGuideStyleAtom,
   wikipediaLanguageAtom,
@@ -38,6 +39,7 @@ export function WikipediaPanel({
   const [tourGuideStyle, setTourGuideStyle] = useAtom(tourGuideStyleAtom);
   const [customTourGuideStyle] = useAtom(customTourGuideStyleAtom);
   const [language] = useAtom(wikipediaLanguageAtom);
+  const [speakerLanguage] = useAtom(speakerLanguageAtom);
   const [wordLimit] = useAtom(wordLimitAtom);
   const [elevenlabsApiKey] = useAtom(elevenlabsApiKeyAtom);
 
@@ -77,6 +79,7 @@ export function WikipediaPanel({
         style: tourGuideStyle,
         customTourGuideStyle,
         wordLimit,
+        speakerLanguage,
       });
       const content = openAiText?.choices[0].message.content;
 
@@ -115,6 +118,8 @@ export function WikipediaPanel({
         audioUrl = URL.createObjectURL(audioBlob);
       } else {
         // Fallback to Unreal Speech if no Elevenlabs API key
+        const voiceId = speakerLanguage === "french" ? "Élodie" : "Charlotte";
+
         const response = await fetch("https://api.v8.unrealspeech.com/stream", {
           method: "POST",
           headers: {
@@ -123,7 +128,7 @@ export function WikipediaPanel({
           },
           body: JSON.stringify({
             Text: content ?? "",
-            VoiceId: "Charlotte",
+            VoiceId: voiceId,
             Bitrate: "192k",
             Speed: "0.01",
             Pitch: "0.92",

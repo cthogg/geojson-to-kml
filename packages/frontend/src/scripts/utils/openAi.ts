@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { TourGuideStyle } from "../../settings/atoms";
+import { SpeakerLanguage, TourGuideStyle } from "../../settings/atoms";
 
 export const createCompletion = async ({
   fullArticle,
@@ -7,12 +7,14 @@ export const createCompletion = async ({
   style,
   customTourGuideStyle,
   wordLimit,
+  speakerLanguage,
 }: {
   fullArticle: string;
   openAiKey: string;
   style: TourGuideStyle;
   customTourGuideStyle: string;
   wordLimit: number;
+  speakerLanguage: SpeakerLanguage;
 }) => {
   const openai = new OpenAI({
     organization: "org-NnvD2zTUZJPKSal9Y5kSw3z0",
@@ -22,13 +24,14 @@ export const createCompletion = async ({
   });
 
   const styleToUse = style === "custom" ? customTourGuideStyle : style;
+  const languageToUse = speakerLanguage === "french" ? "French" : "English";
 
   const completion = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
       {
         role: "system",
-        content: `You are a local tour guide. You are given a location. Write a ${wordLimit} word summary of the location. The summary should be in the style of a ${styleToUse}. Answer in the English language.`,
+        content: `You are a local tour guide. You are given a location. Write a ${wordLimit} word summary of the location. The summary should be in the style of a ${styleToUse}. Answer in the ${languageToUse} language.`,
       },
       {
         role: "user",

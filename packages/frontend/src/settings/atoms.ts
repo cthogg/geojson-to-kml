@@ -20,6 +20,13 @@ export type TourGuideStyle =
 export const openAiKeyAtom = atomWithStorage("openai-api-key", "");
 export const unrealSpeechTokenAtom = atomWithStorage("unreal-speech-token", "");
 export const elevenlabsApiKeyAtom = atomWithStorage("elevenlabs-api-key", "");
+
+export type SpeakerLanguage = "english" | "french";
+export const speakerLanguageAtom = atomWithStorage<SpeakerLanguage>(
+  "speaker-language",
+  "english"
+);
+
 export const tourGuideStyleAtom = atomWithStorage<TourGuideStyle>(
   "tour-guide-style",
   "tour guide"
