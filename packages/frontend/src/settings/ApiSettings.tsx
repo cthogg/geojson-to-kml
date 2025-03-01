@@ -181,19 +181,15 @@ export function ApiSettings({
           <option value="custom">Custom Style</option>
         </select>
 
-        {tempTourGuideStyle === "custom" && (
-          <div className="mb-4">
-            <p className="text-sm text-gray-600 mb-2">
-              Custom Style Description
-            </p>
-            <textarea
-              value={tempCustomTourGuideStyle}
-              onChange={(e) => setTempCustomTourGuideStyle(e.target.value)}
-              placeholder="Describe your custom tour guide style..."
-              className="w-full p-2 border border-gray-300 rounded h-24 resize-none"
-            />
-          </div>
-        )}
+        <div className="mb-4">
+          <p className="text-sm text-gray-600 mb-2">Custom Style Description</p>
+          <textarea
+            value={tempCustomTourGuideStyle}
+            onChange={(e) => setTempCustomTourGuideStyle(e.target.value)}
+            placeholder="The summary should be in the style of a..."
+            className="w-full p-2 border border-gray-300 rounded h-24 resize-none"
+          />
+        </div>
 
         <p className="text-sm text-gray-600 mb-4">Wikipedia Language</p>
         <select
