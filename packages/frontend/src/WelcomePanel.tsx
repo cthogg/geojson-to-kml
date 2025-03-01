@@ -71,39 +71,6 @@ export function WelcomePanel({ onClose }: WelcomePanelProps) {
             </ul>
           </div>
 
-          <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-            <h3 className="text-lg font-medium mb-2 flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 mr-2 text-blue-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
-              Getting Started:
-            </h3>
-            <ol className="list-decimal pl-5 space-y-2 text-gray-700">
-              <li>Navigate to an area of interest on the map</li>
-              <li>
-                Click on a Wikipedia marker (look for the Wikipedia logo or
-                image thumbnails)
-              </li>
-              <li>
-                Read about the location or click the play button to listen
-              </li>
-              <li>
-                Configure API settings by clicking the "APIs" button if needed
-              </li>
-            </ol>
-          </div>
-
           <div className="mt-4 flex justify-center">
             <button
               onClick={onClose}

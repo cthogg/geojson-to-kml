@@ -173,7 +173,7 @@ export function Map() {
             onClick={() => setShowApiKeyPrompt(true)}
             className="flex-shrink-0 bg-white text-gray-700 hover:bg-gray-50 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors duration-200 px-4 py-2 flex items-center gap-2 whitespace-nowrap"
           >
-            <span className="text-gray-700 font-medium">🔧 APIs</span>
+            <span className="text-gray-700 font-medium">🔧 Settings</span>
           </button>
 
           {wikiQuery.isLoading && (
