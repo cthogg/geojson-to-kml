@@ -11,7 +11,6 @@ import { createCompletion } from "./scripts/utils/openAi";
 import { WikipediaArticleSchema } from "./scripts/utils/WikipediaArticlesTypes";
 import {
   customTourGuideStyleAtom,
-  elevenlabsApiKeyAtom,
   speakerLanguageAtom,
   TourGuideStyle,
   tourGuideStyleAtom,
@@ -45,7 +44,6 @@ export function WikipediaPanel({
   const [language] = useAtom(wikipediaLanguageAtom);
   const [speakerLanguage] = useAtom(speakerLanguageAtom);
   const [wordLimit] = useAtom(wordLimitAtom);
-  const [elevenlabsApiKey] = useAtom(elevenlabsApiKeyAtom);
 
   useEffect(() => {
     // Cleanup audio when selectedArticle changes
@@ -98,68 +96,38 @@ export function WikipediaPanel({
         return;
       }
 
-      let audioUrl: string;
-
-      if (elevenlabsApiKey) {
-        //Get from https://api.elevenlabs.io/v1/voices
-        // const brianVoiceId = "dRe8aG2olO7L6WwHb5en";
-        const eastEndSteveVoiceId = "1TE7ou3jyxHsyRehUuMB";
-        // Use Elevenlabs if API key is available
-        const response = await fetch(
-          `https://api.elevenlabs.io/v1/text-to-speech/${eastEndSteveVoiceId}?output_format=mp3_44100_128`,
-          {
-            method: "POST",
-            headers: {
-              "xi-api-key": elevenlabsApiKey,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              text: content ?? "",
-              model_id: "eleven_flash_v2_5",
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`${response.status} ${response.statusText}`);
-        }
-
-        const audioBlob = await response.blob();
-        audioUrl = URL.createObjectURL(audioBlob);
+      // Use Unreal Speech for text-to-speech
+      let voiceId;
+      if (speakerLanguage === "french") {
+        voiceId = "Élodie";
+      } else if (speakerLanguage === "mandarin") {
+        voiceId = "Mei";
       } else {
-        // Fallback to Unreal Speech if no Elevenlabs API key
-        let voiceId;
-        if (speakerLanguage === "french") {
-          voiceId = "Élodie";
-        } else if (speakerLanguage === "mandarin") {
-          voiceId = "Mei";
-        } else {
-          voiceId = "Charlotte";
-        }
-
-        const response = await fetch("https://api.v8.unrealspeech.com/stream", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${unrealSpeechToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            Text: content ?? "",
-            VoiceId: voiceId,
-            Bitrate: "192k",
-            Speed: "0.01",
-            Pitch: "0.92",
-            Codec: "libmp3lame",
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error(`${response.status} ${response.statusText}`);
-        }
-
-        const audioBlob = await response.blob();
-        audioUrl = URL.createObjectURL(audioBlob);
+        voiceId = "Charlotte";
       }
+
+      const response = await fetch("https://api.v8.unrealspeech.com/stream", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${unrealSpeechToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          Text: content ?? "",
+          VoiceId: voiceId,
+          Bitrate: "192k",
+          Speed: "0.01",
+          Pitch: "0.92",
+          Codec: "libmp3lame",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`${response.status} ${response.statusText}`);
+      }
+
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
 
       const audio = new Audio(audioUrl);
       audioRef.current = audio;
