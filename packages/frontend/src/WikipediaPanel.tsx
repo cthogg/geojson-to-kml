@@ -56,6 +56,17 @@ export function WikipediaPanel({
     }
   }, [selectedArticle]);
 
+  // Reset audio state when tour guide style changes
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+      setIsPlaying(false);
+      setShowAudioTranscript(false);
+      setAudioTranscriptText(null);
+    }
+  }, [tourGuideStyle, customTourGuideStyle]);
+
   const { data: wikiInfo, isLoading } = useQuery({
     queryKey: ["wikipediaInfo", selectedArticle.wikipedia_article_url],
     queryFn: () =>
@@ -141,6 +152,7 @@ export function WikipediaPanel({
       setIsPlaying(true);
       setShowAudioTranscript(true);
     },
+    mutationKey: [tourGuideStyle, customTourGuideStyle],
     throwOnError: true,
   });
 
