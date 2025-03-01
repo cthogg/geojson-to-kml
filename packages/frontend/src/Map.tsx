@@ -168,20 +168,18 @@ export function Map() {
     <div className="h-[100dvh] w-[100dvw] flex flex-col relative">
       {/* API Key Missing Banner */}
       {isMissingApiKeys && (
-        <div className="absolute top-0 left-0 right-0 bg-amber-100 border-b border-amber-300 p-3 z-[1001] flex justify-between items-center">
-          <div className="flex items-center">
-            <span className="text-amber-700 mr-2">⚠️</span>
-            <span className="text-amber-800 font-medium">
-              {isOpenAiKeyMissing && isUnrealSpeechTokenMissing
-                ? "OpenAI API key and Unreal Speech token are missing"
-                : isOpenAiKeyMissing
-                ? "OpenAI API key is missing"
-                : "Unreal Speech token is missing"}
-            </span>
-          </div>
+        <div className="absolute top-0 left-0 right-0 bg-amber-100 border-b border-amber-300 p-3 z-[1001] flex items-center">
+          <span className="text-amber-700 mr-2">⚠️</span>
+          <span className="text-amber-800 font-medium">
+            {isOpenAiKeyMissing && isUnrealSpeechTokenMissing
+              ? "OpenAI API key and Unreal Speech token are missing. These are needed to play audio summaries."
+              : isOpenAiKeyMissing
+              ? "OpenAI API key is missing. This is needed to play audio summaries."
+              : "Unreal Speech token is missing. This is needed to play audio summaries."}
+          </span>
           <button
             onClick={() => setShowApiKeyPrompt(true)}
-            className="bg-amber-200 hover:bg-amber-300 text-amber-800 px-3 py-1 rounded-md text-sm font-medium transition-colors duration-200"
+            className="ml-3 bg-amber-200 hover:bg-amber-300 text-amber-800 px-3 py-1 rounded-md text-sm font-medium transition-colors duration-200 whitespace-nowrap"
           >
             Open Settings
           </button>
