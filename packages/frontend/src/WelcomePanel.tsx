@@ -7,7 +7,7 @@ export function WelcomePanel({ onClose }: WelcomePanelProps) {
     <div className="relative z-10 p-4 backdrop-blur-sm">
       <div className="flex flex-col text-black">
         <div className="w-full flex justify-between items-center">
-          <h2 className="text-xl font-semibold">Welcome to GeoWiki Explorer</h2>
+          <h2 className="text-xl font-semibold">Welcome to What's near</h2>
           <button
             onClick={onClose}
             className="text-black hover:bg-gray-200 p-1 rounded-full transition-colors"
