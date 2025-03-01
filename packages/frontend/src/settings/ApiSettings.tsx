@@ -174,7 +174,9 @@ export function ApiSettings({
           }
           className="w-full p-2 border border-gray-300 rounded mb-4"
         >
-          <option value="local history expert">Local history expert</option>
+          <option value="local history expert who is specific with facts">
+            Local history expert
+          </option>
           <option value="comedian">Comedian</option>
           <option value="philosopher">Philosopher</option>
           <option value="poet">Poet</option>
