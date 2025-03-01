@@ -202,11 +202,12 @@ export function Map() {
             <span className="text-gray-700 font-medium">🔧 Settings</span>
           </button>
 
-          {wikiQuery.isLoading && (
-            <div className="flex-shrink-0 bg-white rounded-lg shadow-lg px-4 py-2 flex items-center">
+          <div className="flex-shrink-0  rounded-lg shadow-lg px-4 py-2 flex items-center w-20 h-10">
+            {wikiQuery.isLoading && (
               <div className="animate-spin h-5 w-5 border-2 border-blue-500 border-t-transparent rounded-full"></div>
-            </div>
-          )}
+            )}
+            {!wikiQuery.isLoading && <span className="text-green-500">✓</span>}
+          </div>
         </div>
       </div>
 
