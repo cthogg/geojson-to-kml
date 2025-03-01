@@ -139,22 +139,8 @@ export function ApiSettings({
         >
           <option value="tour guide">Tour Guide</option>
           <option value="comedian">Comedian</option>
-          <option value="history buff">History Buff</option>
-          <option value="architect">Architect</option>
-          <option value="local expert">Local Expert</option>
-          <option value="foodie">Foodie</option>
-          <option value="rap artist">Rap Artist</option>
-          <option value="person who speaks one setence english one sentence german">
-            English/German Speaker
-          </option>
-          <option value="person who only speaks in words that start with the letter 'S'">
-            S-Words Only
-          </option>
-          <option value="arrogant know-it-all">Arrogant Know-it-all</option>
-          <option value="motivational speaker">Motivational Speaker</option>
           <option value="philosopher">Philosopher</option>
           <option value="poet">Poet</option>
-          <option value="historian">Historian</option>
           <option value="custom">Custom Style</option>
         </select>
 
