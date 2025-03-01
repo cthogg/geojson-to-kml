@@ -176,6 +176,11 @@ export function WikipediaPanel({
     }
   };
 
+  // Can you change the handleLearnMore function so when the user presses it it:
+  // 1. Produces text from @openAi.ts . It takes in the same information and also the current content.
+  // The prompt is You are a local tour guide. You are given a location and content which the tour guide has just spoken about. Write a ${wordLimit} word addition to this, not including things they have spoken about. It should be in the style of a ${styleToUse}. Answer in the ${languageToUse} language.
+  // When the user presses play it shows the extra text in the Audio transcript and plays it with unreal speech.
+
   const handleLearnMore = () => {
     alert("FIXME: feature not yet implemented");
   };
